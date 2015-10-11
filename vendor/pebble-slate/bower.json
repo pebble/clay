@@ -1,0 +1,13 @@
+{
+  "name": "Slate",
+  "version": "0.0.3",
+  "homepage": "https://github.com/pebble/slate",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

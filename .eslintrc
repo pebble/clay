@@ -1,0 +1,16 @@
+{
+  "extends": "pebble",
+  "env" : {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "Pebble": true,
+    "$": true,
+    "t": true
+  },
+  "rules" : {
+    "new-cap": [0],
+    "max-params": [1]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Slate",
+  "version": "0.0.3",
+  "description": "Front-end framework for developing Pebble mobile configuration pages.",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pebble/slate.git"
+  },
+  "keywords": [
+    "Pebble"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pebble/slate/issues"
+  },
+  "homepage": "https://github.com/pebble/slate",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-uglify": "^1.2.0",
+    "gulp-uglifycss": "^1.0.4",
+    "rimraf": "^2.4.0"
+  }
+}

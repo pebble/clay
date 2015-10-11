@@ -1,0 +1,59 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.hide {
+  display:none;
+}
+.item-styled-color .value {
+  box-sizing: border-box;
+  height: 26px;
+}
+
+.item-container {
+  margin-top: 0;
+  padding-top: 15px;
+}
+
+input[type="button"]:disabled {
+  background-color: #ccc;
+}
+
+#cancel-btn {
+  background-color: #444;
+}
+
+#cancel-btn,
+#save-btn {
+  width: 45%;
+}
+
+#main-form {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -1.5rem;
+}
+
+#main-form:after {
+  content: "";
+  display: block;
+  padding-top: 2rem;
+}
+
+footer, #main-form:after {
+  height: 1.5rem;
+}
+
+footer {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.item {
+  display: table;
+  width:100%;
+  box-sizing: border-box;
+}
