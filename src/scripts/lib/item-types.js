@@ -25,22 +25,11 @@ module.exports = {
   },
   select: {
     template: require('../../templates/components/select.mustache'),
-    manipulator: manipulators.val,
-    valueTransformer: function(rawValue, item) {
-      item.options.forEach(function(option, index) {
-        if (option.value === rawValue) {
-          item.options[index].selected = 'selected';
-        }
-      });
-      return rawValue;
-    }
+    manipulator: manipulators.val
   },
   toggle: {
     template: require('../../templates/components/toggle.mustache'),
-    manipulator: manipulators.checked,
-    valueTransformer: function(rawValue) {
-      return rawValue ? 'checked' : '';
-    }
+    manipulator: manipulators.checked
   },
   submit: {
     template: require('../../templates/components/submit.mustache'),

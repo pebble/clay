@@ -51,20 +51,22 @@ function encodeDataUri(input) {
   return 'data:text/html;base64,' + encodeURIComponent(out.join(''));
 }
 
-function Clay(config) {
+/**
+ * @param {array} config - the Clay config
+ * @param {function} [customFn] - custom code to run from the config page.
+ * Will run with api as context
+ * @constructor
+ */
+function Clay(config, customFn) {
   this.config = config;
-  /**
-   * @type {{}}
-   * @private
-   */
-  this._defaults = {};
+  this.customFn = customFn || function() {};
 }
 
 /**
  * Generate the Data URI used by the config Page with settings injected
- * @param {string} clayData - the entire HTML page as a data URI
+ * @param {string} returnTo - used while developing on desktop.
  */
-Clay.prototype.generateUrl = function() {
+Clay.prototype.generateUrl = function(returnTo) {
   var settings;
   try {
     settings = JSON.parse(localStorage.getItem('clay-settings')) || {};
@@ -74,6 +76,8 @@ Clay.prototype.generateUrl = function() {
   }
   // Show config page
   return encodeDataUri(configPageHtml
+    .replace('$$CUSTOM_FN$$', this.customFn.toString().replace(/^.*?\{/, '{'))
+    .replace('$$RETURN_TO$$', returnTo || 'pebblejs://close#')
     .replace('$$CONFIG$$', JSON.stringify(this.config))
     .replace('$$SETTINGS$$', JSON.stringify(settings))
   );
@@ -86,10 +90,7 @@ Clay.prototype.getSettings = function(response) {
   if (!settings) return {};
 
   localStorage.setItem('clay-settings', JSON.stringify(settings));
-};
-
-Clay.prototype.getDefaults = function() {
-  return this._defaults;
+  return settings;
 };
 
 module.exports = Clay;

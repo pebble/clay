@@ -16,7 +16,7 @@ gulp.task('clean', function(done) {
 });
 
 gulp.task('browserify', ['clean'], function(done) {
-  return browserify('src/scripts/config-page.js', { debug: true })
+  return browserify('src/scripts/config-page.js', { debug: false })
     .transform(stringify(['.html', '.mustache']))
     .bundle()
     .pipe(source('config-page.js'))
