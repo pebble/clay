@@ -2,12 +2,13 @@
   "name": "pebble-clay",
   "version": "1.0.0",
   "description": "Pebble Config Framework",
-  "main": "index.js",
+  "main": "dist/clay.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "browserify-mustache": "0.0.4",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
+    "gulp-html-to-js": "0.0.1",
     "gulp-inline": "0.0.15",
     "gulp-minify-html": "^1.0.4",
     "gulp-minify-inline": "^0.1.1",

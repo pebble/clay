@@ -4,8 +4,6 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var gulp = require('gulp');
 var path = require('path');
-var template = require('gulp-template');
-var stringify = require('stringify');
 var del = require('del');
 
 var projectPath = process.argv[2] || process.cwd();
@@ -19,16 +17,11 @@ gulp.task('clean', function() {
   return del([pebbleJsPath]);
 });
 
-gulp.task('build', ['clean', 'pebble-js-app'], function() {
-
-});
-
-gulp.task('pebble-js-app', function() {
+gulp.task('pebble-js-app', ['clean'], function() {
   browserify(clayJsPath, { debug: false })
-    .transform(stringify(['.html', '.mustache']))
     .bundle()
     .pipe(source('pebble-js-app.js'))
     .pipe(gulp.dest('./src/js/'));
 });
 
-gulp.start('build');
+gulp.start('pebble-js-app');

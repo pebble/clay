@@ -31,7 +31,16 @@ gulp.task('inlineHtml', ['clean', 'browserify'], function() {
       jsSelector: 'script[uglify]'
     }))
     .pipe(minifyHTML())
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('tmp/'));
 });
 
-gulp.task('default', ['inlineHtml']);
+gulp.task('clay', ['inlineHtml'], function() {
+  return browserify('index.js', { debug: false })
+    .transform(stringify(['.html', '.mustache']))
+    .require(require.resolve('./index'), {expose: 'pebble-clay'})
+    .bundle()
+    .pipe(source('clay.js'))
+    .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('default', ['clay']);
