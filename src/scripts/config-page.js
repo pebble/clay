@@ -10,8 +10,8 @@
  * @property {string|boolean} default
  * @property {string} label
  * @property {object} attributes
- * @property {array} options
- * @property {array} items
+ * @property {Array} options
+ * @property {Array} items
  */
 
 var mustache = require('mustache');
@@ -47,8 +47,10 @@ function getSetting(key, defaultValue) {
 //   settings[key] = value;
 // }
 
+var index = 0;
+
 /**
- * @param {Clay~Item} item
+ * @param {Clay~Item|Array} item
  * @param {$} $parent
  */
 function processConfigItem(item, $parent) {
@@ -73,9 +75,11 @@ function processConfigItem(item, $parent) {
     var itemType = itemTypes[item.type];
     var templateData = $.extend({}, item, {
       attributes: $.map(item.attributes || [], function(item, key) {
+        console.log(index);
         return {
           key: key,
-          value: item.toString()
+          value: item.toString(),
+          index: index++
         };
       })
     });
@@ -145,7 +149,7 @@ api.getItemsByType = function(type) {
   });
 };
 
-processConfigItem(config, $mainForm, 0);
+processConfigItem(config, $mainForm);
 $mainForm.on('submit', submit);
 
 module.exports = api;

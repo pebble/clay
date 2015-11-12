@@ -31,6 +31,10 @@ module.exports = {
     template: require('../../templates/components/toggle.mustache'),
     manipulator: manipulators.checked
   },
+  radiogroup: {
+    template: require('../../templates/components/radiogroup.mustache'),
+    manipulator: manipulators.radiogroup
+  },
   submit: {
     template: require('../../templates/components/submit.mustache'),
     manipulator: manipulators.val

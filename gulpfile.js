@@ -15,7 +15,7 @@ gulp.task('clean', function(done) {
   });
 });
 
-gulp.task('browserify', ['clean'], function(done) {
+gulp.task('browserify', ['clean'], function() {
   return browserify('src/scripts/config-page.js', { debug: false })
     .transform(stringify(['.html', '.mustache']))
     .bundle()
