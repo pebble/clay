@@ -1,0 +1,37 @@
+@import "../vendor/bourbon/bourbon";
+
+// Bourbon settings
+$em-base: 16px;
+
+// ---- Colors ------
+$color-orange: #ff4700;
+$color-red: #ff0000;
+$color-white: #ffffff;
+$color-borders: #5c5c5c;
+
+// background color
+$color-grey-darker: #333333;
+
+// secondary background
+$color-grey-dark: #484848;
+
+//buttons
+$color-grey-medium: #666666;
+$color-grey-light: #767676;
+$border-radius: 4px;
+
+// used for fonts
+$color-grey-lighter: #848484;
+$color-grey-lightest: #adadad;
+
+
+// custom vars
+$global-margin: 55px;
+$form-margin: 25px;
+$button-padding: 18px;
+$button-padding-ios: 16px;
+$button-line-height: 13px;
+$footer-height-large: 90px;
+
+$border-standard: 1px solid $color-borders;
+

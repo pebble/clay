@@ -16,8 +16,9 @@ gulp.task('clean-js', function() {
 });
 
 gulp.task('js', ['clean-js'], function() {
-  return browserify('src/scripts/config-page.js', { debug: false })
-    .transform(stringify(['.html', '.mustache']))
+  return browserify('src/scripts/config-page.js', { debug: true })
+    .transform(stringify(['.html', '.tpl']))
+    .transform('deamdify')
     .bundle()
     .pipe(source('config-page.js'))
     .pipe(gulp.dest('./tmp/'));
@@ -47,7 +48,7 @@ gulp.task('inlineHtml', ['js', 'sass'], function() {
 
 gulp.task('clay', ['inlineHtml'], function() {
   return browserify('index.js', { debug: false })
-    .transform(stringify(['.html', '.mustache']))
+    .transform(stringify(['.html', '.tpl']))
     .require(require.resolve('./index'), {expose: 'pebble-clay'})
     .bundle()
     .pipe(source('clay.js'))
@@ -58,8 +59,8 @@ gulp.task('default', ['clay']);
 
 gulp.task('dev', ['js', 'sass'], function() {
 
-  gulp.watch('./src/styles/', ['sass']);
-  gulp.watch('./src/scripts/', ['js']);
+  gulp.watch('src/styles/**/*.scss', ['sass']);
+  gulp.watch(['src/scripts/**/*.js', 'src/templates/**/*.tpl'], ['js']);
 
   return browserify('dev/dev.js', { debug: true })
     .bundle()

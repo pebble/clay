@@ -1,0 +1,22 @@
+@mixin font-pfdin($weight: normal) {
+
+  font-weight: normal;
+
+  @if $weight == light {
+    font-family: 'PFDinDisplayPro-Light', PFDinDisplayProLightWebfont, sans-serif;
+  }
+
+  @if $weight == normal or $weight == regular {
+    font-family: 'PFDinDisplayPro-Regular', PFDinDisplayProRegularWebfont, sans-serif;
+  }
+
+  @if $weight == medium {
+    font-family: 'PFDinDisplayPro-Medium', PFDinDisplayProRegularWebfont, sans-serif;
+
+    .platform-android & {
+      font-family: PFDinDisplayProLightWebfont, sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
+  }
+}

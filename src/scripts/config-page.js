@@ -14,17 +14,18 @@
  * @property {Array} items
  */
 
-var mustache = require('mustache');
-var itemTypes = require('./lib/item-types');
-var $ = require('zepto-browserify').$;
+var itemTypes = require('./lib/items');
+var $ = require('./vendor/minified/minified').$;
+var _ = require('./vendor/minified/minified')._;
+var HTML = require('./vendor/minified/minified').HTML;
 
-var config = $.extend(true, [], window.clayConfig || []);
-var settings = $.extend(true, {}, window.claySettings || {});
+var config = _.extend([], window.clayConfig || []);
+var settings = _.extend({}, window.claySettings || {});
 var returnTo = window.returnTo || 'pebblejs://close#';
 var customFn = window.customFn;
 
 function submit(event) {
-  $.each(api.itemsByAppKey, function(appKey, item) {
+  _.each(api.itemsByAppKey, function(appKey, item) {
     settings[appKey] = item.get();
   });
   // Set the return URL depending on the runtime environment
@@ -47,8 +48,6 @@ function getSetting(key, defaultValue) {
 //   settings[key] = value;
 // }
 
-var index = 0;
-
 /**
  * @param {Clay~Item|Array} item
  * @param {$} $parent
@@ -63,29 +62,29 @@ function processConfigItem(item, $parent) {
   } else if (item.type === 'section') {
     processConfigItem(
       item.items,
-      $('<div class="item-container">').appendTo($parent)
+      $parent.add(HTML('<div class="section">'))
     );
   } else if (item.type === 'block') {
     processConfigItem(
       item.items,
-      $('<div class="item-container-content">').appendTo($parent)
+      $parent.add(HTML('<div class="block">'))
     );
   } else {
+    console.debug('KEEGAN: itemType', item.type);
     var apiItem = {};
     var itemType = itemTypes[item.type];
-    var templateData = $.extend({}, item, {
-      attributes: $.map(item.attributes || [], function(item, key) {
-        console.log(index);
-        return {
-          key: key,
-          value: item.toString(),
-          index: index++
-        };
-      })
-    });
+    var templateData = {
+      label: '',
+      options: [],
+      attributes: {}
+    };
 
-    apiItem.$element = $(mustache.render(itemType.template, templateData));
-    apiItem.$manipulatorTarget = apiItem.$element.find('[data-manipulator-target]');
+    console.debug('KEEGAN: templateData', templateData);
+
+    _.extend(templateData, item);
+    apiItem.$element = HTML(_.formatHtml(itemType.template, templateData));
+    apiItem.$manipulatorTarget =
+      apiItem.$element.select('[data-manipulator-target]');
 
     // this caters for situations where the manipulator target is the root element
     if (!apiItem.$manipulatorTarget.length) {
@@ -93,25 +92,43 @@ function processConfigItem(item, $parent) {
     }
 
     // proxy event related methods
+    var eventProxies = {};
     apiItem.on = function(events, handler) {
-      return apiItem.$manipulatorTarget.on(events, $.proxy(handler, apiItem));
+      eventProxies[handler] = function(event) {
+        handler.call(apiItem, event);
+      };
+      return apiItem.$manipulatorTarget.on(events, eventProxies[handler]);
     };
     apiItem.one = function(events, handler) {
-      return apiItem.$manipulatorTarget.one(events, $.proxy(handler, apiItem));
+      eventProxies[handler] = function(event) {
+        handler.call(apiItem, event);
+        $.off(eventProxies[handler]);
+      };
+      return apiItem.$manipulatorTarget.on(events, eventProxies[handler]);
     };
-    apiItem.off = apiItem.$manipulatorTarget.off.bind(apiItem.$manipulatorTarget);
-    apiItem.triggerHandler =
-      apiItem.$manipulatorTarget.triggerHandler.bind(apiItem.$manipulatorTarget);
+    apiItem.off = function(handler) {
+      return $.off(eventProxies[handler]);
+    };
+
+    apiItem.trigger =
+      apiItem.$manipulatorTarget.trigger.bind(apiItem.$manipulatorTarget);
 
     // attach the manipulator methods to the apiItem
-    $.each(itemType.manipulator, function(methodName, method) {
+    _.eachObj(itemType.manipulator, function(methodName, method) {
       apiItem[methodName] = method.bind(apiItem);
     });
 
+    apiItem.config = item;
+
+    // attach the initialize method to the API.
+    apiItem.iniialize = typeof itemType.initialize === 'function' ?
+      itemType.initialize :
+      function() {};
+    apiItem.iniialize.bind(apiItem);
+    apiItem.iniialize();
+
     // set the value of the item via the manipulator to ensure consistency
     apiItem.set(getSetting(item.app_key, item.value));
-
-    apiItem.config = item;
 
     if (item.id) {
       api.itemsById[item.id] = apiItem;
@@ -123,7 +140,7 @@ function processConfigItem(item, $parent) {
 
     api.items.push(apiItem);
 
-    $parent.append(apiItem.$element);
+    $parent.add(apiItem.$element);
   }
 }
 

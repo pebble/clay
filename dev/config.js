@@ -32,7 +32,7 @@ module.exports = [
             "value": "Hello",
             "label": "Greeting",
             "attributes": {
-              "placeholder": "Enter a \"greeting\"",
+              "placeholder": "Enter a \"greeting\" >",
               "limit": 10,
               "required": "required"
             }
