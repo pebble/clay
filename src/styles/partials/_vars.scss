@@ -1,37 +1,40 @@
 @import "../vendor/bourbon/bourbon";
 
 // Bourbon settings
-$em-base: 16px;
+$em-base: 18px;
 
 // ---- Colors ------
 $color-orange: #ff4700;
+$color-orange-dark: #993d19;
 $color-red: #ff0000;
 $color-white: #ffffff;
-$color-borders: #5c5c5c;
+$color-black: #000000;
 
 // background color
-$color-grey-darker: #333333;
-
-// secondary background
-$color-grey-dark: #484848;
-
-//buttons
-$color-grey-medium: #666666;
-$color-grey-light: #767676;
-$border-radius: 4px;
-
-// used for fonts
-$color-grey-lighter: #848484;
-$color-grey-lightest: #adadad;
-
+$color-gray-0: #111111;
+$color-gray-1: #2f2f2f;
+$color-gray-2: #333333;
+$color-gray-3: #414141;
+$color-gray-4: #484848; // divider
+$color-gray-5: #5b5b5b;
+$color-gray-6: #666666;
+$color-gray-7: #767676;
+$color-gray-8: #858585;
+$color-gray-9: #a4a4a4 ;
+$color-gray-10: #ececec;
+$color-gray-11: #f2f2f2;
 
 // custom vars
+$border-radius: 0.25rem;
+$item-spacing-v: 1.5rem;
+$item-spacing-h: 0.75rem;
+
+
 $global-margin: 55px;
 $form-margin: 25px;
-$button-padding: 18px;
-$button-padding-ios: 16px;
+$button-padding: 0.7rem;
+$button-padding-ios: 0.6rem;
 $button-line-height: 13px;
 $footer-height-large: 90px;
 
-$border-standard: 1px solid $color-borders;
-
+$box-shadow-small-components: $color-gray-1 0 0.1rem 0.1rem;

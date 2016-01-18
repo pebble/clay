@@ -2,12 +2,14 @@
   <span class="label">{{{label}}}</span>
   <input
     data-manipulator-target
-    type="text"
+    type="hidden"
   />
-  <div class="picker">
-    <span class="value"></span>
-    <div class="color-box-wrap">
-      <div class="color-box-container"></div>
+  <span class="value"></span>
+  <div class="picker-wrap">
+    <div class="picker">
+      <div class="color-box-wrap">
+        <div class="color-box-container"></div>
+      </div>
     </div>
   </div>
 </label>

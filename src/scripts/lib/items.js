@@ -2,7 +2,7 @@
 
 module.exports = {
   heading: require('./items/heading'),
-  subheading: require('./items/subheading'),
+  text: require('./items/text'),
   footer: require('./items/footer'),
   input: require('./items/input'),
   color: require('./items/color'),

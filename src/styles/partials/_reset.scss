@@ -50,11 +50,9 @@ q:before, q:after {
 
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-  -webkit-box-sizing: inherit;
 }

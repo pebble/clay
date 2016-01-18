@@ -1,0 +1,51 @@
+@import "../partials/vars";
+
+.item-toggle {
+
+  $slide-height: 0.75rem;
+  $slide-width: $slide-height * 2.4;
+  $marker-diameter: 1rem;
+
+  input {
+    display: none; // @todo make sure this doesnt mess up interactivity on iOS
+  }
+
+  .graphic {
+    display: inline-block;
+    position: relative;
+
+    .slide {
+      display:block;
+      border-radius: $slide-height;
+      height: $slide-height;
+      width: $slide-width;
+      background: $color-gray-1;
+      transition: background-color 150ms linear;
+    }
+
+    .marker {
+      background: $color-gray-10;
+      width: $marker-diameter;
+      height: $marker-diameter;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      display: block;
+      top: ($marker-diameter - $slide-height) / 2 * -1;
+      transition: transform 150ms linear;
+      box-shadow: $box-shadow-small-components;
+    }
+  }
+
+  input:checked + .graphic {
+    .slide {
+      background: $color-orange-dark;
+    }
+
+    .marker {
+      background: $color-orange;
+      transform: translateX($slide-width - $marker-diameter);
+    }
+  }
+
+}

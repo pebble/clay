@@ -60,7 +60,7 @@ module.exports = {
         grid += '<i ' +
           'class="color-box ' + selectable + roundedTL + roundedTR + roundedBL +
               roundedBR + '" ' +
-          'data-value="' + color.replace(/^#/, '0x') + '" ' +
+          'data-value="' + color.replace(/^#/, '0x').toLowerCase() + '" ' +
           'style="' +
             'width:' + itemWidth + '%; ' +
             'height:' + itemHeight + '%; ' +
@@ -71,17 +71,24 @@ module.exports = {
 
     $elem.select('.color-box-container').add(HTML(grid));
 
-    var $injectedColor = $elem.select('.color-box-container')
-    var $valueDisplay = $injectedColor.select('.value');
+    var $valueDisplay = $elem.select('.value');
+    var $picker = $elem.select('.picker-wrap')
 
     $elem.on('click', function(ev) {
-      $elem.select('.color-box-wrap').set('show');
+      $picker.set('show');
     });
 
     self.on('change', function(ev) {
       var value = self.get().replace(/^0x/, '').toLowerCase();
       $valueDisplay.set('$background-color', '#' + value);
+      $elem.select('.color-box').set('-selected');
+      $elem.select('.color-box[data-value="0x' + value + '"]').set('+selected');
+    });
+
+    $elem.select('.color-box.selectable').on('click', function(ev) {
+      self.set(ev.target.dataset.value);
+      $picker.set('-show');
     });
 
   }
-}
+};

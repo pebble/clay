@@ -1,0 +1,47 @@
+@import "../partials/vars";
+@import "../partials/mixins";
+
+
+.item-input {
+
+  .input {
+    margin-left: 1rem;
+    position: relative;
+    min-width: 50%;
+
+    &:before {
+      content: "";
+      position: absolute;
+      display: block;
+      left: 0;
+      right: 0;
+      bottom: -0.4rem;
+      height: 0;
+      border-bottom: 1px solid $color-gray-5;
+    }
+  }
+
+  input {
+    display:inline-block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0;
+    vertical-align: baseline;
+    color: $color-white;
+    font-size: inherit;
+
+    
+    @include placeholder {
+      color: $color-gray-8;
+    }
+
+    &:focus {
+      @include placeholder {
+        color: $color-gray-6;
+      }
+      border: none;
+      box-shadow: none ;
+    }
+  }
+}

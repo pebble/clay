@@ -1,9 +1,9 @@
-<div class="button-container">
-  <input
+<div class="item item-button">
+  <button
     data-manipulator-target
     type="submit"
-    class="item-button"
-    value="{{label}}"
     {{each key: attributes}}{{key}}="{{this}}"{{/each}}
   >
+    {{{label}}}
+  </button>
 </div>

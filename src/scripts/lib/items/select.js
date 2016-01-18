@@ -2,5 +2,15 @@
 
 module.exports = {
   template: require('../../../templates/items/select.tpl'),
-  manipulator: require('../manipulators').val
+  manipulator: require('../manipulators').val,
+  initialize: function() {
+    var self = this;
+
+    var $value = self.$element.select('.value');
+
+    self.on('change', function(ev) {
+      var value = self.$manipulatorTarget.select('option:checked').get('innerHTML');
+      $value.set('innerHTML', value);
+    });
+  }
 };

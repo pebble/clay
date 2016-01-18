@@ -1,0 +1,197 @@
+@import "vendor/bourbon/bourbon";
+@import "partials/vars";
+@import "partials/mixins";
+
+html, body {
+  @include font-pfdin(regular);
+  -webkit-font-smoothing: antialiased;
+  font-size: $em-base;
+  line-height: 1;
+  height:100%;
+  color: $color-white;
+
+  //&.platform-ios {
+  //  font-size: 13px;
+  //}
+
+}
+
+body {
+  background-color: $color-gray-2;
+  padding: 0.75rem;
+}
+
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+  @include font-pfdin(medium);
+  @include pfdin-uppercase();
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.8rem;
+}
+
+.section {
+  background: $color-gray-4;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  box-shadow: $color-gray-1 0 0.15rem 0.25rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: $item-spacing-v / 2;
+
+  .input {
+    white-space: nowrap;
+    display: flex;
+    max-width: 50%;
+  }
+
+  &.invalid .input:after {
+    $size: 1.1rem;
+
+    content: "!";
+    display: inline-block;
+    color: $color-white;
+    background: $color-orange;
+    border-radius: $size / 2;
+    width: $size;
+    text-align: center;
+    height: $size;
+    font-size: $size * 0.75;
+    vertical-align: middle;
+    line-height: $size;
+    box-shadow: $box-shadow-small-components;
+    @include font-pfdin(medium);
+    flex: 0 0 $size;
+    margin-left: 0.3rem;
+  }
+
+    //.input input {
+    //  color: $color-orange;
+    //  padding-right: 1em;
+    //
+    //  @include placeholder {
+    //    color: $color-orange;
+    //  }
+    //
+    //}
+
+  
+  .section & {
+    padding-top: $item-spacing-v / 2;
+    padding-right: $item-spacing-h;
+    padding-left: $item-spacing-h;
+
+    &:last-child {
+      padding-bottom: $item-spacing-v /2 ;
+    }
+
+    &:first-child {
+      padding-bottom: $item-spacing-v / 2;
+    }
+  }
+}
+
+label.item{
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
+.section {
+  .item-heading:first-child {
+    background: $color-gray-3;
+    border-radius: $border-radius $border-radius 0 0;
+  }
+}
+
+
+strong {
+  @include font-pfdin(medium);
+  color: $color-orange;
+}
+
+a {
+  color: $color-gray-8;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.inputs {
+  display: block;
+  width:100%;
+  border-collapse: collapse;
+
+  .section & .item {
+    display: table;
+    width:100%;
+
+    .label,
+    .input {
+      display: table-cell;
+    }
+    
+    .input {
+      text-align: right;
+    }
+
+    &.invalid {
+      .input:after {
+        content: "!";
+        display: inline-block;
+        color: $color-white;
+        background: $color-orange;
+        border-radius: $border-radius;
+        width: 1.2em;
+        text-align: center;
+        height: 1.2em;
+        font-size: 1em;
+        vertical-align: middle;
+        line-height: 1.3em;
+        margin-left: -0.7em;
+        position:absolute;
+        @include font-pfdin(regular);
+      }
+
+      .input input {
+        color: $color-orange;
+        padding-right: 1em;
+
+        @include placeholder {
+          color: $color-orange;
+        }
+
+      }
+    }
+
+  }
+}

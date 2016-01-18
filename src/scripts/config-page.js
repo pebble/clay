@@ -60,15 +60,9 @@ function processConfigItem(item, $parent) {
       processConfigItem(item, $parent);
     });
   } else if (item.type === 'section') {
-    processConfigItem(
-      item.items,
-      $parent.add(HTML('<div class="section">'))
-    );
-  } else if (item.type === 'block') {
-    processConfigItem(
-      item.items,
-      $parent.add(HTML('<div class="block">'))
-    );
+    var $container = HTML('<div class="section">');
+    $parent.add($container);
+    processConfigItem(item.items, $container);
   } else {
     console.debug('KEEGAN: itemType', item.type);
     var apiItem = {};
@@ -76,7 +70,8 @@ function processConfigItem(item, $parent) {
     var templateData = {
       label: '',
       options: [],
-      attributes: {}
+      attributes: {},
+      size: 4
     };
 
     console.debug('KEEGAN: templateData', templateData);

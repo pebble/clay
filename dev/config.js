@@ -3,16 +3,45 @@
 
 module.exports = [
   {
+    "type": "heading",
+    "id": "main-heading",
+    "value": "My Cool App",
+    "size": 1
+  },
+  {
+    "type": "text",
+    "value": "By Keegan Lillo - <a href=\"http://lillo.me\">Lillo.me</a>"
+  },
+  {
     "type": "section",
     "items": [
       {
         "type": "heading",
-        "id": "main-heading",
-        "value": "My Cool App"
+        "value": "Settings"
       },
       {
-        "type": "footer",
-        "value": "By Keegan Lillo - <a href=\"http://lillo.me\">Lillo.me</a>"
+        "type": "input",
+        "app_key": "email",
+        "value": "",
+        "label": "Email",
+        "attributes": {
+          "placeholder": "eg: name@domain.com",
+          "limit": 10,
+          "required": "required",
+          type: "email"
+        }
+      },
+      {
+        "type": "toggle",
+        "app_key": "like_stuff",
+        "label": "Enable Cool Stuff",
+        "value": false
+      },
+      {
+        "type": "color",
+        "app_key": "background",
+        "value": "0xFF0000",
+        "label": "Background Color"
       }
     ]
   },
@@ -20,58 +49,25 @@ module.exports = [
     "type": "section",
     "items": [
       {
-        "type": "subheading",
+        "type": "heading",
         "value": "Settings"
       },
       {
-        "type": "block",
-        "items": [
-          {
-            "type": "input",
-            "app_key": "greeting",
-            "value": "Hello",
-            "label": "Greeting",
-            "attributes": {
-              "placeholder": "Enter a \"greeting\" >",
-              "limit": 10,
-              "required": "required"
-            }
-          },
-          {
-            "type": "toggle",
-            "app_key": "like_stuff",
-            "label": "Enable Cool Stuff",
-            "value": true
-          },
-          {
-            "id": "flavor",
-            "type": "select",
-            "app_key": "flavor",
-            "value": "grape",
-            "label": "Favorite Flavor",
-            "options": [
-              { "label": "Berry", "value": "berry" },
-              { "label": "Grape", "value": "grape" },
-              { "label": "Banana", "value": "banana" }
-            ]
-          },
-          {
-            "type": "color",
-            "app_key": "background",
-            "value": "0xFF0000",
-            "label": "Background Color"
-          }
+        "id": "flavor",
+        "type": "select",
+        "app_key": "flavor",
+        "value": "grape",
+        "label": "Favorite Flavor",
+        "options": [
+          { "label": "Berry things", "value": "berry" },
+          { "label": "Grape", "value": "grape" },
+          { "label": "Banana", "value": "banana" }
         ]
       }
     ]
   },
   {
-    "type": "section",
-    "items": [
-      {
-        "type": "submit",
-        "value": "Save"
-      }
-    ]
+    "type": "submit",
+    "label": "Save"
   }
 ];

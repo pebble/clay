@@ -1,6 +1,7 @@
 'use strict';
 
 var configPageHtml = require('./tmp/config-page.html');
+//var errorPageHtml = require('./tmp/error-page.html');
 
 function encodeDataUri(input) {
   if (window.btoa) {
@@ -74,12 +75,20 @@ Clay.prototype.generateUrl = function(returnTo) {
     console.error(e);
     settings = {};
   }
+
+  var strings = {
+    customFn: this.customFn.toString().replace(/^.*?\{/, '{'),
+    returnTo: returnTo || 'pebblejs://close#',
+    config: JSON.stringify(this.config),
+    settings: JSON.stringify(settings)
+  };
+
   // Show config page
   return encodeDataUri(configPageHtml
-    .replace('$$CUSTOM_FN$$', this.customFn.toString().replace(/^.*?\{/, '{'))
-    .replace('$$RETURN_TO$$', returnTo || 'pebblejs://close#')
-    .replace('$$CONFIG$$', JSON.stringify(this.config))
-    .replace('$$SETTINGS$$', JSON.stringify(settings))
+    .replace('$$CUSTOM_FN$$', strings.customFn)
+    .replace('$$RETURN_TO$$', strings.returnTo)
+    .replace('$$CONFIG$$', strings.config)
+    .replace('$$SETTINGS$$', strings.settings)
   );
 };
 

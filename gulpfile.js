@@ -10,6 +10,7 @@ var minifyInline = require('gulp-minify-inline');
 var minifyHTML = require('gulp-minify-html');
 var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('clean-js', function() {
   return del(['tmp/config-page.js']);
@@ -31,6 +32,10 @@ gulp.task('sass', ['clean-sass'], function() {
   gulp.src('./src/styles/config-page.scss')
     .pipe(sourceMaps.init())
     .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({
+      browsers: ['Android 4', 'iOS 8'],
+      cascade: false
+    }))
     .pipe(sourceMaps.write('./'))
     .pipe(gulp.dest('tmp'));
 });

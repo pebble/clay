@@ -1,4 +1,4 @@
-<label class="item">
+<label class="item item-toggle">
   <span class="label">{{{label}}}</span>
   <span class="input">
     <input
@@ -6,5 +6,9 @@
       type="checkbox"
       {{each key: attributes}}{{key}}="{{this}}"{{/each}}
     />
+    <span class="graphic">
+      <span class="slide"></span>
+      <span class="marker"></span>
+    </span>
   </span>
 </label>
