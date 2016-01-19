@@ -60,15 +60,17 @@ gulp.task('clay', ['inlineHtml'], function() {
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('default', ['clay']);
-
-gulp.task('dev', ['js', 'sass'], function() {
-
-  gulp.watch('src/styles/**/*.scss', ['sass']);
-  gulp.watch(['src/scripts/**/*.js', 'src/templates/**/*.tpl'], ['js']);
-
+gulp.task('dev-js', ['js', 'sass'], function() {
   return browserify('dev/dev.js', { debug: true })
     .bundle()
     .pipe(source('dev.js'))
     .pipe(gulp.dest('./tmp/'));
+});
+
+gulp.task('default', ['clay']);
+
+gulp.task('dev', ['dev-js'], function() {
+  gulp.watch('src/styles/**/*.scss', ['sass']);
+  gulp.watch(['src/scripts/**/*.js', 'src/templates/**/*.tpl'], ['js']);
+  gulp.watch(['dev/**/*.js'], ['dev-js']);
 });
