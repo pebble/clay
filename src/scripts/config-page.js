@@ -64,7 +64,6 @@ function processConfigItem(item, $parent) {
     $parent.add($container);
     processConfigItem(item.items, $container);
   } else {
-    console.debug('KEEGAN: itemType', item.type);
     var apiItem = {};
     var itemType = itemTypes[item.type];
     var templateData = {
@@ -73,8 +72,6 @@ function processConfigItem(item, $parent) {
       attributes: {},
       size: 4
     };
-
-    console.debug('KEEGAN: templateData', templateData);
 
     _.extend(templateData, item);
     apiItem.$element = HTML(_.formatHtml(itemType.template, templateData));
@@ -89,14 +86,14 @@ function processConfigItem(item, $parent) {
     // proxy event related methods
     var eventProxies = {};
     apiItem.on = function(events, handler) {
-      eventProxies[handler] = function(event) {
-        handler.call(apiItem, event);
+      eventProxies[handler] = function() {
+        handler.apply(apiItem, arguments);
       };
       return apiItem.$manipulatorTarget.on(events, eventProxies[handler]);
     };
     apiItem.one = function(events, handler) {
       eventProxies[handler] = function(event) {
-        handler.call(apiItem, event);
+        handler.apply(apiItem, arguments);
         $.off(eventProxies[handler]);
       };
       return apiItem.$manipulatorTarget.on(events, eventProxies[handler]);

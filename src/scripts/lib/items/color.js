@@ -7,7 +7,6 @@ module.exports = {
   manipulator: require('../manipulators').val,
   initialize: function() {
     var self = this;
-    console.debug('KEEGAN: initializer', self);
 
     /* eslint-disable  comma-spacing, no-multi-spaces, max-len,
         standard/array-bracket-even-spacing */
@@ -72,20 +71,20 @@ module.exports = {
     $elem.select('.color-box-container').add(HTML(grid));
 
     var $valueDisplay = $elem.select('.value');
-    var $picker = $elem.select('.picker-wrap')
+    var $picker = $elem.select('.picker-wrap');
 
-    $elem.on('click', function(ev) {
+    $elem.on('|click', function(ev) {
       $picker.set('show');
     });
 
-    self.on('change', function(ev) {
+    self.on('|change', function() {
       var value = self.get().replace(/^0x/, '').toLowerCase();
       $valueDisplay.set('$background-color', '#' + value);
       $elem.select('.color-box').set('-selected');
       $elem.select('.color-box[data-value="0x' + value + '"]').set('+selected');
     });
 
-    $elem.select('.color-box.selectable').on('click', function(ev) {
+    $elem.select('.color-box.selectable').on('|click', function(ev) {
       self.set(ev.target.dataset.value);
       $picker.set('-show');
     });
