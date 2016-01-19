@@ -73,7 +73,7 @@ module.exports = {
     var $valueDisplay = $elem.select('.value');
     var $picker = $elem.select('.picker-wrap');
 
-    $elem.on('|click', function(ev) {
+    $elem.on('click', function(ev) {
       $picker.set('show');
     });
 
@@ -84,7 +84,7 @@ module.exports = {
       $elem.select('.color-box[data-value="0x' + value + '"]').set('+selected');
     });
 
-    $elem.select('.color-box.selectable').on('|click', function(ev) {
+    $elem.select('.color-box.selectable').on('click', function(ev) {
       self.set(ev.target.dataset.value);
       $picker.set('-show');
     });
