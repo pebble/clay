@@ -5,19 +5,20 @@ module.exports = [
   {
     "type": "heading",
     "id": "main-heading",
-    "value": "My Cool App",
+    "value": "Clay Test Page",
     "size": 1
   },
   {
     "type": "text",
-    "value": "By Keegan Lillo - <a href=\"http://lillo.me\">Lillo.me</a>"
+    "value": "Some arbitrary text explaining how this all works. " +
+             "It's cool if this wraps across multiple lines"
   },
   {
     "type": "section",
     "items": [
       {
         "type": "heading",
-        "value": "Settings"
+        "value": "This is a section"
       },
       {
         "type": "input",
@@ -50,7 +51,7 @@ module.exports = [
     "items": [
       {
         "type": "heading",
-        "value": "Settings"
+        "value": "More Settings"
       },
       {
         "id": "flavor",

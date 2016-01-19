@@ -6,7 +6,7 @@ html, body {
   @include font-pfdin(regular);
   -webkit-font-smoothing: antialiased;
   font-size: $em-base;
-  line-height: 1;
+  line-height: 1.15;
   height:100%;
   color: $color-white;
 
