@@ -1,11 +1,12 @@
 'use strict';
 
 module.exports = function() {
-  var Api = this;
+  var Api = window.Clay = this;
 
   var testHandler = function() {
-    console.debug('KEEGAN: EVENT', this);
-    Api.getItemByAppKey('background').off(testHandler);
+    console.debug('KEEGAN: this', this);
+    console.debug('KEEGAN: arguments', arguments);
+//    Api.getItemByAppKey('background').off(testHandler);
   };
 
   Api.getItemByAppKey('background').on('change', testHandler);
