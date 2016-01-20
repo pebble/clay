@@ -4,34 +4,30 @@
 
 .item-input {
 
-  .input {
-    margin-left: 1rem;
-    position: relative;
-    min-width: 50%;
+  display: block;
 
-    &:before {
-      content: "";
-      position: absolute;
-      display: block;
-      left: 0;
-      right: 0;
-      bottom: -0.4rem;
-      height: 0;
-      border-bottom: 1px solid $color-gray-5;
-    }
+  .label {
+    padding-bottom: $item-spacing-v;
+  }
+
+  .input {
+    position: relative;
+    min-width: 100%;
+    margin-top: $item-spacing-v;
+    margin-left: 0;
   }
 
   input {
-    display:inline-block;
+    display:block;
     width: 100%;
-    background: transparent;
+    background: $color-gray-2;
+    border-radius: $border-radius;
+    padding: $item-spacing-v / 2 $item-spacing-h / 2;
     border: none;
-    padding: 0;
     vertical-align: baseline;
     color: $color-white;
     font-size: inherit;
 
-    
     @include placeholder {
       color: $color-gray-8;
     }

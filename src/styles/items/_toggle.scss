@@ -2,9 +2,9 @@
 
 .item-toggle {
 
-  $slide-height: 0.75rem;
-  $slide-width: $slide-height * 2.4;
-  $marker-diameter: 1rem;
+  $slide-height: $base-height * 0.75;
+  $slide-width: $small-component-width;
+  $marker-diameter: $base-height;
 
   input {
     display: none; // @todo make sure this doesnt mess up interactivity on iOS
@@ -27,7 +27,7 @@
       background: $color-gray-10;
       width: $marker-diameter;
       height: $marker-diameter;
-      border-radius: 50%;
+      border-radius: $marker-diameter;
       position: absolute;
       left: 0;
       display: block;

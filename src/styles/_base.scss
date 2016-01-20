@@ -6,19 +6,19 @@ html, body {
   @include font-pfdin(regular);
   -webkit-font-smoothing: antialiased;
   font-size: $em-base;
-  line-height: 1.15;
+  line-height: $base-line-height;
   height:100%;
   color: $color-white;
 
-  //&.platform-ios {
-  //  font-size: 13px;
-  //}
+  &.platform-ios {
+    font-size: 16px;
+  }
 
 }
 
 body {
   background-color: $color-gray-2;
-  padding: 0.75rem;
+  padding: $item-spacing-v $item-spacing-h;
 }
 
 h1, h2, h3, h4 {
@@ -28,46 +28,40 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: 2rem;
+  @include font-size(2);
 }
 
 h2 {
-  font-size: 1.8rem;
+  @include font-size(1.8);
 }
 
 h3 {
-  font-size: 1.5rem;
+  @include font-size(1.5);
 }
 
 h4 {
-  font-size: 1.3rem;
+  @include font-size(1.2);
 }
 
 h5 {
-  font-size: 1rem;
+  @include font-size(1);
 }
 
 h6 {
-  font-size: 0.8rem;
-}
-
-.section {
-  background: $color-gray-4;
-  border-radius: 0.25rem;
-  margin-bottom: 1rem;
-  box-shadow: $color-gray-1 0 0.15rem 0.25rem;
+  @include font-size(0.8);
 }
 
 .item {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: $item-spacing-v / 2;
+  align-items: center;
+  padding-bottom: $item-spacing-v;
 
   .input {
     white-space: nowrap;
     display: flex;
     max-width: 50%;
+    margin-left: $item-spacing-h;
   }
 
   &.invalid .input:after {
@@ -89,31 +83,48 @@ h6 {
     flex: 0 0 $size;
     margin-left: 0.3rem;
   }
+}
 
-    //.input input {
-    //  color: $color-orange;
-    //  padding-right: 1em;
-    //
-    //  @include placeholder {
-    //    color: $color-orange;
-    //  }
-    //
-    //}
 
-  
-  .section & {
-    padding-top: $item-spacing-v / 2;
+.section {
+  background: $color-gray-4;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  box-shadow: $color-gray-1 0 0.15rem 0.25rem;
+
+  .item {
+    padding-top: $item-spacing-v;
     padding-right: $item-spacing-h;
     padding-left: $item-spacing-h;
+    position: relative;
 
-    &:last-child {
-      padding-bottom: $item-spacing-v /2 ;
+    &:last-child,
+    &:first-child {
+      padding-bottom: $item-spacing-v;
+      
+      &:after {
+        display: none;
+      }
     }
 
-    &:first-child {
-      padding-bottom: $item-spacing-v / 2;
+    &:after {
+      content: "";
+      background: $color-gray-6;
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: $item-spacing-h / 2;
+      right: $item-spacing-h / 2;
+      height: 1px;
+      pointer-events: none;
     }
   }
+
+  .item-heading:first-child {
+    background: $color-gray-3;
+    border-radius: $border-radius $border-radius 0 0;
+  }
+
 }
 
 label.item{
@@ -123,15 +134,6 @@ label.item{
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
-
-
-.section {
-  .item-heading:first-child {
-    background: $color-gray-3;
-    border-radius: $border-radius $border-radius 0 0;
-  }
-}
-
 
 strong {
   @include font-pfdin(medium);

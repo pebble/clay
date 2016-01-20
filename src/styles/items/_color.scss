@@ -3,9 +3,9 @@
 .item-color {
 
   .value {
-    width: 1.8rem;
-    height: 1rem;
-    border-radius: 1rem;
+    width: $small-component-width;
+    height: $base-height;
+    border-radius: $base-height / 2;
     box-shadow: $box-shadow-small-components;
   }
 

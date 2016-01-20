@@ -1,7 +1,17 @@
 @import "../vendor/bourbon/bourbon";
 
 // Bourbon settings
-$em-base: 18px;
+$em-base: 17px;
+
+// custom vars
+$base-line-height: 1.4;
+$base-height: rem($base-line-height * $em-base);
+$border-radius: 0.25rem;
+$item-spacing-v: $base-height / 2;
+$item-spacing-h: 0.75rem;
+$small-component-width: $base-height * $golden;
+
+
 
 // ---- Colors ------
 $color-orange: #ff4700;
@@ -24,10 +34,7 @@ $color-gray-9: #a4a4a4 ;
 $color-gray-10: #ececec;
 $color-gray-11: #f2f2f2;
 
-// custom vars
-$border-radius: 0.25rem;
-$item-spacing-v: 1.5rem;
-$item-spacing-h: 0.75rem;
+
 
 
 $global-margin: 55px;
