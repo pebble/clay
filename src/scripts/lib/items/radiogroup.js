@@ -2,5 +2,9 @@
 
 module.exports = {
   template: require('../../../templates/items/radiogroup.tpl'),
-  manipulator: require('../manipulators').radiogroup
+  manipulator: require('../manipulators').radiogroup,
+  defaults: {
+    label: '',
+    options: []
+  }
 };

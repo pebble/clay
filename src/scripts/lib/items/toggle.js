@@ -2,5 +2,8 @@
 
 module.exports = {
   template: require('../../../templates/items/toggle.tpl'),
-  manipulator: require('../manipulators').checked
+  manipulator: require('../manipulators').checked,
+  defaults: {
+    attributes: {}
+  }
 };

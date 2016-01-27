@@ -5,6 +5,9 @@ var HTML = require('../../vendor/minified/minified').HTML;
 module.exports = {
   template: require('../../../templates/items/color.tpl'),
   manipulator: require('../manipulators').val,
+  defaults: {
+    label: ''
+  },
   initialize: function() {
     var self = this;
 
@@ -72,9 +75,12 @@ module.exports = {
 
     var $valueDisplay = $elem.select('.value');
     var $picker = $elem.select('.picker-wrap');
+    var disabled = self.$manipulatorTarget.get('disabled');
 
     $elem.on('click', function(ev) {
-      $picker.set('show');
+      if (!disabled) {
+        $picker.set('show');
+      }
     });
 
     self.on('|change', function() {
@@ -87,6 +93,14 @@ module.exports = {
     $elem.select('.color-box.selectable').on('click', function(ev) {
       self.set(ev.target.dataset.value);
       $picker.set('-show');
+    });
+
+    self.on('disabled', function() {
+      disabled = true;
+    });
+
+    self.on('enabled', function() {
+      disabled = false;
     });
 
   }

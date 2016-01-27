@@ -22,7 +22,7 @@ module.exports = [
       },
       {
         "type": "input",
-        "app_key": "email",
+        "appKey": "email",
         "value": "",
         "label": "Email",
         "attributes": {
@@ -34,13 +34,13 @@ module.exports = [
       },
       {
         "type": "toggle",
-        "app_key": "like_stuff",
+        "appKey": "cool_stuff",
         "label": "Enable Cool Stuff",
         "value": false
       },
       {
         "type": "color",
-        "app_key": "background",
+        "appKey": "background",
         "value": "0xFF0000",
         "label": "Background Color"
       }
@@ -56,7 +56,7 @@ module.exports = [
       {
         "id": "flavor",
         "type": "select",
-        "app_key": "flavor",
+        "appKey": "flavor",
         "value": "grape",
         "label": "Favorite Flavor",
         "options": [

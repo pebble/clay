@@ -1,15 +1,15 @@
 'use strict';
 
 module.exports = function() {
-  var Api = window.Clay = this;
+  var Clay = this;
 
-  var testHandler = function() {
-    console.debug('KEEGAN: this', this);
-    console.debug('KEEGAN: arguments', arguments);
-//    Api.getItemByAppKey('background').off(testHandler);
-  };
+  Clay.getItemByAppKey('cool_stuff').on('change', function() {
+    if (this.get()) {
+      Clay.getItemByAppKey('background').enable();
+    } else {
+      Clay.getItemByAppKey('background').disable();
+    }
+  });
 
-  Api.getItemByAppKey('background').on('change', testHandler);
-
-  console.debug('custom fn worked');
+  Clay.getSettings();
 };

@@ -9,6 +9,11 @@
     box-shadow: $box-shadow-small-components;
   }
 
+  input:disabled ~ .value,
+  input:disabled ~ .label {
+    opacity: 0.25;
+  }
+
   .picker-wrap {
     left: 0;
     top: 0;

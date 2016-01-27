@@ -3,6 +3,10 @@
 module.exports = {
   template: require('../../../templates/items/select.tpl'),
   manipulator: require('../manipulators').val,
+  defaults: {
+    label: '',
+    options: []
+  },
   initialize: function() {
     var self = this;
 

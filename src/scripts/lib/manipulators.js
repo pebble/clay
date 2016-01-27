@@ -19,10 +19,12 @@ module.exports = {
         .trigger('change');
     },
     disable: function() {
-      return this.$manipulatorTarget.set('disabled', true);
+      return this.$manipulatorTarget.set('disabled', true)
+        .trigger('disabled');
     },
     enable: function() {
-      return this.$manipulatorTarget.set('disabled', false);
+      return this.$manipulatorTarget.set('disabled', false)
+        .trigger('enabled');
     }
   },
   checked: {
