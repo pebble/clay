@@ -45,7 +45,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'mocha', 'coverage'],
+    reporters: ['progress', 'mocha', 'coverage', 'threshold'],
 
     // optionally, configure the reporter
     coverageReporter: {
@@ -54,6 +54,13 @@ module.exports = function(config) {
         {type: 'text-summary'},
         {type: 'html', subdir: '.'}
       ]
+    },
+
+    thresholdReporter: {
+      statements: 100,
+      branches: 100,
+      functions: 100,
+      lines: 100
     },
 
     // web server port
@@ -73,6 +80,14 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
+
+    // set via the command line
+    customLaunchers: {
+      chromeTravisCI: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
