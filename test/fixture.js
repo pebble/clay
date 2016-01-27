@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('../src/scripts/vendor/minified/minified')._;
 var idCounter = 0;
 
 function fixture(type, config) {
@@ -11,9 +12,9 @@ function fixture(type, config) {
     id: 'id-' + idCounter
   };
 
-  idCounter ++;
+  idCounter++;
 
-  return Object.assign({}, basic, config);
+  return _.extend({}, basic, config);
 }
 
 module.exports = fixture;
