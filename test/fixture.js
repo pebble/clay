@@ -3,6 +3,11 @@
 var _ = require('../src/scripts/vendor/minified/minified')._;
 var idCounter = 0;
 
+/**
+ * @param {string} type
+ * @param {{}} [config]
+ * @returns {{}}
+ */
 function fixture(type, config) {
 
   var basic = {

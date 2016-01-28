@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function() {
+
+  /** @type {ClayConfig} */
   var Clay = window.Clay = this;
 
   Clay.getItemByAppKey('cool_stuff').on('change', function() {
@@ -11,5 +13,9 @@ module.exports = function() {
     }
   });
 
-  Clay.getSettings();
+  Clay.on('test', function() {
+    console.debug('KEEGAN: this', this);
+  });
+
+  Clay.trigger('test');
 };

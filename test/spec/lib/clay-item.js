@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var ApiItem = require('../../../src/scripts/lib/clay-item');
+var ClayItem = require('../../../src/scripts/lib/clay-item');
 var fixture = require('../../fixture');
 var items = require('../../../src/scripts/lib/items');
 
@@ -18,7 +18,7 @@ function checkReadOnly(object, properties) {
   });
 }
 
-describe('ApiItem', function() {
+describe('ClayItem', function() {
   it('defines read-only properties', function() {
     var properties = [
       'id',
@@ -32,15 +32,36 @@ describe('ApiItem', function() {
       'trigger',
       'initialize'
     ];
-    var apiItem = new ApiItem(fixture('input'));
+    var apiItem = new ClayItem(fixture('input'));
     checkReadOnly(apiItem, properties);
   });
 
   it('attaches the manipulator methods', function() {
     Object.keys(items).forEach(function(itemName) {
-      var apiItem = new ApiItem(fixture(itemName));
+      var clayItem = new ClayItem(fixture(itemName));
       var manipulator = items[itemName].manipulator;
-      checkReadOnly(apiItem, Object.keys(manipulator));
+      checkReadOnly(clayItem, Object.keys(manipulator));
     });
   });
+
+  describe('.id', function() {
+    it('sets id correctly', function() {
+      var config = fixture('input');
+      var clayItem = new ClayItem(config);
+      assert.strictEqual(clayItem.id, config.id);
+    });
+  });
+
+  describe('.appKey', function() {
+    it('sets appKey correctly', function() {
+      var config = fixture('input');
+      var clayItem = new ClayItem(config);
+      assert.strictEqual(clayItem.appKey, config.appKey);
+    });
+  });
+  
+  describe('.$manipulatorTarget', function() {
+    
+  });
+
 });

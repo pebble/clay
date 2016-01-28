@@ -15,9 +15,17 @@
 
 var HTML = require('../vendor/minified/minified').HTML;
 var _ = require('../vendor/minified/minified')._;
-var ApiItem = require('./clay-item');
+var ClayItem = require('./clay-item');
 var utils = require('../lib/utils');
+var ClayEvents = require('./clay-events');
 
+/**
+ * @extends ClayEvents
+ * @param settings
+ * @param config
+ * @param $rootContainer
+ * @constructor
+ */
 function ClayConfig(settings, config, $rootContainer) {
   var self = this;
 
@@ -62,6 +70,8 @@ function ClayConfig(settings, config, $rootContainer) {
     return _settings;
   };
 
+  ClayEvents.call(this, $rootContainer);
+
   /**
    * Add item(s) to the config
    * @param {Clay~ConfigItem|array} items
@@ -77,26 +87,26 @@ function ClayConfig(settings, config, $rootContainer) {
       $container.add($wrapper);
       _addItems(item.items, $wrapper);
     } else {
-      var apiItem = new ApiItem(item);
+      var clayItem = new ClayItem(item);
 
       if (item.id) {
-        _itemsById[item.id] = apiItem;
+        _itemsById[item.id] = clayItem;
       }
 
       if (item.appKey) {
-        _itemsByAppKey[item.appKey] = apiItem;
+        _itemsByAppKey[item.appKey] = clayItem;
       }
 
-      _items.push(apiItem);
+      _items.push(clayItem);
 
       // set the value of the item via the manipulator to ensure consistency
       var value = typeof _settings[item.appKey] !== 'undefined' ?
         _settings[item.appKey] :
         (item.value || '');
 
-      apiItem.set(value);
+      clayItem.set(value);
 
-      $container.add(apiItem.$element);
+      $container.add(clayItem.$element);
     }
   };
 
