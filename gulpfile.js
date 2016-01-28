@@ -6,8 +6,7 @@ var source = require('vinyl-source-stream');
 var stringify = require('stringify');
 var del = require('del');
 var inline = require('gulp-inline');
-var minifyInline = require('gulp-minify-inline');
-var minifyHTML = require('gulp-minify-html');
+var htmlmin = require('gulp-htmlmin');
 var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
@@ -43,11 +42,15 @@ gulp.task('sass', ['clean-sass'], function() {
 gulp.task('inlineHtml', ['js', 'sass'], function() {
   return gulp.src('src/config-page.html')
     .pipe(inline())
-    .pipe(minifyInline({
-      js: {},
-      jsSelector: 'script[uglify]'
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true,
+      removeTagWhitespace: true,
+      removeRedundantAttributes: true,
+      caseSensitive: true,
+      minifyJS: true,
+      minifyCSS: true
     }))
-    .pipe(minifyHTML())
     .pipe(gulp.dest('tmp/'));
 });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var ApiItem = require('../../../src/scripts/lib/api-item');
+var ApiItem = require('../../../src/scripts/lib/clay-item');
 var fixture = require('../../fixture');
 var items = require('../../../src/scripts/lib/items');
 

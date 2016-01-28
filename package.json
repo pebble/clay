@@ -7,8 +7,9 @@
     "example": "example"
   },
   "scripts": {
-    "test-travis": "./node_modules/karma/bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI",
-    "test": "./node_modules/karma/bin/karma start ./test/karma.conf.js --no-single-run",
+    "test-travis": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
+    "test": "./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run",
+    "lint": "./node_modules/.bin/eslint ./",
     "build": "gulp"
   },
   "repository": {
@@ -45,16 +46,14 @@
     "karma-source-map-support": "^1.1.0",
     "karma-threshold-reporter": "^0.1.15",
     "mocha": "^2.3.4",
-    "watchify": "^3.7.0"
-  },
-  "dependencies": {
+    "watchify": "^3.7.0",
     "browserify": "^13.0.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-inline": "0.0.15",
-    "gulp-minify-html": "^1.0.4",
-    "gulp-minify-inline": "^0.1.1",
     "stringify": "^3.2.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
   }
 }

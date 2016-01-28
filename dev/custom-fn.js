@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function() {
-  var Clay = this;
+  var Clay = window.Clay = this;
 
   Clay.getItemByAppKey('cool_stuff').on('change', function() {
     if (this.get()) {

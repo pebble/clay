@@ -1,7 +1,6 @@
 'use strict';
 
 var configPageHtml = require('./tmp/config-page.html');
-//var errorPageHtml = require('./tmp/error-page.html');
 
 function encodeDataUri(input) {
   if (window.btoa) {

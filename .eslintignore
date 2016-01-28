@@ -1,2 +1,4 @@
-vendor/
+coverage/
+dist/
+tmp/
 src/scripts/vendor/

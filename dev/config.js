@@ -36,7 +36,7 @@ module.exports = [
         "type": "toggle",
         "appKey": "cool_stuff",
         "label": "Enable Cool Stuff",
-        "value": false
+        "value": true
       },
       {
         "type": "color",

@@ -29,7 +29,6 @@ module.exports = {
     var grid = '';
     var itemWidth = 100 / layout[0].length;
     var itemHeight = 100 / layout.length;
-    var boxHeight = itemWidth * layout.length;
     var $elem = self.$element;
 
     for (var i = 0; i < layout.length; i++) {
