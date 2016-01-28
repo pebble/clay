@@ -2,6 +2,13 @@
 
 var $ = require('../vendor/minified/minified').$;
 
+/**
+ * Attaches event methods to the context.
+ * Call with ClayEvents.call(yourObject, $eventTarget)
+ * @param {EventEmitter} $eventTarget - An object that will be used as the event
+ * target. Must implement EventEmitter
+ * @constructor
+ */
 function ClayEvents($eventTarget) {
   var self = this;
   var _eventProxies = {};
@@ -55,10 +62,10 @@ function ClayEvents($eventTarget) {
   };
 
   /**
-   * trigger an event. This proxies minified.js' trigger.
+   * Trigger an event. This proxies minified.js' trigger.
    * @param {string} name - a single event name to trigger
-   * @param {object} eventObj - an object to pass to the event handler, provided the
-   * handler does not have custom arguments.
+   * @param {object} [eventObj] - an object to pass to the event handler,
+   * provided the handler does not have custom arguments.
    * @see {@link http://minifiedjs.com/api/trigger.html|.trigger()}
    * @returns {object}
    */

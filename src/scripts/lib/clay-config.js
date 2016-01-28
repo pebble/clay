@@ -70,7 +70,8 @@ function ClayConfig(settings, config, $rootContainer) {
     return _settings;
   };
 
-  ClayEvents.call(this, $rootContainer);
+  // attach event methods
+  ClayEvents.call(self, $rootContainer);
 
   /**
    * Add item(s) to the config
