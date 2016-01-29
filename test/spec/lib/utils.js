@@ -27,5 +27,3 @@ describe('Utils', function() {
     });
   });
 });
-
-

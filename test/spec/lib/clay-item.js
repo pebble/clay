@@ -59,9 +59,9 @@ describe('ClayItem', function() {
       assert.strictEqual(clayItem.appKey, config.appKey);
     });
   });
-  
+
   describe('.$manipulatorTarget', function() {
-    
+
   });
 
 });

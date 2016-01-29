@@ -5,7 +5,7 @@ var $ = require('../vendor/minified/minified').$;
 /**
  * Attaches event methods to the context.
  * Call with ClayEvents.call(yourObject, $eventTarget)
- * @param {EventEmitter} $eventTarget - An object that will be used as the event
+ * @param {EventEmitter|M} $eventTarget - An object that will be used as the event
  * target. Must implement EventEmitter
  * @constructor
  */
@@ -70,7 +70,7 @@ function ClayEvents($eventTarget) {
    * @returns {object}
    */
   self.trigger = function(name, eventObj) {
-    $eventTarget.trigger(name, eventObj);
+    $eventTarget.trigger(name);
     return self;
   };
 }

@@ -29,10 +29,29 @@ var ClayEvents = require('./clay-events');
 function ClayConfig(settings, config, $rootContainer) {
   var self = this;
 
+  self.test = Math.random();
+
   var _settings = _.copyObj(settings);
   var _items = [];
   var _itemsById = {};
   var _itemsByAppKey = {};
+
+  self.EVENTS = {
+    /**
+     * Called before framework has initialized. This is when you would attach your
+     * custom items.
+     * @const
+     */
+    BEFORE_BUILD: 'BEFORE_BUILD',
+
+    /**
+     * Called after the config has been parsed and all items have their initial value
+     * set
+     * @const
+     */
+    AFTER_BUILD: 'AFTER_BUILD'
+  };
+  utils.updateProperties(self.EVENTS, {writable: false});
 
   /**
    * @param {string} key
@@ -72,6 +91,13 @@ function ClayConfig(settings, config, $rootContainer) {
 
   // attach event methods
   ClayEvents.call(self, $rootContainer);
+
+  self.build = function() {
+    self.trigger(self.EVENTS.BEFORE_BUILD);
+    // initialize the config
+    _addItems(config, $rootContainer);
+    self.trigger(self.EVENTS.AFTER_BUILD);
+  };
 
   /**
    * Add item(s) to the config
@@ -114,8 +140,6 @@ function ClayConfig(settings, config, $rootContainer) {
   // prevent external modifications of properties
   utils.updateProperties(self, { writable: false, configurable: false });
 
-  // initialize the config
-  _addItems(config, $rootContainer);
 }
 
 module.exports = ClayConfig;
