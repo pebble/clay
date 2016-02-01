@@ -22,7 +22,11 @@ module.exports = function(config) {
         'deamdify',
         [
           'browserify-istanbul',
-          { ignore: ['**/test/**', '**/src/scripts/vendor/**'] }
+          {
+            ignore: process.env.DEBUG ?
+              ['**/**'] :
+              ['**/test/**', '**/src/scripts/vendor/**']
+          }
         ]
       ]
     },
@@ -46,7 +50,9 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha', 'coverage', 'threshold'],
+    reporters: process.env.DEBUG ?
+      ['mocha'] :
+      ['mocha', 'coverage', 'threshold'],
 
     // optionally, configure the reporter
     coverageReporter: {
