@@ -1,6 +1,6 @@
 'use strict';
 
-var itemTypes = require('./items');
+var componentRegistry = require('./component-registry');
 var _ = require('../vendor/minified/minified')._;
 var HTML = require('../vendor/minified/minified').HTML;
 var utils = require('../lib/utils');
@@ -14,7 +14,7 @@ var ClayEvents = require('./clay-events');
 function ClayItem(config) {
   var self = this;
 
-  var _itemType = itemTypes[config.type];
+  var _itemType = componentRegistry[config.type];
   var _templateData = _.extend({}, _itemType.defaults, config);
 
   /** @type {string|null} */

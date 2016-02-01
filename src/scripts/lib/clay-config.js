@@ -18,6 +18,7 @@ var _ = require('../vendor/minified/minified')._;
 var ClayItem = require('./clay-item');
 var utils = require('../lib/utils');
 var ClayEvents = require('./clay-events');
+var componentStore = require('./component-registry');
 
 /**
  * @extends ClayEvents
@@ -89,8 +90,20 @@ function ClayConfig(settings, config, $rootContainer) {
     return _settings;
   };
 
-  // attach event methods
-  ClayEvents.call(self, $rootContainer);
+  /**
+   * Register a component to Clay. This must be called prior to .build();
+   * @param {{}} component - the clay component to register
+   * @param {string} component.name - the name of the component
+   * @param {string} component.template - HTML template to use for the component
+   * @param {{}} component.manipulator - methods to attach to the component
+   * @param {function} component.manipulator.set - set manipulator method
+   * @param {function} component.manipulator.get - get manipulator method
+   * @param {{}} component.defaults - template defaults
+   * @param {function} [component.initialize] - method to scaffold the component
+   */
+  self.registerComponent = function(component) {
+    componentStore[component.name] = component;
+  };
 
   self.build = function() {
     self.trigger(self.EVENTS.BEFORE_BUILD);
@@ -98,6 +111,9 @@ function ClayConfig(settings, config, $rootContainer) {
     _addItems(config, $rootContainer);
     self.trigger(self.EVENTS.AFTER_BUILD);
   };
+
+  // attach event methods
+  ClayEvents.call(self, $rootContainer);
 
   /**
    * Add item(s) to the config

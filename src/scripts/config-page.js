@@ -13,14 +13,24 @@ var $mainForm = $('#main-form');
 var clayConfig = new ClayConfig(settings, config, $mainForm);
 
 clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
-  // attach components here
+
+  // register components here
+  this.registerComponent(require('./components/heading'));
+  this.registerComponent(require('./components/text'));
+  this.registerComponent(require('./components/footer'));
+  this.registerComponent(require('./components/input'));
+  this.registerComponent(require('./components/color'));
+  this.registerComponent(require('./components/select'));
+  this.registerComponent(require('./components/toggle'));
+  this.registerComponent(require('./components/radiogroup'));
+  this.registerComponent(require('./components/submit'));
 });
 
 clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
   var self = this;
 
   // add listeners here
-  $mainForm.on('|submit', function(event) {
+  $mainForm.on('submit', function(event) {
     // Set the return URL depending on the runtime environment
     location.href =
       returnTo + encodeURIComponent(JSON.stringify(self.getSettings()));

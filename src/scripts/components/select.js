@@ -1,8 +1,9 @@
 'use strict';
 
 module.exports = {
-  template: require('../../../templates/items/select.tpl'),
-  manipulator: require('../manipulators').val,
+  name: 'select',
+  template: require('../../templates/items/select.tpl'),
+  manipulator: require('../lib/manipulators').val,
   defaults: {
     label: '',
     options: []

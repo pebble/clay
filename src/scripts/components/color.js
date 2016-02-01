@@ -1,10 +1,11 @@
 'use strict';
 
-var HTML = require('../../vendor/minified/minified').HTML;
+var HTML = require('../vendor/minified/minified').HTML;
 
 module.exports = {
-  template: require('../../../templates/items/color.tpl'),
-  manipulator: require('../manipulators').val,
+  name: 'color',
+  template: require('../../templates/items/color.tpl'),
+  manipulator: require('../lib/manipulators').val,
   defaults: {
     label: ''
   },
@@ -82,7 +83,7 @@ module.exports = {
       }
     });
 
-    self.on('|change', function() {
+    self.on('change', function() {
       var value = self.get().replace(/^0x/, '').toLowerCase();
       $valueDisplay.set('$background-color', '#' + value);
       $elem.select('.color-box').set('-selected');

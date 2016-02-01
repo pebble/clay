@@ -23,11 +23,14 @@ function ClayEvents($eventTarget) {
    * @returns {object}
    */
   self.on = function(events, handler) {
+    var _events = events.split(' ').map(function(event) {
+      return '|' + event.replace(/^\|/, '');
+    }).join(' ');
     var self = this;
     _eventProxies[handler] = function() {
       handler.apply(self, arguments);
     };
-    $eventTarget.on(events, _eventProxies[handler]);
+    $eventTarget.on(_events, _eventProxies[handler]);
     return self;
   };
 
@@ -41,12 +44,15 @@ function ClayEvents($eventTarget) {
    * @returns {object}
    */
   self.one = function(events, handler) {
+    var _events = events.split(' ').map(function(event) {
+      return '|' + event.replace(/^\|/, '');
+    }).join(' ');
     var self = this;
     _eventProxies[handler] = function(event) {
       handler.apply(self, arguments);
       $.off(_eventProxies[handler]);
     };
-    $eventTarget.on(events, _eventProxies[handler]);
+    $eventTarget.on(_events, _eventProxies[handler]);
     return self;
   };
 
@@ -70,7 +76,7 @@ function ClayEvents($eventTarget) {
    * @returns {object}
    */
   self.trigger = function(name, eventObj) {
-    $eventTarget.trigger(name);
+    $eventTarget.trigger(name, eventObj);
     return self;
   };
 }
