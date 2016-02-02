@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('../src/scripts/vendor/minified/minified')._;
+var ClayItem = require('../src/scripts/lib/clay-item');
 var idCounter = 0;
 
 /**
@@ -8,7 +9,7 @@ var idCounter = 0;
  * @param {{}} [config]
  * @returns {{}}
  */
-function fixture(type, config) {
+function configItem(type, config) {
 
   var basic = {
     type: type,
@@ -22,4 +23,15 @@ function fixture(type, config) {
   return _.extend({}, basic, config);
 }
 
-module.exports = fixture;
+/**
+ *
+ * @param {string} type
+ * @param {{}} [config]
+ * @returns {ClayItem}
+ */
+function clayItem(type, config) {
+  return new ClayItem(configItem(type, config));
+}
+
+module.exports.configItem = configItem;
+module.exports.clayItem = clayItem;

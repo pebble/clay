@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'select',
-  template: require('../../templates/items/select.tpl'),
+  template: require('../../templates/components/select.tpl'),
   manipulator: require('../lib/manipulators').val,
   defaults: {
     label: '',

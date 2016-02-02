@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'heading',
-  template: require('../../templates/items/heading.tpl'),
+  template: require('../../templates/components/heading.tpl'),
   manipulator: require('../lib/manipulators').html,
   defaults: {
     attributes: {},

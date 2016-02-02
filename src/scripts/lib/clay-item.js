@@ -23,8 +23,8 @@ function ClayItem(config) {
   /** @type {string|null} */
   self.appKey = config.appKey || null;
 
-  /** @type {object|null} */
-  self.config = config || null;
+  /** @type {object} */
+  self.config = config;
 
   /** @type {M} */
   self.$element = HTML(_.formatHtml(_itemType.template, _templateData));
@@ -38,7 +38,7 @@ function ClayItem(config) {
   }
 
   /**
-   * Run the initializer. This will automatically be run on item creation.
+   * Run the initializer if it exists.
    * @returns {ClayItem}
    */
   self.initialize = function() {
@@ -55,8 +55,6 @@ function ClayItem(config) {
   _.eachObj(_itemType.manipulator, function(methodName, method) {
     self[methodName] = method.bind(self);
   });
-
-  self.initialize();
 
   // prevent external modifications of properties
   utils.updateProperties(self, { writable: false, configurable: false });

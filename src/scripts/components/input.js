@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'input',
-  template: require('../../templates/items/input.tpl'),
+  template: require('../../templates/components/input.tpl'),
   manipulator: require('../lib/manipulators').val,
   defaults: {
     label: '',

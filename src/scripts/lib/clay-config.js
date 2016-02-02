@@ -40,13 +40,13 @@ function ClayConfig(settings, config, $rootContainer) {
   self.EVENTS = {
     /**
      * Called before framework has initialized. This is when you would attach your
-     * custom items.
+     * custom components.
      * @const
      */
     BEFORE_BUILD: 'BEFORE_BUILD',
 
     /**
-     * Called after the config has been parsed and all items have their initial value
+     * Called after the config has been parsed and all components have their initial value
      * set
      * @const
      */
@@ -130,7 +130,7 @@ function ClayConfig(settings, config, $rootContainer) {
       $container.add($wrapper);
       _addItems(item.items, $wrapper);
     } else {
-      var clayItem = new ClayItem(item);
+      var clayItem = new ClayItem(item).initialize();
 
       if (item.id) {
         _itemsById[item.id] = clayItem;

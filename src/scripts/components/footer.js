@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'footer',
-  template: require('../../templates/items/footer.tpl'),
+  template: require('../../templates/components/footer.tpl'),
   manipulator: require('../lib/manipulators').html,
   defaults: {
     attributes: {}

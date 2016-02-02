@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'submit',
-  template: require('../../templates/items/submit.tpl'),
+  template: require('../../templates/components/submit.tpl'),
   manipulator: require('../lib/manipulators').val,
   defaults: {
     attributes: {}

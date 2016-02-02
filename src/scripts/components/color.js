@@ -4,7 +4,7 @@ var HTML = require('../vendor/minified/minified').HTML;
 
 module.exports = {
   name: 'color',
-  template: require('../../templates/items/color.tpl'),
+  template: require('../../templates/components/color.tpl'),
   manipulator: require('../lib/manipulators').val,
   defaults: {
     label: ''
