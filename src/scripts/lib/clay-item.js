@@ -15,6 +15,12 @@ function ClayItem(config) {
   var self = this;
 
   var _itemType = componentRegistry[config.type];
+
+  if (!_itemType) {
+    throw new Error('the component: ' + config.type + ' is not registered. ' +
+                    'Make sure to register it with ClayConfig.registerComponent()');
+  }
+
   var _templateData = _.extend({}, _itemType.defaults, config);
 
   /** @type {string|null} */

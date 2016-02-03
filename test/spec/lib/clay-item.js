@@ -2,30 +2,11 @@
 
 var assert = require('chai').assert;
 var sinon = require('sinon');
+var checkReadOnly = require('../../test-utils').checkReadOnly;
 var ClayItem = require('../../../src/scripts/lib/clay-item');
 var clayItemFixture = require('../../fixture').clayItem;
 var configItemFixture = require('../../fixture').configItem;
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
-
-// add some components to the registry to test
-componentRegistry.text = require('../../../src/scripts/components/text');
-componentRegistry.input = require('../../../src/scripts/components/input');
-componentRegistry.toggle = require('../../../src/scripts/components/toggle');
-componentRegistry.footer = require('../../../src/scripts/components/footer');
-componentRegistry.select = require('../../../src/scripts/components/select');
-
-/**
- * @param {Object} object
- * @param {Array} properties
- */
-function checkReadOnly(object, properties) {
-  properties.forEach(function(property) {
-    assert.strictEqual(
-      Object.getOwnPropertyDescriptor(object, property).writable,
-      false
-    );
-  });
-}
 
 describe('ClayItem', function() {
   it('defines read-only properties', function() {
@@ -53,6 +34,13 @@ describe('ClayItem', function() {
     });
   });
 
+  it('throws if a component is not in the registry', function() {
+    var config = configItemFixture('fake');
+    /* eslint-disable no-new */
+    assert.throws(function() { new ClayItem(config); }, /fake/);
+    /* eslint-enable no-new */
+  });
+
   describe('.id', function() {
     it('sets id if config has id', function() {
       var config = configItemFixture('input');
@@ -61,7 +49,7 @@ describe('ClayItem', function() {
     });
 
     it('sets id to null if there is no id in the config', function() {
-      var clayItem = clayItemFixture('input', {id: undefined});
+      var clayItem = clayItemFixture({type: 'input', id: undefined});
       assert.strictEqual(clayItem.id, null);
     });
   });
@@ -74,7 +62,7 @@ describe('ClayItem', function() {
     });
 
     it('sets appKey to null if there is no appKey in the config', function() {
-      var clayItem = clayItemFixture('input', {appKey: undefined});
+      var clayItem = clayItemFixture({type: 'input', appKey: undefined});
       assert.strictEqual(clayItem.appKey, null);
     });
   });

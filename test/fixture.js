@@ -1,19 +1,32 @@
 'use strict';
 
 var _ = require('../src/scripts/vendor/minified/minified')._;
+var $ = require('../src/scripts/vendor/minified/minified').$;
+var HTML = require('../src/scripts/vendor/minified/minified').HTML;
 var ClayItem = require('../src/scripts/lib/clay-item');
+var ClayConfig = require('../src/scripts/lib/clay-config');
 var idCounter = 0;
 
+var componentRegistry = require('../src/scripts/lib/component-registry');
+
+// add some components to the registry to test
+componentRegistry.text = require('../src/scripts/components/text');
+componentRegistry.input = require('../src/scripts/components/input');
+componentRegistry.toggle = require('../src/scripts/components/toggle');
+componentRegistry.footer = require('../src/scripts/components/footer');
+componentRegistry.select = require('../src/scripts/components/select');
+
 /**
- * @param {string} type
- * @param {{}} [config]
+ * @param {string|{}} config
  * @returns {{}}
  */
-function configItem(type, config) {
+module.exports.configItem = function(config) {
+  if (typeof config === 'string') {
+    config = { type: config };
+  }
 
   var basic = {
-    type: type,
-    label: type + '-label',
+    label: config.type + '-label',
     appKey: 'appKey-' + idCounter,
     id: 'id-' + idCounter
   };
@@ -21,17 +34,39 @@ function configItem(type, config) {
   idCounter++;
 
   return _.extend({}, basic, config);
-}
+};
 
 /**
- *
- * @param {string} type
- * @param {{}} [config]
+ * @param {string|{}} [config]
  * @returns {ClayItem}
  */
-function clayItem(type, config) {
-  return new ClayItem(configItem(type, config));
-}
+module.exports.clayItem = function(config) {
+  return new ClayItem(module.exports.configItem(config));
+};
 
-module.exports.configItem = configItem;
-module.exports.clayItem = clayItem;
+/**
+ * @param {[]} types
+ * @returns {*}
+ */
+module.exports.config = function(types) {
+  return types.map(function(item) {
+    return Array.isArray(item) ?
+      {type: 'section', items: module.exports.config(item)} :
+      module.exports.configItem(item);
+  });
+};
+
+/**
+ * @param {[]} types
+ * @param {boolean} [noBuild=false] - don't run the build method on the result
+ * @param {{}} [settings] - settings to pass to constructor
+ * @returns {ClayConfig}
+ */
+module.exports.clayConfig = function(types, noBuild, settings) {
+  var clayConfig = new ClayConfig(
+    settings || {},
+    module.exports.config(types), $(HTML('<div>'))
+  );
+  return noBuild ? clayConfig : clayConfig.build();
+};
+

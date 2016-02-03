@@ -30,90 +30,11 @@ var componentStore = require('./component-registry');
 function ClayConfig(settings, config, $rootContainer) {
   var self = this;
 
-  self.test = Math.random();
-
   var _settings = _.copyObj(settings);
   var _items = [];
   var _itemsById = {};
   var _itemsByAppKey = {};
-
-  self.EVENTS = {
-    /**
-     * Called before framework has initialized. This is when you would attach your
-     * custom components.
-     * @const
-     */
-    BEFORE_BUILD: 'BEFORE_BUILD',
-
-    /**
-     * Called after the config has been parsed and all components have their initial value
-     * set
-     * @const
-     */
-    AFTER_BUILD: 'AFTER_BUILD'
-  };
-  utils.updateProperties(self.EVENTS, {writable: false});
-
-  /**
-   * @param {string} key
-   * @returns {ClayItem}
-   */
-  self.getItemByAppKey = function(key) {
-    return _itemsByAppKey[key];
-  };
-
-  /**
-   * @param {string} key
-   * @returns {ClayItem}
-   */
-  self.getItemById = function(key) {
-    return _itemsById[key];
-  };
-
-  /**
-   * @param {string} key
-   * @returns {[ClayItem]}
-   */
-  self.getItemsByType = function(type) {
-    return _items.filter(function(item) {
-      return item.config.type === type;
-    });
-  };
-
-  /**
-   * @returns {object}
-   */
-  self.getSettings = function() {
-    _.eachObj(_itemsByAppKey, function(appKey, item) {
-      _settings[appKey] = item.get();
-    });
-    return _settings;
-  };
-
-  /**
-   * Register a component to Clay. This must be called prior to .build();
-   * @param {{}} component - the clay component to register
-   * @param {string} component.name - the name of the component
-   * @param {string} component.template - HTML template to use for the component
-   * @param {{}} component.manipulator - methods to attach to the component
-   * @param {function} component.manipulator.set - set manipulator method
-   * @param {function} component.manipulator.get - get manipulator method
-   * @param {{}} component.defaults - template defaults
-   * @param {function} [component.initialize] - method to scaffold the component
-   */
-  self.registerComponent = function(component) {
-    componentStore[component.name] = component;
-  };
-
-  self.build = function() {
-    self.trigger(self.EVENTS.BEFORE_BUILD);
-    // initialize the config
-    _addItems(config, $rootContainer);
-    self.trigger(self.EVENTS.AFTER_BUILD);
-  };
-
-  // attach event methods
-  ClayEvents.call(self, $rootContainer);
+  var _isBuilt = false;
 
   /**
    * Add item(s) to the config
@@ -152,6 +73,116 @@ function ClayConfig(settings, config, $rootContainer) {
       $container.add(clayItem.$element);
     }
   };
+
+  /**
+   *
+   * @param {string} fnName
+   * @private
+   */
+  var _checkBuilt = function(fnName) {
+    if (!_isBuilt) {
+      throw new Error(
+        'ClayConfig not built. build() must be run before ' +
+        'you can run ' + fnName + '()'
+      );
+    }
+    return true;
+  };
+
+  self.EVENTS = {
+    /**
+     * Called before framework has initialized. This is when you would attach your
+     * custom components.
+     * @const
+     */
+    BEFORE_BUILD: 'BEFORE_BUILD',
+
+    /**
+     * Called after the config has been parsed and all components have their initial
+     * value set
+     * @const
+     */
+    AFTER_BUILD: 'AFTER_BUILD'
+  };
+  utils.updateProperties(self.EVENTS, {writable: false});
+
+  /**
+   * @returns {ClayItem}
+   */
+  self.getAllItems = function() {
+    _checkBuilt('getAllItems');
+    return _items;
+  };
+
+  /**
+   * @param {string} key
+   * @returns {ClayItem}
+   */
+  self.getItemByAppKey = function(key) {
+    _checkBuilt('getItemByAppKey');
+    return _itemsByAppKey[key];
+  };
+
+  /**
+   * @param {string} key
+   * @returns {ClayItem}
+   */
+  self.getItemById = function(key) {
+    _checkBuilt('getItemById');
+    return _itemsById[key];
+  };
+
+  /**
+   * @param {string} key
+   * @returns {[ClayItem]}
+   */
+  self.getItemsByType = function(type) {
+    _checkBuilt('getItemsByType');
+    return _items.filter(function(item) {
+      return item.config.type === type;
+    });
+  };
+
+  /**
+   * @returns {object}
+   */
+  self.getSettings = function() {
+    _checkBuilt('getSettings');
+    _.eachObj(_itemsByAppKey, function(appKey, item) {
+      _settings[appKey] = item.get();
+    });
+    return _settings;
+  };
+
+  /**
+   * Register a component to Clay. This must be called prior to .build();
+   * @param {{}} component - the clay component to register
+   * @param {string} component.name - the name of the component
+   * @param {string} component.template - HTML template to use for the component
+   * @param {{}} component.manipulator - methods to attach to the component
+   * @param {function} component.manipulator.set - set manipulator method
+   * @param {function} component.manipulator.get - get manipulator method
+   * @param {{}} component.defaults - template defaults
+   * @param {function} [component.initialize] - method to scaffold the component
+   */
+  self.registerComponent = function(component) {
+    componentStore[component.name] = component;
+  };
+
+  /**
+   * Build the config page. This must be run before any of the get methods can be run
+   * @returns {ClayConfig}
+   */
+  self.build = function() {
+    self.trigger(self.EVENTS.BEFORE_BUILD);
+    _addItems(config, $rootContainer);
+    _isBuilt = true;
+    self.trigger(self.EVENTS.AFTER_BUILD);
+    return self;
+  };
+
+  // attach event methods
+  ClayEvents.call(self, $rootContainer);
 
   // prevent external modifications of properties
   utils.updateProperties(self, { writable: false, configurable: false });
