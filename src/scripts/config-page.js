@@ -22,7 +22,6 @@ clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
   this.registerComponent(require('./components/color'));
   this.registerComponent(require('./components/select'));
   this.registerComponent(require('./components/toggle'));
-  this.registerComponent(require('./components/radiogroup'));
   this.registerComponent(require('./components/submit'));
 });
 

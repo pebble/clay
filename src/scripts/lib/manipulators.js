@@ -43,23 +43,5 @@ module.exports = {
       return this.$manipulatorTarget.set('disabled', false)
         .trigger('change');
     }
-  },
-  radiogroup: {
-    get: function() {
-      return this.$manipulatorTarget.find('input:checked').val();
-    },
-    set: function(value) {
-      this.$manipulatorTarget.find('[value="' + value + '"]')
-        .prop('checked', true);
-      return this.$manipulatorTarget.trigger('change');
-    },
-    disable: function() {
-      return this.$manipulatorTarget.set('disabled', true)
-        .trigger('change');
-    },
-    enable: function() {
-      return this.$manipulatorTarget.set('disabled', false)
-        .trigger('change');
-    }
   }
 };
