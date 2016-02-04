@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var textComponent = require('../../../src/scripts/components/text');
+var textComponent = require('pebble-clay-components/dist/components/text');
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
 var fixtures = require('../../fixture');
@@ -128,6 +128,8 @@ describe('ClayConfig', function() {
 
       clayConfig.build();
     });
+
+    // @todo test for validation
   });
 
   describe('.build()', function() {
