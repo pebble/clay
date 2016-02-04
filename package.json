@@ -1,6 +1,6 @@
 {
   "name": "pebble-clay",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Pebble Config Framework",
   "main": "dist/clay.js",
   "directories": {
@@ -8,14 +8,14 @@
   },
   "scripts": {
     "test-travis": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
-    "test-debug": "export DEBUG=true; ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run",
+    "test-debug": "DEBUG=true && ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run",
     "test": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run",
     "lint": "./node_modules/.bin/eslint ./",
     "build": "gulp"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keegan-lillo/pebble-clay.git"
+    "url": "git+https://github.com/pebble/clay.git"
   },
   "keywords": [
     "Pebble",
@@ -24,10 +24,11 @@
   "author": "Keegan Lillo",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/keegan-lillo/pebble-clay/issues"
+    "url": "https://github.com/pebble/clay/issues"
   },
-  "homepage": "https://github.com/keegan-lillo/pebble-clay#readme",
+  "homepage": "https://github.com/pebble/clay#readme",
   "devDependencies": {
+    "pebble-clay-components": "git+https://4325063ac4dea1bba5f69148630d26b7b140ba19:x-oauth-basic@github.com/pebble/clay-components.git#master",
     "browserify": "^13.0.0",
     "browserify-istanbul": "^0.2.1",
     "chai": "^3.4.1",

@@ -19,6 +19,7 @@ var ClayItem = require('./clay-item');
 var utils = require('../lib/utils');
 var ClayEvents = require('./clay-events');
 var componentStore = require('./component-registry');
+var manipulators = require('./manipulators');
 
 /**
  * @extends ClayEvents
@@ -154,20 +155,8 @@ function ClayConfig(settings, config, $rootContainer) {
     return _settings;
   };
 
-  /**
-   * Register a component to Clay. This must be called prior to .build();
-   * @param {{}} component - the clay component to register
-   * @param {string} component.name - the name of the component
-   * @param {string} component.template - HTML template to use for the component
-   * @param {{}} component.manipulator - methods to attach to the component
-   * @param {function} component.manipulator.set - set manipulator method
-   * @param {function} component.manipulator.get - get manipulator method
-   * @param {{}} component.defaults - template defaults
-   * @param {function} [component.initialize] - method to scaffold the component
-   */
-  self.registerComponent = function(component) {
-    componentStore[component.name] = component;
-  };
+  // @todo maybe don't do this and force the static method
+  self.registerComponent = ClayConfig.registerComponent;
 
   /**
    * Build the config page. This must be run before any of the get methods can be run
@@ -188,5 +177,24 @@ function ClayConfig(settings, config, $rootContainer) {
   utils.updateProperties(self, { writable: false, configurable: false });
 
 }
+
+/**
+ * Register a component to Clay. This must be called prior to .build();
+ * @param {{}} component - the clay component to register
+ * @param {string} component.name - the name of the component
+ * @param {string} component.template - HTML template to use for the component
+ * @param {string|{}} component.manipulator - methods to attach to the component
+ * @param {function} component.manipulator.set - set manipulator method
+ * @param {function} component.manipulator.get - get manipulator method
+ * @param {{}} component.defaults - template defaults
+ * @param {function} [component.initialize] - method to scaffold the component
+ */
+ClayConfig.registerComponent = function(component) {
+  var _component = _.copyObj(component);
+  if (typeof _component.manipulator === 'string') {
+    _component.manipulator = manipulators[component.manipulator];
+  }
+  componentStore[_component.name] = _component;
+};
 
 module.exports = ClayConfig;

@@ -10,11 +10,11 @@ var idCounter = 0;
 var componentRegistry = require('../src/scripts/lib/component-registry');
 
 // add some components to the registry to test
-componentRegistry.text = require('../src/scripts/components/text');
-componentRegistry.input = require('../src/scripts/components/input');
-componentRegistry.toggle = require('../src/scripts/components/toggle');
-componentRegistry.footer = require('../src/scripts/components/footer');
-componentRegistry.select = require('../src/scripts/components/select');
+ClayConfig.registerComponent(require('pebble-clay-components/dist/components/text'));
+ClayConfig.registerComponent(require('pebble-clay-components/dist/components/input'));
+ClayConfig.registerComponent(require('pebble-clay-components/dist/components/toggle'));
+ClayConfig.registerComponent(require('pebble-clay-components/dist/components/footer'));
+ClayConfig.registerComponent(require('pebble-clay-components/dist/components/select'));
 
 /**
  * @param {string|{}} config

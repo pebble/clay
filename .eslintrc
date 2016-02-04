@@ -5,9 +5,7 @@
     "browser": true
   },
   "globals": {
-    "Pebble": true,
-    "$": true,
-    "t": true
+    "Pebble": true
   },
   "rules" : {
     "new-cap": [0],

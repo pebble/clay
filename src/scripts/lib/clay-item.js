@@ -14,14 +14,14 @@ var ClayEvents = require('./clay-events');
 function ClayItem(config) {
   var self = this;
 
-  var _itemType = componentRegistry[config.type];
+  var _component = componentRegistry[config.type];
 
-  if (!_itemType) {
+  if (!_component) {
     throw new Error('the component: ' + config.type + ' is not registered. ' +
                     'Make sure to register it with ClayConfig.registerComponent()');
   }
 
-  var _templateData = _.extend({}, _itemType.defaults, config);
+  var _templateData = _.extend({}, _component.defaults, config);
 
   /** @type {string|null} */
   self.id = config.id || null;
@@ -33,7 +33,7 @@ function ClayItem(config) {
   self.config = config;
 
   /** @type {M} */
-  self.$element = HTML(_.formatHtml(_itemType.template, _templateData));
+  self.$element = HTML(_.formatHtml(_component.template, _templateData));
 
   /** @type {M} */
   self.$manipulatorTarget = self.$element.select('[data-manipulator-target]');
@@ -48,8 +48,8 @@ function ClayItem(config) {
    * @returns {ClayItem}
    */
   self.initialize = function() {
-    if (typeof _itemType.initialize === 'function') {
-      _itemType.initialize.apply(self, arguments);
+    if (typeof _component.initialize === 'function') {
+      _component.initialize.apply(self, arguments);
     }
     return self;
   };
@@ -58,7 +58,7 @@ function ClayItem(config) {
   ClayEvents.call(self, self.$manipulatorTarget);
 
   // attach the manipulator methods to the clayItem
-  _.eachObj(_itemType.manipulator, function(methodName, method) {
+  _.eachObj(_component.manipulator, function(methodName, method) {
     self[methodName] = method.bind(self);
   });
 
