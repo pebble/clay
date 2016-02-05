@@ -17,7 +17,6 @@ describe('ClayItem', function() {
       '$element',
       '$manipulatorTarget',
       'on',
-      'one',
       'off',
       'trigger',
       'initialize'

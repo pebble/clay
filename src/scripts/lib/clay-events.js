@@ -1,7 +1,7 @@
 'use strict';
 
 var $ = require('../vendor/minified/minified').$;
-
+var _ = require('../vendor/minified/minified')._;
 /**
  * Attaches event methods to the context.
  * Call with ClayEvents.call(yourObject, $eventTarget)
@@ -11,48 +11,51 @@ var $ = require('../vendor/minified/minified').$;
  */
 function ClayEvents($eventTarget) {
   var self = this;
-  var _eventProxies = {};
+  var _eventProxies = [];
 
   /**
-   * Attach an event listener to the item. This proxies minified.js' on.
-   * If you are using a native event like "change", consider using "|change" instead
-   * as this will allow the native events to still work
-   * @see {@link http://minifiedjs.com/api/on.html|.on()}
+   * prefixes events with "|"
    * @param {string} events
-   * @param {function} handler
-   * @returns {object}
+   * @returns {string}
+   * @private
    */
-  self.on = function(events, handler) {
-    var _events = events.split(' ').map(function(event) {
+  var _transformEventNames = function(events) {
+    return events.split(' ').map(function(event) {
       return '|' + event.replace(/^\|/, '');
     }).join(' ');
-    var self = this;
-    _eventProxies[handler] = function() {
-      handler.apply(self, arguments);
-    };
-    $eventTarget.on(_events, _eventProxies[handler]);
-    return self;
+  };
+
+  var _registerEventProxy = function(handler, proxy) {
+    var eventProxy = _.find(_eventProxies, function(item) {
+      return item.handler === handler ? item : null;
+    });
+
+    if (!eventProxy) {
+      eventProxy = { handler: handler, proxy: proxy };
+      _eventProxies.push(eventProxy);
+    }
+    return eventProxy.proxy;
+  };
+
+  var _getEventProxy = function(handler) {
+    return _.find(_eventProxies, function(item) {
+      return item.handler === handler ? item.proxy : null;
+    });
   };
 
   /**
-   * Attach an event listener to the item. This proxies minified.js' one.
-   * If you are using a native event like "change", consider using "|change" instead
-   * as this will allow the native events to still work
-   * @see {@link http://minifiedjs.com/api/one.html|.one()}
-   * @param {string} events
+   * Attach an event listener to the item.
+   * @param {string} events - a space separated list of events
    * @param {function} handler
-   * @returns {object}
+   * @returns {ClayEvents}
    */
-  self.one = function(events, handler) {
-    var _events = events.split(' ').map(function(event) {
-      return '|' + event.replace(/^\|/, '');
-    }).join(' ');
+  self.on = function(events, handler) {
+    var _events = _transformEventNames(events);
     var self = this;
-    _eventProxies[handler] = function(event) {
+    var _proxy = _registerEventProxy(handler, function() {
       handler.apply(self, arguments);
-      $.off(_eventProxies[handler]);
-    };
-    $eventTarget.on(_events, _eventProxies[handler]);
+    });
+    $eventTarget.on(_events, _proxy);
     return self;
   };
 
@@ -60,10 +63,13 @@ function ClayEvents($eventTarget) {
    * Remove the given event handler.
    * @see {@link http://minifiedjs.com/api/off.html|$.off()}
    * @param {function} handler
-   * @returns {object}
+   * @returns {ClayEvents}
    */
   self.off = function(handler) {
-    $.off(_eventProxies[handler]);
+    var _proxy = _getEventProxy(handler);
+    if (_proxy) {
+      $.off(_proxy);
+    }
     return self;
   };
 
@@ -73,7 +79,7 @@ function ClayEvents($eventTarget) {
    * @param {object} [eventObj] - an object to pass to the event handler,
    * provided the handler does not have custom arguments.
    * @see {@link http://minifiedjs.com/api/trigger.html|.trigger()}
-   * @returns {object}
+   * @returns {ClayEvents}
    */
   self.trigger = function(name, eventObj) {
     $eventTarget.trigger(name, eventObj);

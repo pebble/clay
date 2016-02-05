@@ -193,7 +193,18 @@ ClayConfig.registerComponent = function(component) {
   var _component = _.copyObj(component);
   if (typeof _component.manipulator === 'string') {
     _component.manipulator = manipulators[component.manipulator];
+
+    if (!_component.manipulator) {
+      throw new Error('The manipulator: ' + component.manipulator +
+                      ' does not exist in the built-in manipulators.');
+    }
   }
+
+  if (typeof _component.manipulator.set !== 'function' ||
+      typeof _component.manipulator.get !== 'function') {
+    throw new Error('The manipulator must have both a `get` and `set` method');
+  }
+
   componentStore[_component.name] = _component;
 };
 
