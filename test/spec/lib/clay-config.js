@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
-var sinon = require('sinon');
+var _ = require('../../../src/scripts/vendor/minified/minified')._;
 var textComponent = require('pebble-clay-components/dist/components/text');
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
@@ -18,7 +18,6 @@ describe('ClayConfig', function() {
       'registerComponent',
       'build',
       'on',
-      'one',
       'off',
       'trigger'
     ];
@@ -129,7 +128,37 @@ describe('ClayConfig', function() {
       clayConfig.build();
     });
 
-    // @todo test for validation
+    it('throws if manipulator is a string and does not match built-in manipulator',
+    function(done) {
+      var clayConfig = fixtures.clayConfig(['text'], true);
+      var _textComponent = _.copyObj(textComponent);
+      _textComponent.manipulator = 'not_real';
+
+      clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
+        assert.throws(function() {
+          clayConfig.registerComponent(_textComponent);
+        }, new RegExp('not_real'));
+        done();
+      });
+
+      clayConfig.build();
+    });
+
+    it('throws if manipulator does not have a `get` and `set` method',
+      function(done) {
+        var clayConfig = fixtures.clayConfig(['text'], true);
+        var _textComponent = _.copyObj(textComponent);
+        _textComponent.manipulator = {};
+
+        clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
+          assert.throws(function() {
+            clayConfig.registerComponent(_textComponent);
+          }, /(get.*set)|(set.*get)/);
+          done();
+        });
+
+        clayConfig.build();
+      });
   });
 
   describe('.build()', function() {
