@@ -9,6 +9,19 @@
   },
   "rules" : {
     "new-cap": [0],
-    "max-params": [1]
+    "max-params": [1],
+    "require-jsdoc": [2, {
+      "require": {
+        "FunctionDeclaration": true,
+        "MethodDefinition": true,
+        "ClassDeclaration": false
+      }
+    }],
+    "valid-jsdoc": [2, {
+      "requireParamDescription": false,
+      "requireReturnDescription": false,
+      "requireReturnType": true
+    }]
   }
 }
+

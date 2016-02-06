@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert;
 var _ = require('../../../src/scripts/vendor/minified/minified')._;
-var textComponent = require('pebble-clay-components/dist/components/text');
+var textComponent = require('pebble-clay-components').text;
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
 var fixtures = require('../../fixture');

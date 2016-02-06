@@ -10,6 +10,7 @@
  * @param {boolean} [descriptor.writable]
  * @param {function} [descriptor.get]
  * @param {function} [descriptor.set]
+ * @return {void}
  */
 module.exports.updateProperties = function(obj, descriptor) {
   Object.getOwnPropertyNames(obj).forEach(function(prop) {

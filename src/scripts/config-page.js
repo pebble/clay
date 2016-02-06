@@ -15,14 +15,14 @@ var clayConfig = new ClayConfig(settings, config, $mainForm);
 clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
 
   // register components here
-  this.registerComponent(require('pebble-clay-components/dist/components/heading'));
-  this.registerComponent(require('pebble-clay-components/dist/components/text'));
-  this.registerComponent(require('pebble-clay-components/dist/components/footer'));
-  this.registerComponent(require('pebble-clay-components/dist/components/input'));
-  this.registerComponent(require('pebble-clay-components/dist/components/color'));
-  this.registerComponent(require('pebble-clay-components/dist/components/select'));
-  this.registerComponent(require('pebble-clay-components/dist/components/toggle'));
-  this.registerComponent(require('pebble-clay-components/dist/components/submit'));
+  this.registerComponent(require('pebble-clay-components').heading);
+  this.registerComponent(require('pebble-clay-components').text);
+  this.registerComponent(require('pebble-clay-components').footer);
+  this.registerComponent(require('pebble-clay-components').input);
+  this.registerComponent(require('pebble-clay-components').color);
+  this.registerComponent(require('pebble-clay-components').select);
+  this.registerComponent(require('pebble-clay-components').toggle);
+  this.registerComponent(require('pebble-clay-components').submit);
 });
 
 clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
