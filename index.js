@@ -2,6 +2,10 @@
 
 var configPageHtml = require('./tmp/config-page.html');
 
+/**
+ * @param {string} input
+ * @returns {string}
+ */
 function encodeDataUri(input) {
   if (window.btoa) {
     return 'data:text/html;base64,' + encodeURIComponent(window.btoa(input));
@@ -65,6 +69,7 @@ function Clay(config, customFn) {
 /**
  * Generate the Data URI used by the config Page with settings injected
  * @param {string} returnTo - used while developing on desktop.
+ * @return {string}
  */
 Clay.prototype.generateUrl = function(returnTo) {
   var settings;
@@ -91,6 +96,11 @@ Clay.prototype.generateUrl = function(returnTo) {
   );
 };
 
+/**
+ * Parse the response from the webviewclosed event data
+ * @param {string} response
+ * @returns {{}}
+ */
 Clay.prototype.getSettings = function(response) {
   // Decode and parse config data as JSON
   var settings = JSON.parse(decodeURIComponent(response));

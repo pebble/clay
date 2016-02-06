@@ -8,7 +8,7 @@ var ClayEvents = require('./clay-events');
 
 /**
  * @extends ClayEvents
- * @param config
+ * @param {Clay~ConfigItem} config
  * @constructor
  */
 function ClayItem(config) {

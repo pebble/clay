@@ -23,9 +23,9 @@ var manipulators = require('./manipulators');
 
 /**
  * @extends ClayEvents
- * @param settings
- * @param config
- * @param $rootContainer
+ * @param {{}} settings - setting that were set from a previous session
+ * @param {[]|{}} config
+ * @param {M} $rootContainer
  * @constructor
  */
 function ClayConfig(settings, config, $rootContainer) {
@@ -39,10 +39,11 @@ function ClayConfig(settings, config, $rootContainer) {
 
   /**
    * Add item(s) to the config
-   * @param {Clay~ConfigItem|array} items
-   * @param {M} [$container]
+   * @param {Clay~ConfigItem|array} item
+   * @param {M} $container
+   * @return {void}
    */
-  var _addItems = function(item, $container) {
+  function _addItems(item, $container) {
     if (Array.isArray(item)) {
       item.forEach(function(item) {
         _addItems(item, $container);
@@ -73,14 +74,15 @@ function ClayConfig(settings, config, $rootContainer) {
 
       $container.add(clayItem.$element);
     }
-  };
+  }
 
   /**
-   *
+   * Throws if the config has not been built yet.
    * @param {string} fnName
+   * @returns {boolean}
    * @private
    */
-  var _checkBuilt = function(fnName) {
+  function _checkBuilt(fnName) {
     if (!_isBuilt) {
       throw new Error(
         'ClayConfig not built. build() must be run before ' +
@@ -88,7 +90,7 @@ function ClayConfig(settings, config, $rootContainer) {
       );
     }
     return true;
-  };
+  }
 
   self.EVENTS = {
     /**
@@ -134,8 +136,8 @@ function ClayConfig(settings, config, $rootContainer) {
   };
 
   /**
-   * @param {string} key
-   * @returns {[ClayItem]}
+   * @param {string} type
+   * @returns {Array.<ClayItem>}
    */
   self.getItemsByType = function(type) {
     _checkBuilt('getItemsByType');
@@ -188,6 +190,7 @@ function ClayConfig(settings, config, $rootContainer) {
  * @param {function} component.manipulator.get - get manipulator method
  * @param {{}} component.defaults - template defaults
  * @param {function} [component.initialize] - method to scaffold the component
+ * @return {void}
  */
 ClayConfig.registerComponent = function(component) {
   var _component = _.copyObj(component);

@@ -12,10 +12,14 @@ var ctx;
 
 var eventCounter = 0;
 
-var createEventName = function() {
+/**
+ * Create a unique event name
+ * @returns {string}
+ */
+function createEventName() {
   eventCounter++;
   return 'test-event-' + eventCounter;
-};
+}
 
 describe('ClayEvents', function() {
 
