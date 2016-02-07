@@ -1,10 +1,12 @@
 'use strict';
 
 var componentRegistry = require('./component-registry');
-var _ = require('../vendor/minified/minified')._;
-var HTML = require('../vendor/minified/minified').HTML;
+var minified = require('../vendor/minified/minified');
 var utils = require('../lib/utils');
 var ClayEvents = require('./clay-events');
+
+var _ = minified._;
+var HTML = minified.HTML;
 
 /**
  * @extends ClayEvents
@@ -33,7 +35,7 @@ function ClayItem(config) {
   self.config = config;
 
   /** @type {M} */
-  self.$element = HTML(_.formatHtml(_component.template, _templateData));
+  self.$element = HTML(_component.template.trim(), _templateData);
 
   /** @type {M} */
   self.$manipulatorTarget = self.$element.select('[data-manipulator-target]');
@@ -44,12 +46,13 @@ function ClayItem(config) {
   }
 
   /**
-   * Run the initializer if it exists.
+   * Run the initializer if it exists and attaches the css to the head.
+   * Passes minified as the first param
    * @returns {ClayItem}
    */
   self.initialize = function() {
     if (typeof _component.initialize === 'function') {
-      _component.initialize.apply(self, arguments);
+      _component.initialize.call(self, minified);
     }
     return self;
   };

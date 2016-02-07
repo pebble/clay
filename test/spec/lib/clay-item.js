@@ -4,6 +4,7 @@ var assert = require('chai').assert;
 var sinon = require('sinon');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
 var ClayItem = require('../../../src/scripts/lib/clay-item');
+var minified = require('../../../src/scripts/vendor/minified/minified');
 var clayItemFixture = require('../../fixture').clayItem;
 var configItemFixture = require('../../fixture').configItem;
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
@@ -98,6 +99,7 @@ describe('ClayItem', function() {
       var initializeSpy = sinon.spy(componentRegistry.select, 'initialize');
       var clayItem = clayItemFixture('select').initialize();
       assert(initializeSpy.alwaysCalledOn(clayItem));
+      assert(initializeSpy.alwaysCalledWith(minified));
       initializeSpy.restore();
     });
 
