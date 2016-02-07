@@ -6,7 +6,16 @@ module.exports = function() {
   var Clay = window.Clay = this;
 
   Clay.on(Clay.EVENTS.BEFORE_BUILD, function() {
-    console.debug('KEEGAN: BEFORE_BUILD', this);
+
+    // register components here
+    this.registerComponent(require('pebble-clay-components').heading);
+    this.registerComponent(require('pebble-clay-components').text);
+    this.registerComponent(require('pebble-clay-components').footer);
+    this.registerComponent(require('pebble-clay-components').input);
+    this.registerComponent(require('pebble-clay-components').color);
+    this.registerComponent(require('pebble-clay-components').select);
+    this.registerComponent(require('pebble-clay-components').toggle);
+    this.registerComponent(require('pebble-clay-components').submit);
   });
 
   Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
