@@ -51,7 +51,7 @@ h6 {
   @include font-size(0.8);
 }
 
-.item {
+.component {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +92,7 @@ h6 {
   margin-bottom: 1rem;
   box-shadow: $color-gray-1 0 0.15rem 0.25rem;
 
-  .item {
+  .component {
     padding-top: $item-spacing-v;
     padding-right: $item-spacing-h;
     padding-left: $item-spacing-h;
@@ -120,14 +120,14 @@ h6 {
     }
   }
 
-  .item-heading:first-child {
+  .component-heading:first-child {
     background: $color-gray-3;
     border-radius: $border-radius $border-radius 0 0;
   }
 
 }
 
-label.item{
+label.component{
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
 
   &:active {
@@ -153,7 +153,7 @@ a {
   width:100%;
   border-collapse: collapse;
 
-  .section & .item {
+  .section & .component {
     display: table;
     width:100%;
 
