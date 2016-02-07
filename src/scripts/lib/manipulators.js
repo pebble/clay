@@ -31,7 +31,7 @@ module.exports = {
       return this.$manipulatorTarget.get('value');
     },
     set: function(value) {
-      this.$manipulatorTarget.set('value', value)
+      this.$manipulatorTarget.set('value', value);
       return this.trigger('change');
     },
     disable: disable,
@@ -42,7 +42,7 @@ module.exports = {
       return this.$manipulatorTarget.get('checked');
     },
     set: function(value) {
-      this.$manipulatorTarget.set('checked', value)
+      this.$manipulatorTarget.set('checked', value);
       return this.trigger('change');
     },
     disable: disable,
