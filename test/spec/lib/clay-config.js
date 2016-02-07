@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert;
 var _ = require('../../../src/scripts/vendor/minified/minified')._;
-var textComponent = require('pebble-clay-components').text;
+var selectComponent = require('pebble-clay-components').select;
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
 var fixtures = require('../../fixture');
@@ -111,17 +111,20 @@ describe('ClayConfig', function() {
   });
 
   describe('.registerComponent()', function() {
-    it('adds the component to the registry', function(done) {
-      delete componentRegistry.text;
-      assert.typeOf(componentRegistry.text, 'undefined');
-      var clayConfig = fixtures.clayConfig(['text'], true);
+    it('adds the component to the registry and adds the style to the HEAD',
+    function(done) {
+      delete componentRegistry.select;
+      assert.typeOf(componentRegistry.select, 'undefined');
+      var clayConfig = fixtures.clayConfig(['select'], true);
 
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
-        clayConfig.registerComponent(textComponent);
+        clayConfig.registerComponent(selectComponent);
+        assert.strictEqual(componentRegistry.select.name, selectComponent.name);
+        assert.include(document.head.innerHTML, selectComponent.style);
       });
 
       clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
-        assert.strictEqual(this.getAllItems()[0].config.type, 'text');
+        assert.strictEqual(this.getAllItems()[0].config.type, 'select');
         done();
       });
 
@@ -130,8 +133,8 @@ describe('ClayConfig', function() {
 
     it('throws if manipulator is a string and does not match built-in manipulator',
     function(done) {
-      var clayConfig = fixtures.clayConfig(['text'], true);
-      var _textComponent = _.copyObj(textComponent);
+      var clayConfig = fixtures.clayConfig(['select'], true);
+      var _textComponent = _.copyObj(selectComponent);
       _textComponent.manipulator = 'not_real';
 
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
@@ -145,20 +148,20 @@ describe('ClayConfig', function() {
     });
 
     it('throws if manipulator does not have a `get` and `set` method',
-      function(done) {
-        var clayConfig = fixtures.clayConfig(['text'], true);
-        var _textComponent = _.copyObj(textComponent);
-        _textComponent.manipulator = {};
+    function(done) {
+      var clayConfig = fixtures.clayConfig(['select'], true);
+      var _selectComponent = _.copyObj(selectComponent);
+      _selectComponent.manipulator = {};
 
-        clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
-          assert.throws(function() {
-            clayConfig.registerComponent(_textComponent);
-          }, /(get.*set)|(set.*get)/);
-          done();
-        });
-
-        clayConfig.build();
+      clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
+        assert.throws(function() {
+          clayConfig.registerComponent(_selectComponent);
+        }, /(get.*set)|(set.*get)/);
+        done();
       });
+
+      clayConfig.build();
+    });
   });
 
   describe('.build()', function() {

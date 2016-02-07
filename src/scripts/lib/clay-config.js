@@ -208,6 +208,13 @@ ClayConfig.registerComponent = function(component) {
     throw new Error('The manipulator must have both a `get` and `set` method');
   }
 
+  if (_component.style) {
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(_component.style));
+    document.head.appendChild(style);
+  }
+
   componentStore[_component.name] = _component;
 };
 
