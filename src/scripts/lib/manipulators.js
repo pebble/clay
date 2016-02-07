@@ -1,13 +1,29 @@
 'use strict';
 
+/**
+ * @returns {ClayEvents}
+ */
+function disable() {
+  this.$manipulatorTarget.set('disabled', true);
+  return this.trigger('disabled');
+}
+
+/**
+ * @returns {ClayEvents}
+ */
+function enable() {
+  this.$manipulatorTarget.set('disabled', false);
+  return this.trigger('enabled');
+}
+
 module.exports = {
   html: {
     get: function() {
       return this.$manipulatorTarget.get('innerHTML');
     },
     set: function(value) {
-      return this.$manipulatorTarget.set('innerHTML', value)
-        .trigger('change');
+      this.$manipulatorTarget.set('innerHTML', value);
+      return this.trigger('change');
     }
   },
   val: {
@@ -15,33 +31,21 @@ module.exports = {
       return this.$manipulatorTarget.get('value');
     },
     set: function(value) {
-      return this.$manipulatorTarget.set('value', value)
-        .trigger('change');
+      this.$manipulatorTarget.set('value', value)
+      return this.trigger('change');
     },
-    disable: function() {
-      return this.$manipulatorTarget.set('disabled', true)
-        .trigger('disabled');
-    },
-    enable: function() {
-      return this.$manipulatorTarget.set('disabled', false)
-        .trigger('enabled');
-    }
+    disable: disable,
+    enable: enable
   },
   checked: {
     get: function() {
       return this.$manipulatorTarget.get('checked');
     },
     set: function(value) {
-      return this.$manipulatorTarget.set('checked', value)
-        .trigger('change');
+      this.$manipulatorTarget.set('checked', value)
+      return this.trigger('change');
     },
-    disable: function() {
-      return this.$manipulatorTarget.set('disabled', true)
-        .trigger('change');
-    },
-    enable: function() {
-      return this.$manipulatorTarget.set('disabled', false)
-        .trigger('change');
-    }
+    disable: disable,
+    enable: enable
   }
 };
