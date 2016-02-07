@@ -12,19 +12,7 @@ var customFn = window.customFn || function() {};
 var $mainForm = $('#main-form');
 var clayConfig = new ClayConfig(settings, config, $mainForm);
 
-clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
-
-  // register components here
-  this.registerComponent(require('pebble-clay-components').heading);
-  this.registerComponent(require('pebble-clay-components').text);
-  this.registerComponent(require('pebble-clay-components').footer);
-  this.registerComponent(require('pebble-clay-components').input);
-  this.registerComponent(require('pebble-clay-components').color);
-  this.registerComponent(require('pebble-clay-components').select);
-  this.registerComponent(require('pebble-clay-components').toggle);
-  this.registerComponent(require('pebble-clay-components').submit);
-});
-
+/* istanbul ignore next */ // @todo reassess how to do form submission
 clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
   var self = this;
 
