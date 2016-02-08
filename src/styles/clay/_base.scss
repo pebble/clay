@@ -1,6 +1,6 @@
-@import "vendor/bourbon/bourbon";
-@import "partials/vars";
-@import "partials/mixins";
+@import "bourbon";
+@import "vars";
+@import "mixins";
 
 html, body {
   @include font-pfdin(regular);

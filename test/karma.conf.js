@@ -17,9 +17,27 @@ module.exports = function(config) {
       transform: [
         [
           'stringify',
-          { extensions: ['.html', '.tpl'] }
+          {
+            global: true,
+            extensions: ['.html', '.tpl']
+          }
         ],
         'deamdify',
+        [
+          'sassify',
+          {
+            global: true,
+            base64Encode: false,
+            sourceMap: false,
+            sourceMapEmbed: false,
+            sourceMapContents: false,
+            outputStyle: 'compact',
+            includePaths: [].concat(
+              require('bourbon').includePaths,
+              'src/styles'
+            )
+          }
+        ],
         [
           'browserify-istanbul',
           {

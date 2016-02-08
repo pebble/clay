@@ -11,7 +11,8 @@
     "test-debug": "(export DEBUG=true && ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run)",
     "test": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run",
     "lint": "./node_modules/.bin/eslint ./",
-    "build": "gulp"
+    "build": "gulp",
+    "dev": "gulp dev"
   },
   "repository": {
     "type": "git",

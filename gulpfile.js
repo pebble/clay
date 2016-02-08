@@ -10,6 +10,7 @@ var htmlmin = require('gulp-htmlmin');
 var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
+var sassify = require('sassify');
 
 gulp.task('clean-js', function() {
   return del(['tmp/config-page.js']);
@@ -64,7 +65,21 @@ gulp.task('clay', ['inlineHtml'], function() {
 });
 
 gulp.task('dev-js', ['js', 'sass'], function() {
-  return browserify('dev/dev.js', { debug: true })
+  return browserify('dev/dev.js', { debug: true, global: true })
+    .transform(stringify(['.html', '.tpl']), { global: true })
+    .transform('deamdify')
+    .transform(sassify, {
+      global: true,
+      base64Encode: false,
+      sourceMap: false,
+      sourceMapEmbed: false,
+      sourceMapContents: false,
+      outputStyle: 'compact',
+      includePaths: [].concat(
+        require('bourbon').includePaths,
+        'src/styles'
+      )
+    })
     .bundle()
     .pipe(source('dev.js'))
     .pipe(gulp.dest('./tmp/'));
