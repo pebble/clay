@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/pebble/clay#readme",
   "devDependencies": {
+    "bourbon": "^4.2.6",
     "browserify": "^13.0.0",
     "browserify-istanbul": "^0.2.1",
     "chai": "^3.4.1",
