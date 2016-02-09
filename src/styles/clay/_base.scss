@@ -1,6 +1,5 @@
 @import "bourbon";
-@import "vars";
-@import "mixins";
+@import "clay";
 
 html, body {
   @include font-pfdin(regular);

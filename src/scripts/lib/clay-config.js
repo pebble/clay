@@ -9,12 +9,12 @@
  * @property {string} [id]
  * @property {string} [label]
  * @property {object} [attributes]
- * @property {array} [options]
- * @property {array} [items]
+ * @property {Array} [options]
+ * @property {Array} [items]
  */
 
-var HTML = require('../vendor/minified/minified').HTML;
-var _ = require('../vendor/minified/minified')._;
+var HTML = require('../vendor/minified').HTML;
+var _ = require('../vendor/minified')._;
 var ClayItem = require('./clay-item');
 var utils = require('../lib/utils');
 var ClayEvents = require('./clay-events');
@@ -39,7 +39,7 @@ function ClayConfig(settings, config, $rootContainer) {
 
   /**
    * Add item(s) to the config
-   * @param {Clay~ConfigItem|array} item
+   * @param {Clay~ConfigItem|Array} item
    * @param {M} $container
    * @return {void}
    */

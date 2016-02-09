@@ -1,7 +1,7 @@
 'use strict';
 
-var $ = require('../vendor/minified/minified').$;
-var _ = require('../vendor/minified/minified')._;
+var $ = require('../vendor/minified').$;
+var _ = require('../vendor/minified')._;
 
 /**
  * Attaches event methods to the context.

@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('../src/scripts/vendor/minified/minified')._;
-var $ = require('../src/scripts/vendor/minified/minified').$;
-var HTML = require('../src/scripts/vendor/minified/minified').HTML;
+var _ = require('../src/scripts/vendor/minified')._;
+var $ = require('../src/scripts/vendor/minified').$;
+var HTML = require('../src/scripts/vendor/minified').HTML;
 var ClayItem = require('../src/scripts/lib/clay-item');
 var ClayConfig = require('../src/scripts/lib/clay-config');
 var idCounter = 0;

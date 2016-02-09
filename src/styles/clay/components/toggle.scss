@@ -1,0 +1,51 @@
+@import "clay";
+
+.component-toggle {
+
+  $slide-height: $base-height * 0.75;
+  $slide-width: $small-component-width;
+  $marker-diameter: $base-height;
+
+  input {
+    display: none; // @todo make sure this doesn't mess up interactivity on iOS
+  }
+
+  .graphic {
+    display: inline-block;
+    position: relative;
+
+    .slide {
+      display:block;
+      border-radius: $slide-height;
+      height: $slide-height;
+      width: $slide-width;
+      background: $color-gray-1;
+      transition: background-color 150ms linear;
+    }
+
+    .marker {
+      background: $color-gray-10;
+      width: $marker-diameter;
+      height: $marker-diameter;
+      border-radius: $marker-diameter;
+      position: absolute;
+      left: 0;
+      display: block;
+      top: ($marker-diameter - $slide-height) / 2 * -1;
+      transition: transform 150ms linear;
+      box-shadow: $box-shadow-small-components;
+    }
+  }
+
+  input:checked + .graphic {
+    .slide {
+      background: $color-orange-dark;
+    }
+
+    .marker {
+      background: $color-orange;
+      transform: translateX($slide-width - $marker-diameter);
+    }
+  }
+
+}

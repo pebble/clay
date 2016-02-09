@@ -1,0 +1,91 @@
+@import "clay";
+
+.component-color {
+
+  .value {
+    width: $small-component-width;
+    height: $base-height;
+    border-radius: $base-height / 2;
+    box-shadow: $box-shadow-small-components;
+  }
+
+  input:disabled ~ .value,
+  input:disabled ~ .label {
+    opacity: 0.25;
+  }
+
+  .picker-wrap {
+    left: 0;
+    top: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    padding: 1rem;
+    background: rgba(0,0,0,0.7);
+    opacity: 0;
+    transition: opacity 70ms ease-in 175ms;
+    pointer-events: none;
+    z-index: 100;
+
+    .picker {
+      padding: 1rem;
+      background: $color-gray-11;
+      border-radius: $border-radius;
+    }
+
+    &.show {
+      transition-delay: 0ms;
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+
+  .color-box-wrap {
+    box-sizing: border-box;
+    position: relative;
+    height: 0;
+    width: 100%;
+    padding: 0 0 100% 0; // overridden with inline style
+    margin: 0.6em 0 0em;
+
+    .color-box-container {
+      position: absolute;
+      height: 99.97%;
+      width: 100%;
+      left: 0;
+      top: 0;
+
+      .color-box {
+        float:left;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+        &.rounded-tl {
+          border-top-left-radius: $border-radius;
+        }
+
+        &.rounded-tr {
+          border-top-right-radius: $border-radius;
+        }
+
+        &.rounded-bl {
+          border-bottom-left-radius: $border-radius;
+        }
+
+        &.rounded-br {
+          border-bottom-right-radius: $border-radius;
+        }
+
+        &.selected {
+          transform: scale(1.15);
+          border-radius: $border-radius;
+          box-shadow: #111 0 0 0.24rem;
+          position: relative;
+          z-index: 100;
+        }
+      }
+
+    }
+  }
+}

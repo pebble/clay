@@ -11,6 +11,28 @@ var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var sassify = require('sassify');
+var autoprefixify = require('./src/scripts/vendor/autoprefixify');
+
+var sassIncludePaths = [].concat(
+  require('bourbon').includePaths,
+  'src/styles'
+);
+
+var sassifyOptions = {
+  base64Encode: false,
+  sourceMap: false,
+  sourceMapEmbed: false,
+  sourceMapContents: false,
+  outputStyle: 'compact',
+  includePaths: sassIncludePaths
+};
+
+var autoprefixerOptions = {
+  browsers: ['Android 4', 'iOS 8'],
+  cascade: false
+};
+
+var stringifyOptions = ['.html', '.tpl'];
 
 gulp.task('clean-js', function() {
   return del(['tmp/config-page.js']);
@@ -18,7 +40,6 @@ gulp.task('clean-js', function() {
 
 gulp.task('js', ['clean-js'], function() {
   return browserify('src/scripts/config-page.js', { debug: true })
-    .transform(stringify(['.html', '.tpl']))
     .transform('deamdify')
     .bundle()
     .pipe(source('config-page.js'))
@@ -31,11 +52,10 @@ gulp.task('clean-sass', function() {
 gulp.task('sass', ['clean-sass'], function() {
   gulp.src('./src/styles/config-page.scss')
     .pipe(sourceMaps.init())
-    .pipe(sass().on('error', sass.logError))
-    .pipe(autoprefixer({
-      browsers: ['Android 4', 'iOS 8'],
-      cascade: false
-    }))
+    .pipe(sass({
+      includePaths: sassIncludePaths
+    }).on('error', sass.logError))
+    .pipe(autoprefixer(autoprefixerOptions))
     .pipe(sourceMaps.write('./'))
     .pipe(gulp.dest('tmp'));
 });
@@ -56,8 +76,13 @@ gulp.task('inlineHtml', ['js', 'sass'], function() {
 });
 
 gulp.task('clay', ['inlineHtml'], function() {
-  return browserify('index.js', { debug: false })
-    .transform(stringify(['.html', '.tpl']))
+  return browserify('index.js', {
+    debug: false,
+    standalone: 'clay'
+  })
+    .transform(stringify(stringifyOptions))
+    .transform(sassify, sassifyOptions)
+    .transform(autoprefixify, autoprefixerOptions)
     .require(require.resolve('./index'), {expose: 'pebble-clay'})
     .bundle()
     .pipe(source('clay.js'))
@@ -65,21 +90,10 @@ gulp.task('clay', ['inlineHtml'], function() {
 });
 
 gulp.task('dev-js', ['js', 'sass'], function() {
-  return browserify('dev/dev.js', { debug: true, global: true })
-    .transform(stringify(['.html', '.tpl']), { global: true })
+  return browserify('dev/dev.js', { debug: true })
+    .transform(stringify(stringifyOptions))
     .transform('deamdify')
-    .transform(sassify, {
-      global: true,
-      base64Encode: false,
-      sourceMap: false,
-      sourceMapEmbed: false,
-      sourceMapContents: false,
-      outputStyle: 'compact',
-      includePaths: [].concat(
-        require('bourbon').includePaths,
-        'src/styles'
-      )
-    })
+    .transform(sassify, sassifyOptions)
     .bundle()
     .pipe(source('dev.js'))
     .pipe(gulp.dest('./tmp/'));

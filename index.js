@@ -1,6 +1,8 @@
 'use strict';
 
 var configPageHtml = require('./tmp/config-page.html');
+var toSource = require('tosource');
+var standardComponents = require('./src/scripts/components');
 
 /**
  * @param {string} input
@@ -56,15 +58,41 @@ function encodeDataUri(input) {
 }
 
 /**
- * @param {array} config - the Clay config
+ * @param {Array} config - the Clay config
  * @param {function} [customFn] - custom code to run from the config page.
  * Will run with api as context
  * @constructor
  */
 function Clay(config, customFn) {
-  this.config = config;
-  this.customFn = customFn || function() {};
+  var self = this;
+
+  self.config = config;
+  self.customFn = customFn || function() {};
+  self.components = [];
+
+  /**
+   * @private
+   * @param {Clay~ConfigItem|Array} item
+   * @return {void}
+   */
+  function _registerStandardComponents(item) {
+    if (Array.isArray(item)) {
+      item.forEach(function(item) {
+        _registerStandardComponents(item);
+      });
+    } else if (item.type === 'section') {
+      _registerStandardComponents(item.items);
+    } else if (standardComponents[item.type]) {
+      self.registerComponent(standardComponents[item.type]);
+    }
+  }
+
+  _registerStandardComponents(self.config);
 }
+
+Clay.prototype.registerComponent = function(component) {
+  this.components.push(component);
+};
 
 /**
  * Generate the Data URI used by the config Page with settings injected
@@ -80,19 +108,13 @@ Clay.prototype.generateUrl = function(returnTo) {
     settings = {};
   }
 
-  var strings = {
-    customFn: this.customFn.toString().replace(/^.*?\{/, '{'),
-    returnTo: returnTo || 'pebblejs://close#',
-    config: JSON.stringify(this.config),
-    settings: JSON.stringify(settings)
-  };
-
   // Show config page
   return encodeDataUri(configPageHtml
-    .replace('$$CUSTOM_FN$$', strings.customFn)
-    .replace('$$RETURN_TO$$', strings.returnTo)
-    .replace('$$CONFIG$$', strings.config)
-    .replace('$$SETTINGS$$', strings.settings)
+    .replace('$$CUSTOM_FN$$', toSource(this.customFn))
+    .replace('$$RETURN_TO$$', returnTo || 'pebblejs://close#')
+    .replace('$$CONFIG$$', toSource(this.config))
+    .replace('$$SETTINGS$$', toSource(settings))
+    .replace('$$COMPONENTS$$', toSource(this.components))
   );
 };
 

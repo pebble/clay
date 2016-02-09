@@ -2,8 +2,8 @@
 var sinon = require('sinon');
 var assert = require('chai').assert;
 var ClayEvents = require('../../../src/scripts/lib/clay-events');
-var $ = require('../../../src/scripts/vendor/minified/minified').$;
-var HTML = require('../../../src/scripts/vendor/minified/minified').HTML;
+var $ = require('../../../src/scripts/vendor/minified').$;
+var HTML = require('../../../src/scripts/vendor/minified').HTML;
 
 /**
  * @extends ClayEvents

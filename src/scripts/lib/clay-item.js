@@ -1,7 +1,7 @@
 'use strict';
 
 var componentRegistry = require('./component-registry');
-var minified = require('../vendor/minified/minified');
+var minified = require('../vendor/minified');
 var utils = require('../lib/utils');
 var ClayEvents = require('./clay-events');
 

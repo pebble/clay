@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/pebble/clay#readme",
   "devDependencies": {
+    "autoprefixer": "^6.3.1",
     "bourbon": "^4.2.6",
     "browserify": "^13.0.0",
     "browserify-istanbul": "^0.2.1",
@@ -54,9 +55,13 @@
     "karma-threshold-reporter": "^0.1.15",
     "mocha": "^2.3.4",
     "pebble-clay-components": "git+https://github.com/pebble/clay-components.git#master",
+    "postcss": "^5.0.14",
+    "require-from-string": "^1.1.0",
     "sassify": "^0.9.1",
     "sinon": "^1.17.3",
     "stringify": "^3.2.0",
+    "through": "^2.3.8",
+    "tosource": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
