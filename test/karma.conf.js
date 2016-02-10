@@ -18,7 +18,6 @@ module.exports = function(config) {
         [
           'stringify',
           {
-            global: true,
             extensions: ['.html', '.tpl']
           }
         ],
@@ -26,7 +25,6 @@ module.exports = function(config) {
         [
           'sassify',
           {
-            global: true,
             base64Encode: false,
             sourceMap: false,
             sourceMapEmbed: false,
