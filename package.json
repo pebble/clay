@@ -54,7 +54,6 @@
     "karma-source-map-support": "^1.1.0",
     "karma-threshold-reporter": "^0.1.15",
     "mocha": "^2.3.4",
-    "pebble-clay-components": "git+https://github.com/pebble/clay-components.git#master",
     "postcss": "^5.0.14",
     "require-from-string": "^1.1.0",
     "sassify": "^0.9.1",
