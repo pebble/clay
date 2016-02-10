@@ -6,11 +6,14 @@ var standardComponents = require('./src/scripts/components');
 
 /**
  * @param {string} input
+ * @param {string} [prefix]
  * @returns {string}
  */
-function encodeDataUri(input) {
+function encodeDataUri(input, prefix) {
+  prefix = typeof prefix !== 'undefined' ? prefix : 'data:text/html;base64,';
+
   if (window.btoa) {
-    return 'data:text/html;base64,' + encodeURIComponent(window.btoa(input));
+    return prefix + encodeURIComponent(window.btoa(input));
   }
 
   // iOS doesn't have a window so we need to polyfil window.btoa
@@ -54,7 +57,7 @@ function encodeDataUri(input) {
              B64_ALPHABET.charAt(e4));
   }
 
-  return 'data:text/html;base64,' + encodeURIComponent(out.join(''));
+  return prefix + encodeURIComponent(out.join(''));
 }
 
 /**
@@ -96,11 +99,13 @@ Clay.prototype.registerComponent = function(component) {
 
 /**
  * Generate the Data URI used by the config Page with settings injected
- * @param {string} returnTo - used while developing on desktop.
  * @return {string}
  */
-Clay.prototype.generateUrl = function(returnTo) {
+Clay.prototype.generateUrl = function() {
   var settings;
+  var emulator = !Pebble || Pebble.platform === 'pypkjs';
+  var returnTo = emulator ? '$$$RETURN_TO$$$' : 'pebblejs://close#';
+
   try {
     settings = JSON.parse(localStorage.getItem('clay-settings')) || {};
   } catch (e) {
@@ -108,14 +113,24 @@ Clay.prototype.generateUrl = function(returnTo) {
     settings = {};
   }
 
-  // Show config page
-  return encodeDataUri(configPageHtml
+  var compiledHtml = configPageHtml
+    .replace('$$RETURN_TO$$', returnTo)
     .replace('$$CUSTOM_FN$$', toSource(this.customFn))
-    .replace('$$RETURN_TO$$', returnTo || 'pebblejs://close#')
     .replace('$$CONFIG$$', toSource(this.config))
     .replace('$$SETTINGS$$', toSource(settings))
-    .replace('$$COMPONENTS$$', toSource(this.components))
-  );
+    .replace('$$COMPONENTS$$', toSource(this.components));
+
+  // if we are in the emulator then we need to proxy the data via a webpage to
+  // obtain the return_to.
+  // @todo calculate this from the Pebble object or something
+  if (emulator) {
+    return encodeDataUri(
+      compiledHtml,
+      'http://clay.pebble.com.s3-website-us-west-2.amazonaws.com/#'
+    );
+  }
+
+  return encodeDataUri(compiledHtml);
 };
 
 /**
