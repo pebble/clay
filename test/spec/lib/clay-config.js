@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('chai').assert;
+var sinon = require('sinon');
 var _ = require('../../../src/scripts/vendor/minified')._;
 var selectComponent = require('../../../src/scripts/components/select');
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
@@ -33,7 +34,7 @@ describe('ClayConfig', function() {
       'getSettings'
     ].forEach(function(method) {
       it('.' + method + '()', function() {
-        var clayConfig = fixtures.clayConfig(['input', 'text'], true);
+        var clayConfig = fixtures.clayConfig(['input', 'text'], false);
         assert.throws(clayConfig[method], new RegExp(method));
       });
     });
@@ -93,7 +94,8 @@ describe('ClayConfig', function() {
           ]},
           {type: 'toggle', appKey: 'test3'}
         ],
-        false,
+        true,
+        true,
         {
           test1: 'val-1' // set one of the values via settings
         }
@@ -115,7 +117,7 @@ describe('ClayConfig', function() {
     function(done) {
       delete componentRegistry.select;
       assert.typeOf(componentRegistry.select, 'undefined');
-      var clayConfig = fixtures.clayConfig(['select'], true);
+      var clayConfig = fixtures.clayConfig(['select'], false, false);
 
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
         clayConfig.registerComponent(selectComponent);
@@ -133,7 +135,8 @@ describe('ClayConfig', function() {
 
     it('throws if manipulator is a string and does not match built-in manipulator',
     function(done) {
-      var clayConfig = fixtures.clayConfig(['select'], true);
+      delete componentRegistry.select;
+      var clayConfig = fixtures.clayConfig(['select'], false, false);
       var _textComponent = _.copyObj(selectComponent);
       _textComponent.manipulator = 'not_real';
 
@@ -149,7 +152,8 @@ describe('ClayConfig', function() {
 
     it('throws if manipulator does not have a `get` and `set` method',
     function(done) {
-      var clayConfig = fixtures.clayConfig(['select'], true);
+      delete componentRegistry.select;
+      var clayConfig = fixtures.clayConfig(['select'], false, false);
       var _selectComponent = _.copyObj(selectComponent);
       _selectComponent.manipulator = {};
 
@@ -162,11 +166,31 @@ describe('ClayConfig', function() {
 
       clayConfig.build();
     });
+
+    it('only registers the component once', function() {
+      delete componentRegistry.select;
+      var warnStub = sinon.stub(console, 'warn');
+      var clayConfig = fixtures.clayConfig(['select'], false, false);
+      var _selectComponent1 = _.copyObj(selectComponent);
+      var _selectComponent2 = _.copyObj(selectComponent);
+      _selectComponent2.template = 'fake';
+
+      assert.strictEqual(clayConfig.registerComponent(_selectComponent1), true);
+      var styleCount = document.head.querySelectorAll('style').length;
+      assert.strictEqual(clayConfig.registerComponent(_selectComponent2), false);
+
+      // make sure the styles were not added twice
+      assert.strictEqual(document.head.querySelectorAll('style').length, styleCount);
+
+      // it should throw a warning
+      assert.strictEqual(warnStub.callCount, 1, 'console.warn not called once');
+      warnStub.restore();
+    });
   });
 
   describe('.build()', function() {
     it('dispatches the BEFORE_BUILD event at the right time', function(done) {
-      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], true);
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
 
         // this should throw because the config has not been built yet
@@ -177,7 +201,7 @@ describe('ClayConfig', function() {
     });
 
     it('dispatches the AFTER_BUILD event at the right time', function(done) {
-      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], true);
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
       clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
 
         // this should not throw because the config has been built

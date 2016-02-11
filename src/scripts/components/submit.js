@@ -5,6 +5,7 @@ module.exports = {
   template: require('../../templates/components/submit.tpl'),
   manipulator: 'val',
   defaults: {
+    label: '',
     attributes: {}
   }
 };

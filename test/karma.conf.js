@@ -39,9 +39,12 @@ module.exports = function(config) {
         [
           'browserify-istanbul',
           {
-            ignore: process.env.DEBUG ?
-              ['**/**'] :
-              ['**/test/**', '**/src/scripts/vendor/**']
+            ignore: process.env.DEBUG ? ['**/**'] :
+              [
+                '**/test/**',
+                '**/src/scripts/vendor/**',
+                '**/src/scripts/config-page.js'
+              ]
           }
         ]
       ]

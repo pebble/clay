@@ -190,10 +190,18 @@ function ClayConfig(settings, config, $rootContainer) {
  * @param {function} component.manipulator.get - get manipulator method
  * @param {{}} component.defaults - template defaults
  * @param {function} [component.initialize] - method to scaffold the component
- * @return {void}
+ * @return {boolean} - Returns true if component was registered correctly
  */
 ClayConfig.registerComponent = function(component) {
   var _component = _.copyObj(component);
+
+  if (componentStore[_component.name]) {
+    console.warn('Component: ' + _component.name +
+                 ' is already registered. If you wish to override the existing' +
+                 ' functionality, you must provide a new name');
+    return false;
+  }
+
   if (typeof _component.manipulator === 'string') {
     _component.manipulator = manipulators[component.manipulator];
 
@@ -216,6 +224,7 @@ ClayConfig.registerComponent = function(component) {
   }
 
   componentStore[_component.name] = _component;
+  return true;
 };
 
 module.exports = ClayConfig;

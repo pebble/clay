@@ -5,8 +5,7 @@ var sinon = require('sinon');
 var checkReadOnly = require('../../test-utils').checkReadOnly;
 var ClayItem = require('../../../src/scripts/lib/clay-item');
 var minified = require('../../../src/scripts/vendor/minified');
-var clayItemFixture = require('../../fixture').clayItem;
-var configItemFixture = require('../../fixture').configItem;
+var fixture = require('../../fixture');
 var componentRegistry = require('../../../src/scripts/lib/component-registry');
 
 describe('ClayItem', function() {
@@ -22,20 +21,20 @@ describe('ClayItem', function() {
       'trigger',
       'initialize'
     ];
-    var clayItem = clayItemFixture('input');
+    var clayItem = fixture.clayItem('input');
     checkReadOnly(clayItem, properties);
   });
 
   it('attaches the manipulator methods', function() {
     Object.keys(componentRegistry).forEach(function(itemName) {
-      var clayItem = clayItemFixture(itemName);
+      var clayItem = fixture.clayItem(itemName);
       var manipulator = componentRegistry[itemName].manipulator;
       checkReadOnly(clayItem, Object.keys(manipulator));
     });
   });
 
   it('throws if a component is not in the registry', function() {
-    var config = configItemFixture('fake');
+    var config = fixture.configItem('fake', false);
     /* eslint-disable no-new */
     assert.throws(function() { new ClayItem(config); }, /fake/);
     /* eslint-enable no-new */
@@ -43,33 +42,33 @@ describe('ClayItem', function() {
 
   describe('.id', function() {
     it('sets id if config has id', function() {
-      var config = configItemFixture('input');
+      var config = fixture.configItem('input');
       var clayItem = new ClayItem(config);
       assert.strictEqual(clayItem.id, config.id);
     });
 
     it('sets id to null if there is no id in the config', function() {
-      var clayItem = clayItemFixture({type: 'input', id: undefined});
+      var clayItem = fixture.clayItem({type: 'input', id: undefined});
       assert.strictEqual(clayItem.id, null);
     });
   });
 
   describe('.appKey', function() {
     it('sets appKey correctly', function() {
-      var config = configItemFixture('input');
+      var config = fixture.configItem('input');
       var clayItem = new ClayItem(config);
       assert.strictEqual(clayItem.appKey, config.appKey);
     });
 
     it('sets appKey to null if there is no appKey in the config', function() {
-      var clayItem = clayItemFixture({type: 'input', appKey: undefined});
+      var clayItem = fixture.clayItem({type: 'input', appKey: undefined});
       assert.strictEqual(clayItem.appKey, null);
     });
   });
 
   describe('.config', function() {
     it('sets appKey correctly', function() {
-      var config = configItemFixture('input');
+      var config = fixture.configItem('input');
       var clayItem = new ClayItem(config);
       assert.strictEqual(clayItem.appKey, config.appKey);
     });
@@ -77,7 +76,7 @@ describe('ClayItem', function() {
 
   describe('.$element', function() {
     it('sets $element correctly', function() {
-      var clayItem = clayItemFixture('input');
+      var clayItem = fixture.clayItem('input');
       assert.strictEqual(clayItem.$element[0].tagName, 'LABEL');
     });
   });
@@ -85,11 +84,11 @@ describe('ClayItem', function() {
   describe('.$manipulatorTarget', function() {
     it('sets the $manipulatorTarget to the root element if there are no children',
     function() {
-      var clayItem = clayItemFixture('footer');
+      var clayItem = fixture.clayItem('footer');
       assert.strictEqual(clayItem.$manipulatorTarget, clayItem.$element);
     });
     it('sets the $manipulatorTarget to the correct child element', function() {
-      var clayItem = clayItemFixture('input');
+      var clayItem = fixture.clayItem('input');
       assert.strictEqual(clayItem.$manipulatorTarget[0].tagName, 'INPUT');
     });
   });
@@ -97,19 +96,19 @@ describe('ClayItem', function() {
   describe('.initialize()', function() {
     it('calls component initializer  with the ClayItem as context', function() {
       var initializeSpy = sinon.spy(componentRegistry.select, 'initialize');
-      var clayItem = clayItemFixture('select').initialize();
+      var clayItem = fixture.clayItem('select').initialize();
       assert(initializeSpy.alwaysCalledOn(clayItem));
       assert(initializeSpy.alwaysCalledWith(minified));
       initializeSpy.restore();
     });
 
     it('returns itself for chaining', function() {
-      var clayItem = clayItemFixture('select');
+      var clayItem = fixture.clayItem('select');
       assert.strictEqual(clayItem.initialize(), clayItem);
     });
 
     it('does nothing if there is no initialize function', function() {
-      assert.doesNotThrow(clayItemFixture('input').initialize);
+      assert.doesNotThrow(fixture.clayItem('input').initialize);
     });
   });
 

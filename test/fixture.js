@@ -5,66 +5,72 @@ var $ = require('../src/scripts/vendor/minified').$;
 var HTML = require('../src/scripts/vendor/minified').HTML;
 var ClayItem = require('../src/scripts/lib/clay-item');
 var ClayConfig = require('../src/scripts/lib/clay-config');
+var components = require('../src/scripts/components');
+var componentRegistry = require('../src/scripts/lib/component-registry');
 var idCounter = 0;
-
-// add some components to the registry to test
-ClayConfig.registerComponent(require('../src/scripts/components/text'));
-ClayConfig.registerComponent(require('../src/scripts/components/input'));
-ClayConfig.registerComponent(require('../src/scripts/components/toggle'));
-ClayConfig.registerComponent(require('../src/scripts/components/footer'));
-ClayConfig.registerComponent(require('../src/scripts/components/select'));
 
 /**
  * @param {string|{}} config
- * @returns {{}}
+ * @param {boolean} [autoRegister=true]
+ * @returns {Clay~ConfigItem}
  */
-module.exports.configItem = function(config) {
+module.exports.configItem = function(config, autoRegister) {
   if (typeof config === 'string') {
     config = { type: config };
   }
 
-  var basic = {
+  var result = _.extend({}, {
     label: config.type + '-label',
     appKey: 'appKey-' + idCounter,
     id: 'id-' + idCounter
-  };
+  }, config);
 
   idCounter++;
 
-  return _.extend({}, basic, config);
+  if (autoRegister !== false &&
+      !componentRegistry[result.type] &&
+      result.type !== 'section') {
+    ClayConfig.registerComponent(components[result.type]);
+  }
+
+  return result;
 };
 
 /**
- * @param {string|{}} [config]
+ * @param {string|{}} config
+ * @param {boolean} [autoRegister=true]
  * @returns {ClayItem}
  */
-module.exports.clayItem = function(config) {
-  return new ClayItem(module.exports.configItem(config));
+module.exports.clayItem = function(config, autoRegister) {
+  return new ClayItem(module.exports.configItem(config, autoRegister));
 };
 
 /**
  * @param {[]} types
+ * @param {boolean} [autoRegister=true]
  * @returns {*}
  */
-module.exports.config = function(types) {
+module.exports.config = function(types, autoRegister) {
   return types.map(function(item) {
     return Array.isArray(item) ?
-      {type: 'section', items: module.exports.config(item)} :
-      module.exports.configItem(item);
+      {type: 'section', items: module.exports.config(item, autoRegister)} :
+      module.exports.configItem(item, autoRegister);
   });
 };
 
 /**
  * @param {[]} types
- * @param {boolean} [noBuild=false] - don't run the build method on the result
+ * @param {boolean} [build=true] - run the build method on the result
+ * @param {boolean} [autoRegister=true]
  * @param {{}} [settings] - settings to pass to constructor
  * @returns {ClayConfig}
  */
-module.exports.clayConfig = function(types, noBuild, settings) {
+module.exports.clayConfig = function(types, build, autoRegister, settings) {
   var clayConfig = new ClayConfig(
     settings || {},
-    module.exports.config(types), $(HTML('<div>'))
+    module.exports.config(types, autoRegister),
+    $(HTML('<div>'))
   );
-  return noBuild ? clayConfig : clayConfig.build();
+  return build === false ? clayConfig : clayConfig.build();
 };
 

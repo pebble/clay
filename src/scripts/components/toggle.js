@@ -6,6 +6,7 @@ module.exports = {
   style: require('../../styles/clay/components/toggle.scss'),
   manipulator: 'checked',
   defaults: {
+    label: '',
     attributes: {}
   }
 };

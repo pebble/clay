@@ -12,6 +12,7 @@ var returnTo = window.returnTo || 'pebblejs://close#';
 var customFn = window.customFn || function() {};
 var clayComponents = window.clayComponents || {};
 
+// Register the passed components
 _.eachObj(clayComponents, function(key, component) {
   ClayConfig.registerComponent(component);
 });
@@ -19,18 +20,11 @@ _.eachObj(clayComponents, function(key, component) {
 var $mainForm = $('#main-form');
 var clayConfig = new ClayConfig(settings, config, $mainForm);
 
-/* istanbul ignore next */ // @todo reassess how to do form submission
-clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
-  var self = this;
-
-  // add listeners here
-  $mainForm.on('submit', function(event) {
-    // Set the return URL depending on the runtime environment
-    location.href =
-      returnTo + encodeURIComponent(JSON.stringify(self.getSettings()));
-    event.preventDefault();
-    return false;
-  });
+// add listeners here
+$mainForm.on('submit', function() {
+  // Set the return URL depending on the runtime environment
+  location.href = returnTo +
+                  encodeURIComponent(JSON.stringify(clayConfig.getSettings()));
 });
 
 // Run the custom function in the context of the ClayConfig
