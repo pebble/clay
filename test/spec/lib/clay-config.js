@@ -87,7 +87,7 @@ describe('ClayConfig', function() {
     it('returns the correct settings', function() {
       var clayConfig = fixtures.clayConfig(
         [
-          {type: 'input', appKey: 'test1', value: 'not this'},
+          {type: 'input', appKey: 'test1', defaultValue: 'default val'},
           {type: 'select', appKey: 'test2', options: [
             {label: 'label-1', value: 'val-1'},
             {label: 'label-2', value: 'val-2'}
@@ -97,11 +97,17 @@ describe('ClayConfig', function() {
         true,
         true,
         {
-          test1: 'val-1' // set one of the values via settings
+          test2: 'val-2' // set one of the values via settings
         }
       );
 
-      clayConfig.getItemByAppKey('test2').set('val-2');
+      assert.deepEqual(clayConfig.getSettings(), {
+        test1: 'default val',
+        test2: 'val-2',
+        test3: false
+      });
+
+      clayConfig.getItemByAppKey('test1').set('val-1');
       clayConfig.getItemByAppKey('test3').set(true);
 
       assert.deepEqual(clayConfig.getSettings(), {

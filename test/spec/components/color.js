@@ -18,7 +18,7 @@ describe('component - color', function() {
         type: 'color',
         sunlight: true,
         id: '1',
-        value: 'ff0000'
+        defaultValue: 'ff0000'
       }
     ]);
     var colorItem = clayConfig.getItemById('1');
@@ -41,7 +41,7 @@ describe('component - color', function() {
         type: 'color',
         sunlight: false,
         id: '1',
-        value: 'ff0000'
+        defaultValue: 'ff0000'
       }
     ]);
     var colorItem = clayConfig.getItemById('1');

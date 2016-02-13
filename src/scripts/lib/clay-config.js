@@ -4,7 +4,7 @@
  * A Clay config Item
  * @typedef {object} Clay~ConfigItem
  * @property {string} type
- * @property {string|boolean|number} value
+ * @property {string|boolean|number} defaultValue
  * @property {string} [appKey]
  * @property {string} [id]
  * @property {string} [label]
@@ -68,7 +68,7 @@ function ClayConfig(settings, config, $rootContainer) {
       // set the value of the item via the manipulator to ensure consistency
       var value = typeof _settings[item.appKey] !== 'undefined' ?
         _settings[item.appKey] :
-        (item.value || '');
+        (item.defaultValue || '');
 
       clayItem.set(value);
 

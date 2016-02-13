@@ -5,12 +5,12 @@ module.exports = [
   {
     "type": "heading",
     "id": "main-heading",
-    "value": "Clay Test Page",
+    "defaultValue": "Clay Test Page",
     "size": 1
   },
   {
     "type": "text",
-    "value": "Some arbitrary text explaining how this all works. " +
+    "defaultValue": "Some arbitrary text explaining how this all works. " +
              "It's cool if this wraps across multiple lines"
   },
   {
@@ -18,12 +18,12 @@ module.exports = [
     "items": [
       {
         "type": "heading",
-        "value": "This is a section"
+        "defaultValue": "This is a section"
       },
       {
         "type": "input",
         "appKey": "email",
-        "value": "",
+        "defaultValue": "",
         "label": "Email",
         "attributes": {
           "placeholder": "eg: name@domain.com",
@@ -36,19 +36,19 @@ module.exports = [
         "type": "toggle",
         "appKey": "cool_stuff",
         "label": "Enable Cool Stuff",
-        "value": true
+        "defaultValue": true
       },
       {
         "type": "color",
-        "appKey": "background",
-        "value": "FF0000",
+        "appKey": "colorTest",
+        "defaultValue": "FF0000",
         "label": "Background Color",
         "sunlight": false
       },
       {
         "type": "color",
         "appKey": "background",
-        "value": "00FF00",
+        "defaultValue": "00FF00",
         "label": "Sunny Color",
         "sunlight": true
       }
@@ -59,13 +59,13 @@ module.exports = [
     "items": [
       {
         "type": "heading",
-        "value": "More Settings"
+        "defaultValue": "More Settings"
       },
       {
         "id": "flavor",
         "type": "select",
         "appKey": "flavor",
-        "value": "grape",
+        "defaultValue": "grape",
         "label": "Favorite Flavor",
         "options": [
           { "label": "Berry things", "value": "berry" },
