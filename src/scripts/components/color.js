@@ -4,26 +4,109 @@ module.exports = {
   name: 'color',
   template: require('../../templates/components/color.tpl'),
   style: require('../../styles/clay/components/color.scss'),
-  manipulator: 'val',
+  manipulator: 'color',
   defaults: {
     label: ''
   },
   initialize: function(minified) {
     var HTML = minified.HTML;
     var self = this;
+    var useSunlight = self.config.sunlight !== false;
+    var sunlightColorMap = {
+      '000000': '000000',
+      '000055': '001e41',
+      '0000aa': '004387',
+      '0000ff': '0068ca',
+      '005500': '2b4a2c',
+      '005555': '27514f',
+      '0055aa': '16638d',
+      '0055ff': '007dce',
+      '00aa00': '5e9860',
+      '00aa55': '5c9b72',
+      '00aaaa': '57a5a2',
+      '00aaff': '4cb4db',
+      '00ff00': '8ee391',
+      '00ff55': '8ee69e',
+      '00ffaa': '8aebc0',
+      '00ffff': '84f5f1',
+      '550000': '4a161b',
+      '550055': '482748',
+      '5500aa': '40488a',
+      '5500ff': '2f6bcc',
+      '555500': '564e36',
+      '555555': '545454',
+      '5555aa': '4f6790',
+      '5555ff': '4180d0',
+      '55aa00': '759a64',
+      '55aa55': '759d76',
+      '55aaaa': '71a6a4',
+      '55aaff': '69b5dd',
+      '55ff00': '9ee594',
+      '55ff55': '9de7a0',
+      '55ffaa': '9becc2',
+      '55ffff': '95f6f2',
+      'aa0000': '99353f',
+      'aa0055': '983e5a',
+      'aa00aa': '955694',
+      'aa00ff': '8f74d2',
+      'aa5500': '9d5b4d',
+      'aa5555': '9d6064',
+      'aa55aa': '9a7099',
+      'aa55ff': '9587d5',
+      'aaaa00': 'afa072',
+      'aaaa55': 'aea382',
+      'aaaaaa': 'ababab',
+      'ffffff': 'ffffff',
+      'aaaaff': 'a7bae2',
+      'aaff00': 'c9e89d',
+      'aaff55': 'c9eaa7',
+      'aaffaa': 'c7f0c8',
+      'aaffff': 'c3f9f7',
+      'ff0000': 'e35462',
+      'ff0055': 'e25874',
+      'ff00aa': 'e16aa3',
+      'ff00ff': 'de83dc',
+      'ff5500': 'e66e6b',
+      'ff5555': 'e6727c',
+      'ff55aa': 'e37fa7',
+      'ff55ff': 'e194df',
+      'ffaa00': 'f1aa86',
+      'ffaa55': 'f1ad93',
+      'ffaaaa': 'efb5b8',
+      'ffaaff': 'ecc3eb',
+      'ffff00': 'ffeeab',
+      'ffff55': 'fff1b5',
+      'ffffaa': 'fff6d3'
+    };
+
+    /**
+     * @param {string|boolean|number} color
+     * @returns {string}
+     */
+    function cssColor(color) {
+      if (color === false) { return 'transparent'; }
+      if (typeof color === 'number') {
+        color = color.toString(16);
+      }
+      while (color.length < 6) {
+        color = '0' + color;
+      }
+
+      return '#' + (useSunlight ? sunlightColorMap[color] : color);
+    }
 
     /* eslint-disable  comma-spacing, no-multi-spaces, max-len,
         standard/array-bracket-even-spacing */
     var layout = self.config.layout || [
-      [false    , false    , '#55FF00', '#AAFF55', false    , '#FFFF55', '#FFFFAA', false    , false    ],
-      [false    , '#AAFFAA', '#55FF55', '#00FF00', '#AAFF00', '#FFFF00', '#FFAA55', '#FFAAAA', false    ],
-      ['#55FFAA', '#00FF55', '#00AA00', '#55AA00', '#AAAA55', '#AAAA00', '#FFAA00', '#FF5500', '#FF5555'],
-      ['#AAFFFF', '#00FFAA', '#00AA55', '#55AA55', '#005500', '#555500', '#AA5500', '#FF0000', '#FF0055'],
-      [false    , '#55AAAA', '#00AAAA', '#005555', '#FFFFFF', '#000000', '#AA5555', '#AA0000', false    ],
-      ['#55FFFF', '#00FFFF', '#00AAFF', '#0055AA', '#AAAAAA', '#555555', '#550000', '#AA0055', '#FF55AA'],
-      ['#55AAFF', '#0055FF', '#0000FF', '#0000AA', '#000055', '#550055', '#AA00AA', '#FF00AA', '#FFAAFF'],
-      [false    , '#5555AA', '#5555FF', '#5500FF', '#5500AA', '#AA00FF', '#FF00FF', '#FF55FF', false    ],
-      [false    , false    , false    , '#AAAAFF', '#AA55FF', '#AA55AA', false    , false    , false    ]
+      [false   , false   , '55ff00', 'aaff55', false   , 'ffff55', 'ffffaa', false   , false   ],
+      [false   , 'aaffaa', '55ff55', '00ff00', 'aaff00', 'ffff00', 'ffaa55', 'ffaaaa', false   ],
+      ['55ffaa', '00ff55', '00aa00', '55aa00', 'aaaa55', 'aaaa00', 'ffaa00', 'ff5500', 'ff5555'],
+      ['aaffff', '00ffaa', '00aa55', '55aa55', '005500', '555500', 'aa5500', 'ff0000', 'ff0055'],
+      [false   , '55aaaa', '00aaaa', '005555', 'ffffff', '000000', 'aa5555', 'aa0000', false   ],
+      ['55ffff', '00ffff', '00aaff', '0055aa', 'aaaaaa', '555555', '550000', 'aa0055', 'ff55aa'],
+      ['55aaff', '0055ff', '0000ff', '0000aa', '000055', '550055', 'aa00aa', 'ff00aa', 'ffaaff'],
+      [false   , '5555aa', '5555ff', '5500ff', '5500aa', 'aa00ff', 'ff00ff', 'ff55ff', false   ],
+      [false   , false   , false   , 'aaaaff', 'aa55ff', 'aa55aa', false   , false   , false   ]
     ];
     /* eslint-enable */
 
@@ -35,8 +118,8 @@ module.exports = {
     for (var i = 0; i < layout.length; i++) {
       for (var j = 0; j < layout[i].length; j++) {
 
-        var color = layout[i][j] || 'transparent';
-        var selectable = (color !== 'transparent' ? ' selectable' : '');
+        var color = layout[i][j];
+        var selectable = (color ? ' selectable' : '');
 
         var roundedTL = (i === 0 && j === 0) || i === 0 && !layout[i][j - 1] ||
                         !layout[i][j - 1] && !layout[i - 1][j] ?
@@ -62,11 +145,11 @@ module.exports = {
         grid += '<i ' +
           'class="color-box ' + selectable + roundedTL + roundedTR + roundedBL +
               roundedBR + '" ' +
-          'data-value="' + color.replace(/^#/, '0x').toLowerCase() + '" ' +
+          'data-value="' + parseInt(color, 16) + '" ' +
           'style="' +
             'width:' + itemWidth + '%; ' +
             'height:' + itemHeight + '%; ' +
-            'background:' + color + ';">' +
+            'background:' + cssColor(color) + ';">' +
         '</i>';
       }
     }
@@ -84,14 +167,18 @@ module.exports = {
     });
 
     self.on('change', function() {
-      var value = self.get().replace(/^0x/, '').toLowerCase();
-      $valueDisplay.set('$background-color', '#' + value);
+      var value = self.get();
+      $valueDisplay.set('$background-color', cssColor(value));
       $elem.select('.color-box').set('-selected');
-      $elem.select('.color-box[data-value="0x' + value + '"]').set('+selected');
+      $elem.select('.color-box[data-value="' + value + '"]').set('+selected');
     });
 
     $elem.select('.color-box.selectable').on('click', function(ev) {
-      self.set(ev.target.dataset.value);
+      self.set(parseInt(ev.target.dataset.value, 10));
+      $picker.set('-show');
+    });
+
+    $picker.on('click', function() {
       $picker.set('-show');
     });
 

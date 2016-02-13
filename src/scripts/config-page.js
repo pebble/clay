@@ -12,6 +12,9 @@ var returnTo = window.returnTo || 'pebblejs://close#';
 var customFn = window.customFn || function() {};
 var clayComponents = window.clayComponents || {};
 
+var platform = window.navigator.userAgent.match(/Android/) ? 'android' : 'ios';
+document.documentElement.classList.add('platform-' + platform);
+
 // Register the passed components
 _.eachObj(clayComponents, function(key, component) {
   ClayConfig.registerComponent(component);

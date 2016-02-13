@@ -47,5 +47,21 @@ module.exports = {
     },
     disable: disable,
     enable: enable
+  },
+  color: {
+    get: function() {
+      return parseInt(this.$manipulatorTarget.get('value'), 16);
+    },
+    set: function(value) {
+      switch (typeof value) {
+        case 'number': value = value.toString(16); break;
+        case 'string': value = value.replace(/^#|^0x/, ''); break;
+      }
+
+      this.$manipulatorTarget.set('value', value || '000000');
+      return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable
   }
 };

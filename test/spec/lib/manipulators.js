@@ -9,17 +9,21 @@ describe('manipulators', function() {
   /**
    * @param {string} itemType
    * @param {*} value
+   * @param {*} expected
    * @return {void}
    */
-  function testSetGet(itemType, value) {
+  function testSetGet(itemType, value, expected) {
+    expected = typeof expected === 'undefined' ? value : expected;
+
     describe('.set() and .get()', function() {
-      it('sets and gets the value then triggers a "change" event', function() {
+      it('sets: "' + value + '" and gets: "' + expected + '" then triggers "change"',
+      function() {
         var handlerSpy = sinon.spy();
         var clayItem = fixture.clayItem(itemType);
         clayItem.on('change', handlerSpy);
 
         clayItem.set(value);
-        assert.strictEqual(clayItem.get(), value);
+        assert.strictEqual(clayItem.get(), expected);
         assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
         assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');
       });
@@ -79,5 +83,18 @@ describe('manipulators', function() {
     testSetGet('toggle', false);
     testDisable('toggle');
     testEnable('toggle');
+  });
+
+  describe('color', function() {
+    testSetGet('color', 'FF0000', 0xff0000);
+    testSetGet('color', '#FF0000', 0xff0000);
+    testSetGet('color', '0xFF0000', 0xff0000);
+    testSetGet('color', '#ff0000', 0xff0000);
+    testSetGet('color', 0xff0000, 0xff0000);
+    testSetGet('color', '', 0x000000);
+    testSetGet('color', false, 0x000000);
+    testSetGet('color', undefined, 0x000000);
+    testDisable('color');
+    testEnable('color');
   });
 });

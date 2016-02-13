@@ -1,15 +1,15 @@
 {
   "extends": "pebble",
-  "env" : {
+  "env": {
     "node": true,
     "browser": true
   },
   "globals": {
     "Pebble": true
   },
-  "rules" : {
+  "rules": {
     "new-cap": [0],
-    "max-params": [1],
+    "max-params": [2, 4],
     "require-jsdoc": [2, {
       "require": {
         "FunctionDeclaration": true,
