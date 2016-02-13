@@ -1,4 +1,3 @@
-# pebble-clay
-Pebble Config Framework
+# Clay
+Clay is a JavaScript library that makes it super easy to add offline configuration pages to your Pebble apps. All you need to get started is a couple lines of JavaScript and a JSON file, no servers or HTML required.
 
-__This is very much a work in progress but you are welcome to provide any feedback/feature requests you'd like via github issues__

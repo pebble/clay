@@ -15,8 +15,8 @@ var componentSchema = Joi.object().keys({
   manipulator: Joi.alternatives().try(
     Joi.string().valid(Object.keys(manipulators)),
     Joi.object().keys({
-      get: Joi.func().arity(0).required(),
-      set: Joi.func().arity(1).required()
+      get: Joi.func().required(),
+      set: Joi.func().required()
     }).required().unknown(true)
   ),
   defaults: Joi.object().optional(),
