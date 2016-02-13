@@ -9,7 +9,7 @@ describe('manipulators', function() {
   /**
    * @param {string} itemType
    * @param {*} value
-   * @param {*} expected
+   * @param {*} [expected]
    * @return {void}
    */
   function testSetGet(itemType, value, expected) {
