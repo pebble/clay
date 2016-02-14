@@ -9,5 +9,6 @@ module.exports = {
   submit: require('./submit'),
   text: require('./text'),
   toggle: require('./toggle'),
-  radio: require('./radio')
+  radiogroup: require('./radiogroup'),
+  checkboxgroup: require('./checkboxgroup')
 };

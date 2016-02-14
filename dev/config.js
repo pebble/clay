@@ -62,12 +62,25 @@ module.exports = [
         "defaultValue": "More Settings"
       },
       {
-        "type": "radio",
-        "appKey": "radio-test",
+        "type": "radiogroup",
+        "appKey": "radiogroup-test",
         "defaultValue": "quote' \"test",
         "label": "Radio test",
         "options": [
           { "label": "Test thing one", "value": "one" },
+          { "label": "Another thing", "value": "two" },
+          { "label": "One really long thing that would not fit", "value": "three" },
+          { "label": "Small", "value": "quote' \"test" },
+          { "label": "Final thing", "value": "three" }
+        ]
+      },
+      {
+        "type": "checkboxgroup",
+        "appKey": "checkboxgroup-test",
+        "defaultValue": ["quote' \"test", "two"],
+        "label": "Checkbox test",
+        "options": [
+          { "label": "Test <strong>thing</strong> one", "value": "one" },
           { "label": "Another thing", "value": "two" },
           { "label": "One really long thing that would not fit", "value": "three" },
           { "label": "Small", "value": "quote' \"test" },

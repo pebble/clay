@@ -23,7 +23,7 @@ describe('manipulators', function() {
         clayItem.on('change', handlerSpy);
 
         clayItem.set(value);
-        assert.strictEqual(clayItem.get(), expected);
+        assert.deepEqual(clayItem.get(), expected);
         assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
         assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');
       });
@@ -85,9 +85,9 @@ describe('manipulators', function() {
     testEnable('toggle');
   });
 
-  describe('radio', function() {
+  describe('radiogroup', function() {
     var item = {
-      type: 'radio',
+      type: 'radiogroup',
       clayId: 1,
       options: [
         { label: '1', value: 'one' },
@@ -98,6 +98,24 @@ describe('manipulators', function() {
     testSetGet(item, 'one');
     testSetGet(item, 'two');
     testSetGet(item, 'three "quote');
+    testDisable(item);
+    testEnable(item);
+  });
+
+  describe('checkboxgroup', function() {
+    var item = {
+      type: 'checkboxgroup',
+      clayId: 1,
+      options: [
+        { label: '1', value: 'one' },
+        { label: '2', value: 'two' },
+        { label: '3', value: 'three "quote' }
+      ]
+    };
+    testSetGet(item, ['one', 'two']);
+    testSetGet(item, ['three "quote']);
+    testSetGet(item, []);
+    testSetGet(item, false, []);
     testDisable(item);
     testEnable(item);
   });

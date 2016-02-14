@@ -48,7 +48,7 @@ module.exports = {
     disable: disable,
     enable: enable
   },
-  radio: {
+  radiogroup: {
     get: function() {
       return this.$element.select('input:checked').get('value');
     },
@@ -57,6 +57,28 @@ module.exports = {
         .select('input[value="' + value.replace('"', '\\"') + '"]')
         .set('checked', true);
       return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable
+  },
+  checkboxgroup: {
+    get: function() {
+      var result = [];
+      this.$element.select('input:checked').each(function(item) {
+        result.push(item.value);
+      });
+      return result;
+    },
+    set: function(values) {
+      var self = this;
+      self.$element.select('input').set('checked', false);
+      values = values || [];
+      values.map(function(value) {
+        self.$element
+          .select('input[value="' + value.replace('"', '\\"') + '"]')
+          .set('checked', true);
+      });
+      return self.trigger('change');
     },
     disable: disable,
     enable: enable
