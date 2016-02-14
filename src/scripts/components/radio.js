@@ -7,6 +7,6 @@ module.exports = {
   manipulator: 'radio',
   defaults: {
     label: '',
-    options: [],
+    options: []
   }
 };
