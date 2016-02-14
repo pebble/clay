@@ -1,5 +1,5 @@
-<div class="component-color">
-  <label class="component">
+<div class="component component-color">
+  <label>
     <input
       data-manipulator-target
       type="hidden"

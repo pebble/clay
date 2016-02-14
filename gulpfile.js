@@ -104,5 +104,5 @@ gulp.task('default', ['clay']);
 gulp.task('dev', ['dev-js'], function() {
   gulp.watch('src/styles/**/*.scss', ['sass']);
   gulp.watch(['src/scripts/**/*.js', 'src/templates/**/*.tpl'], ['js']);
-  gulp.watch(['src/scripts/**/*.js', 'dev/**/*.js'], ['dev-js']);
+  gulp.watch(['src/**', 'dev/**/*.js'], ['dev-js']);
 });
