@@ -42,7 +42,11 @@ describe('ClayConfig', function() {
 
   describe('.getAllItems()', function() {
     it('returns an array of all the items', function() {
-      var config = fixtures.config(['input', 'text', ['input']]);
+      var config = fixtures.config([
+        {type: 'input', clayId: 0},
+        {type: 'text', clayId: 1},
+        [{type: 'input', clayId: 2}]
+      ]);
       var clayConfig = fixtures.clayConfig(config);
       var allItems = clayConfig.getAllItems();
       assert.strictEqual(allItems.length, 3);
@@ -55,8 +59,8 @@ describe('ClayConfig', function() {
   describe('.getItemByAppKey()', function() {
     it('it returns the correct item', function() {
       var config = fixtures.config([
-        {type: 'input', appKey: 'test-app-key'},
-        {type: 'input', appKey: undefined}
+        {type: 'input', appKey: 'test-app-key', clayId: 0},
+        {type: 'input', appKey: undefined, clayId: 1}
       ]);
       var clayConfig = fixtures.clayConfig(config);
       assert.deepEqual(clayConfig.getItemByAppKey('test-app-key').config, config[0]);
@@ -66,8 +70,8 @@ describe('ClayConfig', function() {
   describe('.getItemById()', function() {
     it('it returns the correct item', function() {
       var config = fixtures.config([
-        {type: 'input', id: 'test-id'},
-        {type: 'input', id: undefined}
+        {type: 'input', id: 'test-id', clayId: 0},
+        {type: 'input', id: undefined, clayId: 1}
       ]);
       var clayConfig = fixtures.clayConfig(config);
       assert.deepEqual(clayConfig.getItemById('test-id').config, config[0]);
@@ -76,7 +80,11 @@ describe('ClayConfig', function() {
 
   describe('.getItemsByType()', function() {
     it('it returns the correct items', function() {
-      var config = fixtures.config(['input', 'text', 'input']);
+      var config = fixtures.config([
+        {type: 'input', clayId: 0},
+        {type: 'text', clayId: 1},
+        {type: 'input', clayId: 2}
+      ]);
       var clayConfig = fixtures.clayConfig(config);
       assert.deepEqual(clayConfig.getItemsByType('input')[0].config, config[0]);
       assert.deepEqual(clayConfig.getItemsByType('input')[1].config, config[2]);

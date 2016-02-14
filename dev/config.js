@@ -36,7 +36,7 @@ module.exports = [
         "type": "toggle",
         "appKey": "cool_stuff",
         "label": "Enable Cool Stuff",
-        "defaultValue": true
+        "defaultValue": false
       },
       {
         "type": "color",
@@ -62,13 +62,34 @@ module.exports = [
         "defaultValue": "More Settings"
       },
       {
-        "id": "flavor",
+        "type": "radio",
+        "appKey": "radio-test",
+        "defaultValue": "quote' \"test",
+        "label": "Radio test",
+        "options": [
+          { "label": "Test thing one", "value": "one" },
+          { "label": "Another thing", "value": "two" },
+          { "label": "One really long thing that would not fit", "value": "three" },
+          { "label": "Small", "value": "quote' \"test" },
+          { "label": "Final thing", "value": "three" }
+        ]
+      },
+      {
+        "type": "input",
+        "appKey": "date",
+        "defaultValue": "",
+        "label": "Date",
+        "attributes": {
+          type: "date"
+        }
+      },
+      {
         "type": "select",
         "appKey": "flavor",
         "defaultValue": "grape",
         "label": "Favorite Flavor",
         "options": [
-          { "label": "Berry things", "value": "berry" },
+          { "label": "Berry", "value": "berry" },
           { "label": "Grape", "value": "grape" },
           { "label": "Banana", "value": "banana" }
         ]

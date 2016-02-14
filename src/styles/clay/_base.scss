@@ -50,11 +50,10 @@ h6 {
   @include font-size(0.8);
 }
 
-.component {
+label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: $item-spacing-v;
 
   .input {
     white-space: nowrap;
@@ -84,6 +83,10 @@ h6 {
   }
 }
 
+.component {
+  padding-bottom: $item-spacing-v;
+  @include tap-highlight();
+}
 
 .section {
   background: $color-gray-4;
@@ -124,14 +127,6 @@ h6 {
     border-radius: $border-radius $border-radius 0 0;
   }
 
-}
-
-label.component{
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
 }
 
 strong {

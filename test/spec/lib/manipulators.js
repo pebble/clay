@@ -7,7 +7,7 @@ var fixture = require('../../fixture');
 describe('manipulators', function() {
 
   /**
-   * @param {string} itemType
+   * @param {string|Clay~ConfigItem} itemType
    * @param {*} value
    * @param {*} [expected]
    * @return {void}
@@ -31,7 +31,7 @@ describe('manipulators', function() {
   }
 
   /**
-   * @param {string} itemType
+   * @param {string|Clay~ConfigItem} itemType
    * @return {void}
    */
   function testDisable(itemType) {
@@ -83,6 +83,23 @@ describe('manipulators', function() {
     testSetGet('toggle', false);
     testDisable('toggle');
     testEnable('toggle');
+  });
+
+  describe('radio', function() {
+    var item = {
+      type: 'radio',
+      clayId: 1,
+      options: [
+        { label: '1', value: 'one' },
+        { label: '2', value: 'two' },
+        { label: '3', value: 'three "quote' }
+      ]
+    };
+    testSetGet(item, 'one');
+    testSetGet(item, 'two');
+    testSetGet(item, 'three "quote');
+    testDisable(item);
+    testEnable(item);
   });
 
   describe('color', function() {

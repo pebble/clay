@@ -48,6 +48,19 @@ module.exports = {
     disable: disable,
     enable: enable
   },
+  radio: {
+    get: function() {
+      return this.$element.select('input:checked').get('value');
+    },
+    set: function(value) {
+      this.$element
+        .select('input[value="' + value.replace('"', '\\"') + '"]')
+        .set('checked', true);
+      return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable
+  },
   color: {
     get: function() {
       return parseInt(this.$manipulatorTarget.get('value'), 16);

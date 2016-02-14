@@ -8,5 +8,6 @@ module.exports = {
   select: require('./select'),
   submit: require('./submit'),
   text: require('./text'),
-  toggle: require('./toggle')
+  toggle: require('./toggle'),
+  radio: require('./radio')
 };
