@@ -56,7 +56,7 @@ function ClayConfig(settings, config, $rootContainer) {
       var _item = _.copyObj(item);
       _item.clayId = _items.length;
 
-      var clayItem = new ClayItem(_item).initialize();
+      var clayItem = new ClayItem(_item).initialize(self);
 
       if (_item.id) {
         _itemsById[_item.id] = clayItem;

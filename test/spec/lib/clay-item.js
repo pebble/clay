@@ -96,9 +96,9 @@ describe('ClayItem', function() {
   describe('.initialize()', function() {
     it('calls component initializer  with the ClayItem as context', function() {
       var initializeSpy = sinon.spy(componentRegistry.select, 'initialize');
-      var clayItem = fixture.clayItem('select').initialize();
-      assert(initializeSpy.alwaysCalledOn(clayItem));
-      assert(initializeSpy.alwaysCalledWith(minified));
+      var clayConfig = fixture.clayConfig(['select']);
+      assert(initializeSpy.alwaysCalledOn(clayConfig.getItemsByType('select')[0]));
+      assert(initializeSpy.alwaysCalledWith(minified, clayConfig));
       initializeSpy.restore();
     });
 

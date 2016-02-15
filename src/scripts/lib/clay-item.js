@@ -48,11 +48,12 @@ function ClayItem(config) {
   /**
    * Run the initializer if it exists and attaches the css to the head.
    * Passes minified as the first param
+   * @param {ClayConfig} clay
    * @returns {ClayItem}
    */
-  self.initialize = function() {
+  self.initialize = function(clay) {
     if (typeof _component.initialize === 'function') {
-      _component.initialize.call(self, minified);
+      _component.initialize.call(self, minified, clay);
     }
     return self;
   };
