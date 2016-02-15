@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var stringify = require('stringify');
 var del = require('del');
 var inline = require('gulp-inline');
@@ -10,6 +11,7 @@ var htmlmin = require('gulp-htmlmin');
 var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
+var uglify = require('gulp-uglify');
 var sassify = require('sassify');
 var autoprefixify = require('./src/scripts/vendor/autoprefixify');
 
@@ -86,6 +88,8 @@ gulp.task('clay', ['inlineHtml'], function() {
     .require(require.resolve('./index'), {expose: 'pebble-clay'})
     .bundle()
     .pipe(source('clay.js'))
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest('./dist/'));
 });
 

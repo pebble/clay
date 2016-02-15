@@ -45,6 +45,7 @@
     "gulp-inline": "0.0.15",
     "gulp-sass": "^2.1.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.2",
     "joi": "^6.10.1",
     "karma": "^0.13.19",
     "karma-browserify": "^5.0.1",
@@ -62,6 +63,7 @@
     "stringify": "^3.2.0",
     "through": "^2.3.8",
     "tosource": "^1.0.0",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
