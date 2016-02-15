@@ -40,8 +40,15 @@ describe('manipulators', function() {
         var handlerSpy = sinon.spy();
         var clayItem = fixture.clayItem(itemType);
         clayItem.on('disabled', handlerSpy);
-
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('disabled'),
+          false
+        );
         clayItem.disable();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('disabled'),
+          true
+        );
         assert.strictEqual(clayItem.$manipulatorTarget.get('disabled'), true);
         assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
         assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');
@@ -54,13 +61,22 @@ describe('manipulators', function() {
    * @return {void}
    */
   function testEnable(itemType) {
-    describe('.disable()', function() {
-      it('disables the field then triggers an "enabled" event', function() {
+    describe('.enable()', function() {
+      it('enables the field then triggers an "enabled" event', function() {
         var handlerSpy = sinon.spy();
         var clayItem = fixture.clayItem(itemType);
         clayItem.on('enabled', handlerSpy);
 
+        clayItem.disable();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('disabled'),
+          true
+        );
         clayItem.enable();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('disabled'),
+          false
+        );
         assert.strictEqual(clayItem.$manipulatorTarget.get('disabled'), false);
         assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
         assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');

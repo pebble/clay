@@ -86,6 +86,11 @@ label {
 .component {
   padding-bottom: $item-spacing-v;
   @include tap-highlight();
+
+  &.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
 }
 
 .section {

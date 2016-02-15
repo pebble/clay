@@ -4,6 +4,7 @@
  * @returns {ClayEvents}
  */
 function disable() {
+  this.$element.set('+disabled');
   this.$manipulatorTarget.set('disabled', true);
   return this.trigger('disabled');
 }
@@ -12,6 +13,7 @@ function disable() {
  * @returns {ClayEvents}
  */
 function enable() {
+  this.$element.set('-disabled');
   this.$manipulatorTarget.set('disabled', false);
   return this.trigger('enabled');
 }
