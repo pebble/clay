@@ -3,8 +3,5 @@
 module.exports = {
   name: 'text',
   template: require('../../templates/components/text.tpl'),
-  manipulator: 'html',
-  defaults: {
-    attributes: {}
-  }
+  manipulator: 'html'
 };

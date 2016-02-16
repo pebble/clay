@@ -3,7 +3,5 @@
     data-manipulator-target
     type="submit"
     {{each key: attributes}}{{key}}="{{this}}"{{/each}}
-  >
-    {{{label}}}
-  </button>
+  ></button>
 </div>

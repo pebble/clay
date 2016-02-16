@@ -7,6 +7,7 @@ module.exports = {
   manipulator: 'radiogroup',
   defaults: {
     label: '',
-    options: []
+    options: [],
+    attributes: {}
   }
 };

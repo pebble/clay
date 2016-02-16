@@ -43,9 +43,6 @@ module.exports = function (file, options) {
   }
 
   if (typeof file !== 'string') {
-    // Factory: return a function.
-    // Set options variable here so it is ready for when browserifyTransform
-    // is called. Note: first argument is the options.
     options = file;
     return browserifyTransform;
   } else {

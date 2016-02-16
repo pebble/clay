@@ -7,6 +7,7 @@ module.exports = {
   manipulator: 'checkboxgroup',
   defaults: {
     label: '',
-    options: []
+    options: [],
+    attributes: {}
   }
 };

@@ -113,7 +113,7 @@ function ClayConfig(settings, config, $rootContainer) {
   utils.updateProperties(self.EVENTS, {writable: false});
 
   /**
-   * @returns {ClayItem}
+   * @returns {Array.<ClayItem>}
    */
   self.getAllItems = function() {
     _checkBuilt('getAllItems');
@@ -121,21 +121,21 @@ function ClayConfig(settings, config, $rootContainer) {
   };
 
   /**
-   * @param {string} key
+   * @param {string} appKey
    * @returns {ClayItem}
    */
-  self.getItemByAppKey = function(key) {
+  self.getItemByAppKey = function(appKey) {
     _checkBuilt('getItemByAppKey');
-    return _itemsByAppKey[key];
+    return _itemsByAppKey[appKey];
   };
 
   /**
-   * @param {string} key
+   * @param {string} id
    * @returns {ClayItem}
    */
-  self.getItemById = function(key) {
+  self.getItemById = function(id) {
     _checkBuilt('getItemById');
-    return _itemsById[key];
+    return _itemsById[id];
   };
 
   /**
@@ -181,6 +181,9 @@ function ClayConfig(settings, config, $rootContainer) {
   // prevent external modifications of properties
   utils.updateProperties(self, { writable: false, configurable: false });
 
+  // expose the config to allow developers to update it before the build is run
+  self.config = config;
+
 }
 
 /**
@@ -191,7 +194,7 @@ function ClayConfig(settings, config, $rootContainer) {
  * @param {string|{}} component.manipulator - methods to attach to the component
  * @param {function} component.manipulator.set - set manipulator method
  * @param {function} component.manipulator.get - get manipulator method
- * @param {{}} component.defaults - template defaults
+ * @param {{}} [component.defaults] - template defaults
  * @param {function} [component.initialize] - method to scaffold the component
  * @return {boolean} - Returns true if component was registered correctly
  */

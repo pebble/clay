@@ -3,9 +3,8 @@
 module.exports = {
   name: 'submit',
   template: require('../../templates/components/submit.tpl'),
-  manipulator: 'val',
+  manipulator: 'html',
   defaults: {
-    label: '',
     attributes: {}
   }
 };

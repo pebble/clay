@@ -1,5 +1,1 @@
-<div
-  data-manipulator-target
-  class="item-container-footer"
-  {{each attributes}} {{this.key}}="{{this.value}}" {{/each}}
-></div>
+<footer data-manipulator-target class="component component-footer"></footer>

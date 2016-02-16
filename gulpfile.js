@@ -14,6 +14,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
 var sassify = require('sassify');
 var autoprefixify = require('./src/scripts/vendor/autoprefixify');
+var insert = require('gulp-insert');
 
 var sassIncludePaths = [].concat(
   require('bourbon').includePaths,
@@ -35,6 +36,9 @@ var autoprefixerOptions = {
 };
 
 var stringifyOptions = ['.html', '.tpl'];
+var versionMessage = '/* Clay - https://github.com/pebble/clay - Version: ' +
+                     require('./package.json').version +
+                     ' - Build Date: ' + new Date().toISOString() + ' */\n';
 
 gulp.task('clean-js', function() {
   return del(['tmp/config-page.js']);
@@ -90,6 +94,7 @@ gulp.task('clay', ['inlineHtml'], function() {
     .pipe(source('clay.js'))
     .pipe(buffer())
     .pipe(uglify())
+    .pipe(insert.prepend(versionMessage))
     .pipe(gulp.dest('./dist/'));
 });
 

@@ -23,7 +23,7 @@ function ClayItem(config) {
                     'Make sure to register it with ClayConfig.registerComponent()');
   }
 
-  var _templateData = _.extend({}, _component.defaults, config);
+  var _templateData = _.extend({}, _component.defaults || {}, config);
 
   /** @type {string|null} */
   self.id = config.id || null;

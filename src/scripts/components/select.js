@@ -7,7 +7,8 @@ module.exports = {
   manipulator: 'val',
   defaults: {
     label: '',
-    options: []
+    options: [],
+    attributes: {}
   },
   initialize: function() {
     var self = this;

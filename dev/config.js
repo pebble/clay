@@ -64,7 +64,6 @@ module.exports = [
       {
         "type": "radiogroup",
         "appKey": "radiogroup-test",
-        "defaultValue": "quote' \"test",
         "label": "Radio test",
         "options": [
           { "label": "Test thing one", "value": "one" },
@@ -91,9 +90,9 @@ module.exports = [
         "type": "input",
         "appKey": "date",
         "defaultValue": "",
-        "label": "Date",
+        "label": "Range",
         "attributes": {
-          type: "date"
+          type: "range"
         }
       },
       {
@@ -102,15 +101,19 @@ module.exports = [
         "defaultValue": "grape",
         "label": "Favorite Flavor",
         "options": [
+          { "label": "", "value": "" },
           { "label": "Berry", "value": "berry" },
           { "label": "Grape", "value": "grape" },
           { "label": "Banana", "value": "banana" }
-        ]
+        ],
+        "attributes": {
+          "required": "required"
+        }
       }
     ]
   },
   {
     "type": "submit",
-    "label": "Save"
+    "defaultValue": "Save"
   }
 ];
