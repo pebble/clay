@@ -115,10 +115,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
   "type": "heading",
   "id": "main-heading",
   "defaultValue": "My Cool Watchface",
-  "size": 1,
-  "attributes": {
-    ""
-  }
+  "size": 1
 }
 ```
 
@@ -397,13 +394,13 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 #### html
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [string/HTML] value)` | `ClayItem` | `change` | sets the content of the item
 | `.get()` | `string` | | gets the content of the item
 
 #### val
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [string] value)` | `ClayItem` | `change` | sets the value of the item
 | `.get()` |  `string` | | gets the content of the item
 | `.disable()` |  `ClayItem` | `disabled` | Prevents the item from being edited by the user
@@ -411,7 +408,7 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 #### checked
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [boolean] value)` | `ClayItem` | `change` | check/uncheck the state of the item
 | `.get()` |  `string` | | gets the content of the item
 | `.disable()` | `ClayItem` | `disabled` | Prevents the item from being edited by the user
@@ -419,7 +416,7 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 #### color
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [string \| int] value)` | `ClayItem` | `change` | sets the color picker to the provided color. If the value is a string, it must be provided in hex notation eg `'FF0000'`.
 | `.get()` | `int` | | The color is returned as an int in order to make it easy to be used on the watch side using `GColorFromHEX()`
 | `.disable()` | `ClayItem` | `disabled` | Prevents the item from being edited by the user
@@ -427,7 +424,7 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 #### radiogroup
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [string] value)` | `ClayItem` | `change` | checks the radio button that corresponds to the provided value
 | `.get()` |  `string` | | gets the value of the checked radio button in the list
 | `.disable()` | `ClayItem` | `disabled` | Prevents the item from being edited by the user
@@ -435,7 +432,7 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 #### checkboxgroup
 | Method | Returns | Event Fired | Description 
-|---
+|--------|---------|-------------| ----------
 | `.set( [Array] value)` | `ClayItem` | `change` | checks the checkboxes that corresponds to the provided list of values
 | `.get()` |  `string` | | gets the value of the checked radio button in the list
 | `.disable()` | `ClayItem` | `disabled` | Prevents the item from being edited by the user
@@ -497,7 +494,7 @@ This is the main way of talking to your generated config page. A reference to th
 #### Properties
 
 | Property | Type | Description
-| ---
+|----------|------|------------
 | `.EVENTS.BEFORE_BUILD` | String | Dispatched prior to building the page.
 | `.EVENTS.AFTER_BUILD` | String | Dispatched after building the page.
 | `.config` | Array | Reference to the config passed to the constructer and used for generating the page. 
@@ -506,7 +503,7 @@ This is the main way of talking to your generated config page. A reference to th
 #### Methods
 
 | Method | Returns 
-| ---
+|--------|------
 | `.getAllItems()` | `Array.<ConfigItem>` - an array of all config items
 | `.getItemByAppKey( [string] appKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `appKey` otherwise `undefined`
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id` otherwise `undefined`
@@ -525,7 +522,7 @@ This is the main way of talking to your generated config page. A reference to th
 #### Properties
 
 | Property | Type | Description
-| ---
+|----------|------|------------
 | `.id` | String | The ID of the item if provided in the config.
 | `.appKey` | String | The ID of the item if provided in the config.
 | `.config` | Object | Reference to the config passed to the constructer. 
@@ -536,7 +533,7 @@ This is the main way of talking to your generated config page. A reference to th
 #### Methods
 
 | Method | Returns 
-| ---
+|--------|----
 | `.initialize( [ClayConfig] clay)` <br> You shouldn't ever need to run this method manually as it will automatically be called when the config is built | `ConfigItem`
 | `.on( [string] events, [function] handler )` <br> Register an event to the provided handler. The handler will be called with this instance of `ClayItem` as the context. If you wish to register multiple events to the same handler, then separate the events with a space. Events will be registered against the `$manipulatorTarget` so most DOM events such as **"change"** or **"click"** can be listened for. | `ClayItem`
 | `.off( [function] handler )` <br> Remove the given event handler. **NOTE:** This will remove the handler from all registered events | `ClayItem`
@@ -557,7 +554,7 @@ Components are simple objects with the following properties:
 #### `ClayComponent`
 
 | Property | Type | Required | Description 
-|---
+|----------|------|----------|---
 | name | string | yes | This is the unique way to identify the component and what will be used by the config item's `type` 
 | template | string (HTML) | yes | This is the actual HTML content of the component. Make sure there is only **one** root node in the HTML. This HTML will be passed to minified's `HTML()` method. Any properties provided by the config item will be made available to the template, eg: `label`. The template will also be provided with `clayId` as a unique way to set input `name` attributes. 
 | style | string | no | Any extra css styles you want to inject into the page make sure to namespace your CSS with a class that is unique to your component in order to avoid conflicts with other components 
