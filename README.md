@@ -39,7 +39,7 @@ Your root element should be an array. This represents the entire page. Inside th
 
 ## Components
 
-[[https://github.com/pebble/clay/blob/initial-review/src/images/example.png|alt=Example]]
+![Example](src/images/example.png)
 
 ### Section
 
