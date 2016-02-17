@@ -12,11 +12,12 @@ Clay will eventually be built into the Pebble SDK. However while it is still in 
 3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
 4. in order for JSON files to work you may need to change the line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js*'))`
 5. Your `app.js` needs to `require` clay and your config file, then be initialized. Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy-paste the following into the top of your `app.js`:
-```javascript
-var Clay = require('clay');
-var clayConfig = require('config.json');
-var clay = new Clay(clayConfig);
-```
+
+  ```javascript
+  var Clay = require('clay');
+  var clayConfig = require('config.json');
+  var clay = new Clay(clayConfig);
+  ```
 6. Next is the fun part. Creating your config page. Edit your `config.json` file using the instructions below
 
 # Getting Started (CloudPebble)
@@ -26,15 +27,17 @@ Clay will eventually be built into CloudPebble. However while it is still in bet
 1. Create a new JavaScript file and call it `clay.js`
 2. Copy the contents of the Clay distribution file from: [dist/clay.js](dist/clay.js) into your newly created `clay.js`
 3. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array:
-```javascript
-module.exports = [];
-```
+
+  ```javascript
+  module.exports = [];
+  ```
 4. Your `app.js` needs to `require` clay and your config file, then be initialized. Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy-paste the following into the top of your `app.js`:
-```javascript
-var Clay = require('clay');
-var clayConfig = require('config');
-var clay = new Clay(clayConfig);
-```
+
+  ```javascript
+  var Clay = require('clay');
+  var clayConfig = require('config');
+  var clay = new Clay(clayConfig);
+  ```
 5. Next is the fun part. Creating your config page. Edit your `config.js` file using the instructions below
 
 # Creating Your Config File
