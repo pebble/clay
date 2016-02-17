@@ -2,13 +2,13 @@
 
 /**
  * A Clay config Item
- * @typedef {object} Clay~ConfigItem
+ * @typedef {Object} Clay~ConfigItem
  * @property {string} type
  * @property {string|boolean|number} defaultValue
  * @property {string} [appKey]
  * @property {string} [id]
  * @property {string} [label]
- * @property {object} [attributes]
+ * @property {Object} [attributes]
  * @property {Array} [options]
  * @property {Array} [items]
  */
@@ -23,8 +23,8 @@ var manipulators = require('./manipulators');
 
 /**
  * @extends ClayEvents
- * @param {{}} settings - setting that were set from a previous session
- * @param {[]|{}} config
+ * @param {Object} settings - setting that were set from a previous session
+ * @param {Array|Object} config
  * @param {M} $rootContainer
  * @constructor
  */
@@ -150,7 +150,7 @@ function ClayConfig(settings, config, $rootContainer) {
   };
 
   /**
-   * @returns {object}
+   * @returns {Object}
    */
   self.getSettings = function() {
     _checkBuilt('getSettings');
@@ -188,13 +188,13 @@ function ClayConfig(settings, config, $rootContainer) {
 
 /**
  * Register a component to Clay. This must be called prior to .build();
- * @param {{}} component - the clay component to register
+ * @param {Object} component - the clay component to register
  * @param {string} component.name - the name of the component
  * @param {string} component.template - HTML template to use for the component
- * @param {string|{}} component.manipulator - methods to attach to the component
+ * @param {string|Object} component.manipulator - methods to attach to the component
  * @param {function} component.manipulator.set - set manipulator method
  * @param {function} component.manipulator.get - get manipulator method
- * @param {{}} [component.defaults] - template defaults
+ * @param {Object} [component.defaults] - template defaults
  * @param {function} [component.initialize] - method to scaffold the component
  * @return {boolean} - Returns true if component was registered correctly
  */
@@ -215,6 +215,10 @@ ClayConfig.registerComponent = function(component) {
       throw new Error('The manipulator: ' + component.manipulator +
                       ' does not exist in the built-in manipulators.');
     }
+  }
+
+  if (!_component.manipulator) {
+    throw new Error('The manipulator must be defined');
   }
 
   if (typeof _component.manipulator.set !== 'function' ||

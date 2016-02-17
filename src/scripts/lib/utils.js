@@ -2,8 +2,8 @@
 
 /**
  * Batch update all the properties of an object.
- * @param {object} obj
- * @param {object} descriptor
+ * @param {Object} obj
+ * @param {Object} descriptor
  * @param {boolean} [descriptor.configurable]
  * @param {boolean} [descriptor.enumerable]
  * @param {*} [descriptor.value]

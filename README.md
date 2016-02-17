@@ -11,35 +11,18 @@ Clay will eventually be built into the Pebble SDK. However while it is still in 
 2. Drop `clay.js` in your project's `src/js` directory. 
 3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
 4. in order for JSON files to work you may need to change the line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js*'))`
-5. Your `app.js` needs to `require` clay and your config file, then be initialized:
+5. Your `app.js` needs to `require` clay and your config file, then be initialized. Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events:
 ```javascript
 var Clay = require('clay');
 var clayConfig = require('config.json');
 var clay = new Clay(clayConfig);
 ```
-6. Now in your `showConfiguration` handler you let clay generate the URL for you. It should look something like:
-```javascript
-Pebble.addEventListener('showConfiguration', function(e) {
-  Pebble.openURL(clay.generateUrl());
-});
-```
-7. In order for your Pebble app to receive the configuration, you need to get the settings from Clay. Your `webviewclosed` handler should now look something like: 
-```javascript
-Pebble.addEventListener('webviewclosed', function(e) {
-  // Send settings to Pebble watchapp
-  Pebble.sendAppMessage(clay.getSettings(e.response), function(e) {
-    console.log('Sent config data to Pebble');
-  }, function() {
-    console.log('Failed to send config data!');
-    console.log(JSON.stringify(e));
-  });
-});
-```
+
 8. Next is the fun part. Creating your config page. Edit your `config.json` file using the instructions below
 
 # Creating Your Config File
 
-Clay uses javascript objects (or JSON) to generate the config page for you. The structure of the page is totally up to you, but you do need to follow some basic rules. 
+Clay uses JavaScript objects (or JSON) to generate the config page for you. The structure of the page is totally up to you, but you do need to follow some basic rules. 
 
 ## Basic JSON structure 
 
@@ -48,8 +31,8 @@ Your root element should be an array. This represents the entire page. Inside th
 #### Example:
 ```javascript
 [
-  { type: 'heading', defaultValue: 'Example Config Page' },
-  { type: 'text', defaultValue: 'Clay makes things easy.' }
+  { "type": "heading", "defaultValue": "Example Config Page" },
+  { "type": "text", "defaultValue": "Clay makes things easy." }
   //... etc etc
 ]
 ```
@@ -446,6 +429,48 @@ Each component has a **manipulator.** This is a set of methods used to talk to t
 
 Clay is built to allow developers to add their own basic interactivity to the config page. This is done in a number of ways:
 
+## Handling The 'showConfiguration' and 'webviewclosed' Events Manually
+
+Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. If you wish to override this behavior and handle the events yourself, pass an object as the 3rd parameter of the Clay constructor with `autoHandleEvents` set to `false`
+
+Example:
+
+```javascript
+var Clay = require('./clay');
+var clayConfig = require('./config');
+var clay = new Clay(clayConfig, null, {autoHandleEvents: false});
+
+Pebble.addEventListener('showConfiguration', function(e) {
+  Pebble.openURL(clay.generateUrl());
+});
+
+Pebble.addEventListener('webviewclosed', function(e) {
+  
+  if (e && !e.response) { return; }
+
+  // Send settings to Pebble watchapp
+  Pebble.sendAppMessage(clay.getSettings(e.response), function(e) {
+    console.log('Sent config data to Pebble');
+  }, function() {
+    console.log('Failed to send config data!');
+    console.log(JSON.stringify(e));
+  });
+});
+```
+
+### `Clay([Array] config, [function] customFn, [object] options)`
+
+#### Methods
+
+| Method | Returns 
+| ---
+| `Clay(Array] config, [function] customFn=null, [object] options={autoHandleEvents: true})` <br> `config` - an Array representing your config <br> `customFn` - function to be run in the context of the generated page <br> `options.autoHandleEvents` - set to `false` to prevent Clay from automatically handling the "showConfiguration" and "webviewclosed" events | `Clay` - a new instance of Clay
+| `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`.  
+| `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()`
+| `.getSettings(response)` <br> `response` - the response object provided to the "webviewclosed" event | `Object` - hash where the key is the `appKey` and the value is the result from the config page.
+---
+
+
 ## Custom Function
 
 When initializing Clay in your `app.js`, you can optionally provide a function that will be copied and run on the generated config page. **IMPORTANT:** This function is injected by running `.toString()` on it. If you are making use of `require` or any other dynamic features, they will not work. You must make sure that everything the function needs to execute is available in the function body itself. 
@@ -492,7 +517,7 @@ module.exports = function(minified) {
 
 ### `ClayConfig([Object] settings, [Array] config, [$Minified] $rootContainer)`
 
-This is the main way of talking to your generated config page. A reference to the instance of `ClayConfig` is passed to 
+This is the main way of talking to your generated config page.
 
 #### Properties
 

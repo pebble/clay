@@ -88,7 +88,7 @@ function ClayEvents($eventTarget) {
   /**
    * Trigger an event.
    * @param {string} name - a single event name to trigger
-   * @param {object} [eventObj] - an object to pass to the event handler,
+   * @param {Object} [eventObj] - an object to pass to the event handler,
    * provided the handler does not have custom arguments.
    * @returns {ClayEvents}
    */

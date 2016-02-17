@@ -19,7 +19,7 @@ function ClayItem(config) {
   var _component = componentRegistry[config.type];
 
   if (!_component) {
-    throw new Error('the component: ' + config.type + ' is not registered. ' +
+    throw new Error('The component: ' + config.type + ' is not registered. ' +
                     'Make sure to register it with ClayConfig.registerComponent()');
   }
 
@@ -31,7 +31,7 @@ function ClayItem(config) {
   /** @type {string|null} */
   self.appKey = config.appKey || null;
 
-  /** @type {object} */
+  /** @type {Object} */
   self.config = config;
 
   /** @type {M} */

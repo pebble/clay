@@ -47,7 +47,7 @@ module.exports = [
       },
       {
         "type": "color",
-        "appKey": "background",
+        "appKey": "sunnyColorTest",
         "defaultValue": "00FF00",
         "label": "Sunny Color",
         "sunlight": true

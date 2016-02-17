@@ -10,7 +10,7 @@ var componentRegistry = require('../src/scripts/lib/component-registry');
 var idCounter = 0;
 
 /**
- * @param {string|{}} config
+ * @param {string|Object} config
  * @param {boolean} [autoRegister=true]
  * @returns {Clay~ConfigItem}
  */
@@ -37,7 +37,7 @@ module.exports.configItem = function(config, autoRegister) {
 };
 
 /**
- * @param {string|{}} config
+ * @param {string|Object} config
  * @param {boolean} [autoRegister=true]
  * @returns {ClayItem}
  */
@@ -46,7 +46,7 @@ module.exports.clayItem = function(config, autoRegister) {
 };
 
 /**
- * @param {[]} types
+ * @param {Array} types
  * @param {boolean} [autoRegister=true]
  * @returns {*}
  */
@@ -59,10 +59,10 @@ module.exports.config = function(types, autoRegister) {
 };
 
 /**
- * @param {[]} types
+ * @param {Array} types
  * @param {boolean} [build=true] - run the build method on the result
  * @param {boolean} [autoRegister=true]
- * @param {{}} [settings] - settings to pass to constructor
+ * @param {Object} [settings] - settings to pass to constructor
  * @returns {ClayConfig}
  */
 module.exports.clayConfig = function(types, build, autoRegister, settings) {

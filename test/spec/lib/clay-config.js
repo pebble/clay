@@ -181,6 +181,23 @@ describe('ClayConfig', function() {
       clayConfig.build();
     });
 
+    it('throws if there is no manipulator',
+    function(done) {
+      delete componentRegistry.select;
+      var clayConfig = fixtures.clayConfig(['select'], false, false);
+      var _selectComponent = _.copyObj(selectComponent);
+      _selectComponent.manipulator = undefined;
+
+      clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
+        assert.throws(function() {
+          clayConfig.registerComponent(_selectComponent);
+        }, /manipulator must be defined/);
+        done();
+      });
+
+      clayConfig.build();
+    });
+
     it('only registers the component once', function() {
       delete componentRegistry.select;
       var warnStub = sinon.stub(console, 'warn');

@@ -7,6 +7,7 @@ var standardComponents = require('./src/scripts/components');
 /**
  * @param {string} input
  * @param {string} [prefix]
+ * @private
  * @returns {string}
  */
 function encodeDataUri(input, prefix) {
@@ -62,16 +63,50 @@ function encodeDataUri(input, prefix) {
 
 /**
  * @param {Array} config - the Clay config
- * @param {function} [customFn] - custom code to run from the config page.
- * Will run with api as context
+ * @param {function} [customFn] - Custom code to run from the config page. Will run
+ *   with the ClayConfig instance as context
+ * @param {Object} [options] - Additional options to pass to Clay
+ * @param {boolean} [options.autoHandleEvents] - If false, Clay will not
+ *   automatically handle the 'showConfiguration' and 'webviewclosed' events
  * @constructor
  */
-function Clay(config, customFn) {
+function Clay(config, customFn, options) {
   var self = this;
+
+  if (!Array.isArray(config)) {
+    throw new Error('config must be an Array');
+  }
+
+  if (customFn && typeof customFn !== 'function') {
+    throw new Error('customFn must be an function or "null"');
+  }
+
+  options = options || {};
 
   self.config = config;
   self.customFn = customFn || function() {};
   self.components = [];
+
+  // Let Clay handle all the magic
+  if (options.autoHandleEvents !== false && Pebble) {
+
+    Pebble.addEventListener('showConfiguration', function(e) {
+      Pebble.openURL(self.generateUrl());
+    });
+
+    Pebble.addEventListener('webviewclosed', function(e) {
+
+      if (e && !e.response) { return; }
+
+      // Send settings to Pebble watchapp
+      Pebble.sendAppMessage(self.getSettings(e.response), function(e) {
+        console.log('Sent config data to Pebble');
+      }, function() {
+        console.log('Failed to send config data!');
+        console.log(JSON.stringify(e));
+      });
+    });
+  }
 
   /**
    * @private
@@ -93,6 +128,18 @@ function Clay(config, customFn) {
   _registerStandardComponents(self.config);
 }
 
+/**
+ * Register a component to Clay.
+ * @param {Object} component - the clay component to register
+ * @param {string} component.name - the name of the component
+ * @param {string} component.template - HTML template to use for the component
+ * @param {string|Object} component.manipulator - methods to attach to the component
+ * @param {function} component.manipulator.set - set manipulator method
+ * @param {function} component.manipulator.get - get manipulator method
+ * @param {Object} [component.defaults] - template defaults
+ * @param {function} [component.initialize] - method to scaffold the component
+ * @return {boolean} - Returns true if component was registered correctly
+ */
 Clay.prototype.registerComponent = function(component) {
   this.components.push(component);
 };
@@ -136,12 +183,12 @@ Clay.prototype.generateUrl = function() {
 /**
  * Parse the response from the webviewclosed event data
  * @param {string} response
- * @returns {{}}
+ * @returns {Object}
  */
 Clay.prototype.getSettings = function(response) {
   // Decode and parse config data as JSON
   var settings = JSON.parse(decodeURIComponent(response));
-  // @todo get defaults in here
+
   if (!settings) return {};
 
   localStorage.setItem('clay-settings', JSON.stringify(settings));
