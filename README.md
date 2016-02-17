@@ -10,7 +10,7 @@ Clay will eventually be built into the Pebble SDK. However while it is still in 
 1. Download the Clay distribution file from: [dist/clay.js](dist/clay.js)
 2. Drop `clay.js` in your project's `src/js` directory. 
 3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
-4. in order for JSON files to work you may need to change the line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js*'))`
+4. in order for JSON files to work you may need to change the line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`
 5. Your `app.js` needs to `require` clay and your config file, then be initialized. Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy-paste the following into the top of your `app.js`:
 
   ```javascript
