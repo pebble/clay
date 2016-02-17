@@ -1,0 +1,72 @@
+{
+  "name": "pebble-clay",
+  "version": "0.1.0",
+  "description": "Pebble Config Framework",
+  "main": "dist/clay.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test-travis": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
+    "test-debug": "(export DEBUG=true && ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run)",
+    "test": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run",
+    "lint": "./node_modules/.bin/eslint ./",
+    "build": "gulp",
+    "dev": "gulp dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pebble/clay.git"
+  },
+  "keywords": [
+    "Pebble",
+    "Config"
+  ],
+  "author": "Pebble Technology",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pebble/clay/issues"
+  },
+  "homepage": "https://github.com/pebble/clay#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.3.1",
+    "bourbon": "^4.2.6",
+    "browserify": "^13.0.0",
+    "browserify-istanbul": "^0.2.1",
+    "chai": "^3.4.1",
+    "deamdify": "^0.2.0",
+    "del": "^2.0.2",
+    "eslint": "^1.5.1",
+    "eslint-config-pebble": "^1.2.0",
+    "eslint-plugin-standard": "^1.3.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-htmlmin": "^1.3.0",
+    "gulp-inline": "0.0.15",
+    "gulp-insert": "^0.5.0",
+    "gulp-sass": "^2.1.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.2",
+    "joi": "^6.10.1",
+    "karma": "^0.13.19",
+    "karma-browserify": "^5.0.1",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-coverage": "^0.5.3",
+    "karma-mocha": "^0.2.1",
+    "karma-mocha-reporter": "^1.1.5",
+    "karma-source-map-support": "^1.1.0",
+    "karma-threshold-reporter": "^0.1.15",
+    "mocha": "^2.3.4",
+    "postcss": "^5.0.14",
+    "require-from-string": "^1.1.0",
+    "sassify": "^0.9.1",
+    "sinon": "^1.17.3",
+    "stringify": "^3.2.0",
+    "through": "^2.3.8",
+    "tosource": "^1.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {}
+}

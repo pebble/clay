@@ -1,0 +1,41 @@
+@import "clay";
+
+.component-input {
+
+  display: block;
+
+  .label {
+    padding-bottom: $item-spacing-v;
+  }
+
+  .input {
+    position: relative;
+    min-width: 100%;
+    margin-top: $item-spacing-v;
+    margin-left: 0;
+  }
+
+  input {
+    display:block;
+    width: 100%;
+    background: $color-gray-2;
+    border-radius: $border-radius;
+    padding: $item-spacing-v / 2 $item-spacing-h / 2;
+    border: none;
+    vertical-align: baseline;
+    color: $color-white;
+    font-size: inherit;
+
+    @include placeholder {
+      color: $color-gray-8;
+    }
+
+    &:focus {
+      @include placeholder {
+        color: $color-gray-6;
+      }
+      border: none;
+      box-shadow: none ;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@import "bourbon";
+
+// Bourbon settings
+$em-base: 17px;
+
+// custom vars
+$base-line-height: 1.4;
+$base-height: rem($base-line-height * $em-base);
+$border-radius: 0.25rem;
+$item-spacing-v: $base-height / 2;
+$item-spacing-h: 0.75rem;
+$small-component-width: $base-height * $golden;
+
+
+
+// ---- Colors ------
+$color-orange: #ff4700;
+$color-orange-dark: #993d19;
+$color-red: #ff0000;
+$color-white: #ffffff;
+$color-black: #000000;
+
+// background color
+$color-gray-0: #111111;
+$color-gray-1: #2f2f2f;
+$color-gray-2: #333333;
+$color-gray-3: #414141;
+$color-gray-4: #484848; // divider
+$color-gray-5: #5b5b5b;
+$color-gray-6: #666666;
+$color-gray-7: #767676;
+$color-gray-8: #858585;
+$color-gray-9: #a4a4a4 ;
+$color-gray-10: #ececec;
+$color-gray-11: #f2f2f2;
+
+
+
+
+$global-margin: 55px;
+$form-margin: 25px;
+$button-padding: 0.7rem;
+$button-padding-ios: 0.6rem;
+$button-line-height: 13px;
+$footer-height-large: 90px;
+
+$box-shadow-small-components: $color-gray-1 0 0.1rem 0.1rem;

@@ -1,0 +1,57 @@
+@import "clay";
+
+button,
+.button {
+  @include font-pfdin(medium);
+  text-transform: uppercase;
+  background-color: $color-gray-4;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  line-height: 1;
+  border: none;
+  display: block;
+
+  color: $color-white;
+  min-width: 12rem;
+  text-align: center;
+  margin: 0 auto;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+  padding: $button-padding;
+
+  .platform-ios & {
+    padding: $button-padding-ios;
+  }
+
+  &:disabled {
+    background-color: $color-gray-3;
+    color: $color-gray-8;
+  }
+
+  &:not(:disabled):active {
+    background-color: $color-gray-8;
+  }
+
+  &.orange, &[type="submit"] {
+    background-color: $color-orange;
+
+    &:disabled {
+      background-color: $color-orange-dark;
+      color: $color-gray-3;
+    }
+
+    &:not(:disabled):active {
+      background-color: $color-red;
+    }
+  }
+
+  &.light-grey {
+    background-color: $color-gray-5;
+  }
+
+}
+
+a.button {
+  text-decoration: none;
+  color: $color-white;
+}

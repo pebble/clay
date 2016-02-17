@@ -1,0 +1,43 @@
+@import "vars";
+
+@mixin font-pfdin($weight: normal) {
+
+  font-weight: normal;
+
+  @if $weight == normal or $weight == regular {
+    font-family: 'PFDinDisplayPro-Regular', PFDinDisplayProRegularWebfont, sans-serif;
+  }
+
+  @if $weight == medium {
+    // iOS includes the PFDinDisplayPro-Medium in the webview but Android does not,
+    // so we apply a faux bold on the regular weight.
+    font-family: 'PFDinDisplayPro-Medium', PFDinDisplayProRegularWebfont, sans-serif;
+
+    .platform-android & {
+      font-family: PFDinDisplayProRegularWebfont, sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.025em;
+    }
+  }
+}
+
+@mixin pfdin-uppercase {
+  text-transform: uppercase;
+  position: relative;
+  top: 0.05rem;
+  line-height: 0.9;
+}
+
+@mixin font-size($size: 1) {
+  $font-size:  $size * 1rem;
+  font-size:$font-size;
+  line-height: $base-line-height * ceil($font-size / $base-line-height);
+}
+
+@mixin tap-highlight($color: rgba(255, 255, 255, 0.1)) {
+  -webkit-tap-highlight-color: $color;
+
+  &:active {
+    background-color: $color;
+  }
+}
