@@ -39,6 +39,8 @@ Your root element should be an array. This represents the entire page. Inside th
 
 ## Components
 
+[[https://github.com/pebble/clay/blob/initial-review/src/images/example.png|alt=Example]]
+
 ### Section
 
 Sections help divide up the page into logical separations. It is recommended that you place all your input based items in a section for maximum prettiness. 
