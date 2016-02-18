@@ -5,6 +5,7 @@ var $ = require('../src/scripts/vendor/minified').$;
 var HTML = require('../src/scripts/vendor/minified').HTML;
 var ClayItem = require('../src/scripts/lib/clay-item');
 var ClayConfig = require('../src/scripts/lib/clay-config');
+var Clay = require('../index');
 var components = require('../src/scripts/components');
 var componentRegistry = require('../src/scripts/lib/component-registry');
 var idCounter = 0;
@@ -74,3 +75,19 @@ module.exports.clayConfig = function(types, build, autoRegister, settings) {
   return build === false ? clayConfig : clayConfig.build();
 };
 
+/**
+ * @param {Array} config - the Clay config
+ * @param {function} [customFn] - Custom code to run from the config page. Will run
+ *   with the ClayConfig instance as context
+ * @param {Object} [options] - Additional options to pass to Clay
+ * @param {boolean} [options.autoHandleEvents] - If false, Clay will not
+ *   automatically handle the 'showConfiguration' and 'webviewclosed' events
+ * @param {boolean} [destroyLocalStorage=true]
+ * @return {Clay}
+ */
+module.exports.clay = function(config, customFn, options, destroyLocalStorage) {
+  if (destroyLocalStorage !== false) {
+    localStorage.removeItem('clay-settings');
+  }
+  return new Clay(config, customFn, options);
+};
