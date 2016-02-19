@@ -41,10 +41,10 @@ module.exports = {
   },
   checked: {
     get: function() {
-      return this.$manipulatorTarget.get('checked');
+      return this.$manipulatorTarget.get('checked') ? 1 : 0;
     },
     set: function(value) {
-      this.$manipulatorTarget.set('checked', value);
+      this.$manipulatorTarget.set('checked', !!value);
       return this.trigger('change');
     },
     disable: disable,

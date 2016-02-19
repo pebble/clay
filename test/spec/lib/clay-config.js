@@ -112,7 +112,7 @@ describe('ClayConfig', function() {
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'default val',
         test2: 'val-2',
-        test3: false
+        test3: 0
       });
 
       clayConfig.getItemByAppKey('test1').set('val-1');
@@ -121,7 +121,7 @@ describe('ClayConfig', function() {
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'val-1',
         test2: 'val-2',
-        test3: true
+        test3: 1
       });
     });
   });

@@ -95,8 +95,10 @@ describe('manipulators', function() {
   });
 
   describe('checked', function() {
-    testSetGet('toggle', true);
-    testSetGet('toggle', false);
+    testSetGet('toggle', true, 1);
+    testSetGet('toggle', 1);
+    testSetGet('toggle', false, 0);
+    testSetGet('toggle', 0);
     testDisable('toggle');
     testEnable('toggle');
   });

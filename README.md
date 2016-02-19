@@ -214,7 +214,7 @@ Switch for a single item.
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
-| defaultValue | boolean | The default value of the toggle. Defaults to `false` if not specified. |
+| defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 
 
@@ -465,8 +465,8 @@ Each component has a **manipulator**. This is a set of methods used to talk to t
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
-| `.set( [boolean] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
-| `.get()` |  `string` | Gets the content of this item. |
+| `.set( [boolean\|int] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
+| `.get()` | `int` | 1 if checked, 0 if not checked |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 
@@ -493,7 +493,7 @@ Each component has a **manipulator**. This is a set of methods used to talk to t
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `string` | Gets the value of the checked radio button in the list. |
+| `.get()` |  `Array.<string>` | Gets an array of strings representing the list of the values of the checked items |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 
