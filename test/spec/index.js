@@ -64,7 +64,7 @@ describe('Clay', function() {
       assert(Pebble.openURL.calledWith(clay.generateUrl()));
     });
 
-    it('handles the "showConfiguration" event if autoHandleEvents is not false',
+    it('handles the "webviewclosed" event if autoHandleEvents is not false',
     function() {
       stubPebble();
       fixture.clay([]);
@@ -93,6 +93,13 @@ describe('Clay', function() {
 
       assert(Pebble.addEventListener.calledWith('webviewclosed'));
       assert.strictEqual(Pebble.sendAppMessage.callCount, 0);
+    });
+
+    it('does not handle the "webviewclosed" or "showConfiguration" events ' +
+       'if autoHandleEvents is false', function() {
+      stubPebble();
+      fixture.clay([], null, { autoHandleEvents: false });
+      assert.strictEqual(Pebble.addEventListener.called, false);
     });
   });
 
@@ -129,7 +136,7 @@ describe('Clay', function() {
       );
     });
 
-    it('doesn\'t thow and logs an error if setting in localStorage are broken',
+    it('doesn\'t throw and logs an error if settings in localStorage are broken',
     function() {
       var clay = fixture.clay([]);
       var errorStub = sinon.stub(console, 'error');
