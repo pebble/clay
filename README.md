@@ -20,7 +20,7 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
   var clayConfig = require('config.json');
   var clay = new Clay(clayConfig);
   ```
-6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+6. Next is the fun part - creating your config page. Edit your `config.json` file to build a layout of elements as described in the sections below.
 
 # Getting Started (CloudPebble)
 
@@ -28,7 +28,7 @@ Clay will eventually be built into CloudPebble. However while it is still in bet
 
 1. Create a new JavaScript file called `clay.js`.
 2. Copy the contents of the Clay distribution file from [dist/clay.js](dist/clay.js) into your newly created `clay.js` file.
-3. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
+3. Create another JavaScript file called `config.json` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
 
   ```javascript
   module.exports = [];
@@ -40,7 +40,7 @@ Clay will eventually be built into CloudPebble. However while it is still in bet
   var clayConfig = require('config');
   var clay = new Clay(clayConfig);
   ```
-5. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+5. Next is the fun part - creating your config page. Edit your `config.json` file to build a layout of elements as described in the sections below.
 
 # Creating Your Config File
 
@@ -753,7 +753,7 @@ While developing components and other functionality for Clay, it is much easier 
 |----------|-----|
 | `dev.html` | Open this page in a browser after running `$ npm run dev`. |
 | `dev.js` | Injects the components and dependancies things into the window the same way `index.js` would. |
-| `config.js` | Clay config to use as a sandbox for testing components. |
+| `config.json` | Clay config to use as a sandbox for testing components. |
 | `custom-fn.js` | Clay custom function to be injected by `dev.js`. |
 | `emulator.html` | Copy of the HTML page that is used to make the Clay compatible with the Pebble SDK emulator. |
 | `uri-test.html` | Used to stress test URI creation for older browser versions. |
