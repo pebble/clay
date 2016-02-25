@@ -1,7 +1,7 @@
 # Clay
 Clay is a JavaScript library that makes it easy to add offline configuration pages to your Pebble apps. All you need to get started is a couple lines of JavaScript and a JSON file; no servers or HTML required. 
 
-Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `appKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by implementing a [custom function](#custom-function).
+Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `appKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by [handling the events manually](#handling-the-showconfiguration-and-webviewclosed-events-manually).
 
 **Clay is still in early development and may be missing some features. We would love your feedback! Pease submit any ideas or features via GitHub Issues.**
 
