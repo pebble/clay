@@ -29,7 +29,11 @@ function Clay(config, customFn, options) {
   self.config = config;
   self.customFn = customFn || function() {};
   self.components = {};
-  self.meta = {};
+  self.meta = {
+    activeWatchInfo: null,
+    accountToken: '',
+    watchToken: ''
+  };
 
   // Let Clay handle all the magic
   if (options.autoHandleEvents !== false && typeof Pebble !== 'undefined') {
@@ -63,7 +67,7 @@ function Clay(config, customFn, options) {
    * @return {void}
    */
   function _populateMeta() {
-    self.meta = !Pebble ? {} : {
+    self.meta = {
       activeWatchInfo: Pebble.getActiveWatchInfo && Pebble.getActiveWatchInfo(),
       accountToken: Pebble.getAccountToken(),
       watchToken: Pebble.getWatchToken()

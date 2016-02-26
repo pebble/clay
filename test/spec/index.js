@@ -255,12 +255,18 @@ describe('Clay', function() {
   });
 
   describe('.meta', function() {
+    var emptyMeta = {
+      activeWatchInfo: null,
+      accountToken: '',
+      watchToken: ''
+    };
+
     it('populates the meta in the showConfiguration handler', function() {
       stubPebble();
       var clay = fixture.clay([]);
 
       // meta only gets populated after showConfiguration happens
-      assert.deepEqual(clay.meta, {});
+      assert.deepEqual(clay.meta, emptyMeta);
       Pebble.addEventListener.withArgs('showConfiguration').callArg(1);
 
       assert.deepEqual(clay.meta, {
@@ -274,8 +280,8 @@ describe('Clay', function() {
       stubPebble();
       var clay = fixture.clay([], null, {autoHandleEvents: false});
 
-      // meta only gets populated after showConfiguration happens
-      assert.deepEqual(clay.meta, {});
+      // meta only gets populated after ready happens
+      assert.deepEqual(clay.meta, emptyMeta);
       Pebble.addEventListener.withArgs('ready').callArg(1);
 
       assert.deepEqual(clay.meta, {
@@ -283,6 +289,14 @@ describe('Clay', function() {
         accountToken: accountToken,
         watchToken: watchToken
       });
+    });
+
+    it('populates the meta with with empty values when there is no Pebble global',
+    function() {
+      delete global.Pebble;
+      var clay = fixture.clay([], null, {autoHandleEvents: false});
+
+      assert.deepEqual(clay.meta, emptyMeta);
     });
   });
 
