@@ -76,10 +76,15 @@ describe('Clay', function() {
     function() {
       stubPebble();
       var clay = fixture.clay([]);
+
+      // we stub the generateUrl method to avoid very large string comparisons.
+      var generateUrlStub = sinon.stub(clay, 'generateUrl');
+      generateUrlStub.returns('data:text/html;base64,PGh0bWw%2BVEVTVDwvaHRtbD4%3D');
       Pebble.addEventListener.withArgs('showConfiguration').callArg(1);
 
       assert(Pebble.addEventListener.calledWith('showConfiguration'));
       assert(Pebble.openURL.calledWith(clay.generateUrl()));
+      generateUrlStub.restore();
     });
 
     it('handles the "webviewclosed" event if autoHandleEvents is not false',
