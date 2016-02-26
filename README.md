@@ -609,7 +609,7 @@ This is the main way of talking to your generated config page.
 | `.EVENTS.AFTER_BUILD` | String | Dispatched after building the page. |
 | `.config` | Array | Reference to the config passed to the constructor and used for generating the page. |
 | `.meta` | Object | Contains information about the current user and watch |
-| `.meta.activeWatchInfo` | watchinfo|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
+| `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
 | `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
 | `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
 
@@ -641,7 +641,7 @@ This is the main way of talking to your generated config page.
 | `.appKey` | String | The ID of the item if provided in the config. |
 | `.config` | Object | Reference to the config passed to the constructer. |
 | `$element` | $Minified | A Minified list representing the root HTML element of the config item. |
-| `$manipulatorTarget` | A Minified list representing the HTML element with **data-manipulator-target** set. This is generally pointing to the main `<input>` element and will be used for binding events. |
+| `$manipulatorTarget` | $Minified | A Minified list representing the HTML element with **data-manipulator-target** set. This is generally pointing to the main `<input>` element and will be used for binding events. |
 
 
 #### Methods
