@@ -36,7 +36,7 @@
       flex-shrink: 0;
     }
 
-    input:checked ~ i {
+    input:checked + i {
       border-color: $color-orange;
       
       &:after {
