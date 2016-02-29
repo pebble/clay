@@ -1,4 +1,4 @@
-<label class="component component-select">
+<label class="component component-select tap-highlight">
   <span class="label">{{{label}}}</span>
   <span class="value"></span>
   <select data-manipulator-target {{each key: attributes}}{{key}}="{{this}}"{{/each}}>

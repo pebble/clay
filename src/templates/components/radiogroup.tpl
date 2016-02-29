@@ -2,7 +2,7 @@
   <span class="label">{{{label}}}</span>
   <div class="radio-group">
     {{each options}}
-      <label>
+      <label class="tap-highlight">
         <span class="label">{{{this.label}}}</span>
         <input
           type="radio"
