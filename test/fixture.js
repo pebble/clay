@@ -11,6 +11,29 @@ var componentRegistry = require('../src/scripts/lib/component-registry');
 var idCounter = 0;
 
 /**
+ * @returns {{accountToken: string, watchToken: string, activeWatchInfo: {platform:
+ *   string, model: string, language: string, firmware: {major: number, minor:
+ *   number, patch: number, suffix: string}}}}
+ */
+module.exports.meta = function() {
+  return {
+    accountToken: '0123456789abcdef0123456789abcdef',
+    watchToken: '0123456789abcdef0123456789abcdef',
+    activeWatchInfo: {
+      platform: 'chalk',
+      model: 'qemu_platform_chalk',
+      language: 'en_US',
+      firmware: {
+        major: 3,
+        minor: 3,
+        patch: 2,
+        suffix: ''
+      }
+    }
+  };
+};
+
+/**
  * @param {string|Object} config
  * @param {boolean} [autoRegister=true]
  * @returns {Clay~ConfigItem}
@@ -70,7 +93,8 @@ module.exports.clayConfig = function(types, build, autoRegister, settings) {
   var clayConfig = new ClayConfig(
     settings || {},
     module.exports.config(types, autoRegister),
-    $(HTML('<div>'))
+    $(HTML('<div>')),
+    module.exports.meta()
   );
   return build === false ? clayConfig : clayConfig.build();
 };
