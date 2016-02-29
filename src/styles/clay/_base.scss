@@ -50,6 +50,19 @@ h6 {
   @include font-size(0.8);
 }
 
+strong {
+  @include font-pfdin(medium);
+  color: $color-orange;
+}
+
+a {
+  color: $color-gray-8;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
 label {
   display: flex;
   justify-content: space-between;
@@ -83,9 +96,12 @@ label {
   }
 }
 
+.hide {
+  display: none;
+}
+
 .component {
   padding-bottom: $item-spacing-v;
-  @include tap-highlight();
 
   &.disabled {
     opacity: 0.25;
@@ -132,19 +148,6 @@ label {
     border-radius: $border-radius $border-radius 0 0;
   }
 
-}
-
-strong {
-  @include font-pfdin(medium);
-  color: $color-orange;
-}
-
-a {
-  color: $color-gray-8;
-
-  &:hover {
-    color: inherit;
-  }
 }
 
 .inputs {

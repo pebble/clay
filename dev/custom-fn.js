@@ -10,9 +10,9 @@ module.exports = function() {
    */
   function toggleBackground() {
     if (this.get()) {
-      Clay.getItemByAppKey('background').enable();
+      Clay.getItemByAppKey('colorTest').show();
     } else {
-      Clay.getItemByAppKey('background').disable();
+      Clay.getItemByAppKey('colorTest').hide();
     }
   }
 
