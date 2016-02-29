@@ -5,6 +5,21 @@ var Clay = require('../../index');
 var assert = require('chai').assert;
 var standardComponents = require('../../src/scripts/components');
 var sinon = require('sinon');
+var toSource = require('tosource');
+
+var accountToken = '0123456789abcdef0123456789abcdef';
+var watchToken = '0123456789abcdef0123456789abcdef';
+var activeWatchInfo = {
+  platform: 'chalk',
+  model: 'qemu_platform_chalk',
+  language: 'en_US',
+  firmware: {
+    major: 3,
+    minor: 3,
+    patch: 2,
+    suffix: ''
+  }
+};
 
 /**
  * @return {void}
@@ -13,7 +28,10 @@ function stubPebble() {
   global.Pebble = {
     addEventListener: sinon.stub(),
     openURL: sinon.stub(),
-    sendAppMessage: sinon.stub()
+    sendAppMessage: sinon.stub(),
+    getActiveWatchInfo: sinon.stub().returns(activeWatchInfo),
+    getAccountToken: sinon.stub().returns(accountToken),
+    getWatchToken: sinon.stub().returns(watchToken)
   };
 }
 
@@ -56,6 +74,8 @@ describe('Clay', function() {
 
     it('handles the "showConfiguration" event if autoHandleEvents is not false',
     function() {
+      this.timeout(10000); // 10 seconds
+
       stubPebble();
       var clay = fixture.clay([]);
 
@@ -104,7 +124,14 @@ describe('Clay', function() {
        'if autoHandleEvents is false', function() {
       stubPebble();
       fixture.clay([], null, { autoHandleEvents: false });
-      assert.strictEqual(Pebble.addEventListener.called, false);
+      assert.strictEqual(
+        Pebble.addEventListener.withArgs('webviewclosed').called,
+        false
+      );
+      assert.strictEqual(
+        Pebble.addEventListener.withArgs('showConfiguration').called,
+        false
+      );
     });
   });
 
@@ -123,23 +150,66 @@ describe('Clay', function() {
 
   describe('.generateUrl()', function() {
 
-    // @todo this test becomes redundant with the work in 94428b1
-    it('Replaces $$RETURN_TO$$ if in not in the emulator', function() {
-      var clay = fixture.clay([]);
-      stubPebble();
-      Pebble.platform = 'ios';
-      var decodedUrl =
-        atob(decodeURIComponent(clay.generateUrl().replace(/^.*?,/, '')));
-      assert.match(decodedUrl, /pebblejs:\/\/close#/);
+    /**
+     * Decode the generated data URI into just the HTML portion
+     * @param {string} url
+     * @returns {string}
+     */
+    function decodeUrl(url) {
+      return atob(decodeURIComponent(url.replace(/^.*?[#,]/, '')));
+    }
+
+    describe('string substitutions', function() {
+      var customFn = function() { this.getAllItems(); };
+      var config = fixture.config(['input', 'color']);
+      var settings = { appKey: 'value' };
+      var clay;
+      var html;
+
+      before(function() {
+        stubPebble();
+        clay = fixture.clay(config, customFn);
+        Pebble.addEventListener.withArgs('showConfiguration').callArg(1);
+        localStorage.setItem('clay-settings', JSON.stringify(settings));
+        html = decodeUrl(clay.generateUrl());
+      });
+
+      it('Substitutes $$RETURN_TO$$ with the pebblejs://close#', function() {
+        assert.notInclude(html, '$$RETURN_TO$$');
+        assert.include(html, 'window.returnTo="pebblejs://close#"');
+      });
+
+      it('Substitutes $$CUSTOM_FN$$ with the customFn', function() {
+        assert.notInclude(html, '$$CUSTOM_FN$$');
+        assert.include(html, 'window.customFn=' + toSource(customFn));
+      });
+
+      it('Substitutes $$CONFIG$$ with the config', function() {
+        assert.notInclude(html, '$$CONFIG$$');
+        assert.include(html, 'window.clayConfig=' + toSource(config));
+      });
+
+      it('Substitutes $$SETTINGS$$ with the config', function() {
+        assert.notInclude(html, '$$SETTINGS$$');
+        assert.include(html, 'window.claySettings=' + toSource(settings));
+      });
+
+      it('Substitutes $$COMPONENTS$$ with the config', function() {
+        assert.notInclude(html, '$$COMPONENTS$$');
+        assert.include(html, 'window.clayComponents=' + toSource(clay.components));
+      });
+
+      it('Substitutes $$META$$ with the config', function() {
+        assert.notInclude(html, '$$META$$');
+        assert.include(html, 'window.clayMeta=' + toSource(clay.meta));
+      });
     });
 
     it('does not replace $$RETURN_TO$$ if in the emulator', function() {
       var clay = fixture.clay([]);
       stubPebble();
       Pebble.platform = 'pypkjs';
-      var decodedUrl =
-        atob(decodeURIComponent(clay.generateUrl().replace(/^.*?#/, '')));
-      assert.match(decodedUrl, /\$\$RETURN_TO\$\$/);
+      assert.match(decodeUrl(clay.generateUrl()), /\$\$RETURN_TO\$\$/);
     });
 
     it('returns the emulator URL if inside emulator', function() {
@@ -183,6 +253,52 @@ describe('Clay', function() {
         clay.getSettings('not valid JSON');
       }, /Not Valid JSON/i);
       assert.equal(localStorage.getItem('clay-settings'), '{"appKey":"value"}');
+    });
+  });
+
+  describe('.meta', function() {
+    var emptyMeta = {
+      activeWatchInfo: null,
+      accountToken: '',
+      watchToken: ''
+    };
+
+    it('populates the meta in the showConfiguration handler', function() {
+      stubPebble();
+      var clay = fixture.clay([]);
+
+      // meta only gets populated after showConfiguration happens
+      assert.deepEqual(clay.meta, emptyMeta);
+      Pebble.addEventListener.withArgs('showConfiguration').callArg(1);
+
+      assert.deepEqual(clay.meta, {
+        activeWatchInfo: activeWatchInfo,
+        accountToken: accountToken,
+        watchToken: watchToken
+      });
+    });
+
+    it('populates the meta in the ready handler', function() {
+      stubPebble();
+      var clay = fixture.clay([], null, {autoHandleEvents: false});
+
+      // meta only gets populated after ready happens
+      assert.deepEqual(clay.meta, emptyMeta);
+      Pebble.addEventListener.withArgs('ready').callArg(1);
+
+      assert.deepEqual(clay.meta, {
+        activeWatchInfo: activeWatchInfo,
+        accountToken: accountToken,
+        watchToken: watchToken
+      });
+    });
+
+    it('populates the meta with with empty values when there is no Pebble global',
+    function() {
+      delete global.Pebble;
+      var clay = fixture.clay([], null, {autoHandleEvents: false});
+
+      assert.deepEqual(clay.meta, emptyMeta);
     });
   });
 

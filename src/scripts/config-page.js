@@ -11,6 +11,7 @@ var settings = _.extend({}, window.claySettings || {});
 var returnTo = window.returnTo || 'pebblejs://close#';
 var customFn = window.customFn || function() {};
 var clayComponents = window.clayComponents || {};
+var clayMeta = window.clayMeta || {};
 
 var platform = window.navigator.userAgent.match(/android/i) ? 'android' : 'ios';
 document.documentElement.classList.add('platform-' + platform);
@@ -21,7 +22,7 @@ _.eachObj(clayComponents, function(key, component) {
 });
 
 var $mainForm = $('#main-form');
-var clayConfig = new ClayConfig(settings, config, $mainForm);
+var clayConfig = new ClayConfig(settings, config, $mainForm, clayMeta);
 
 // add listeners here
 $mainForm.on('submit', function() {

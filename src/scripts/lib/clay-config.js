@@ -26,9 +26,10 @@ var manipulators = require('./manipulators');
  * @param {Object} settings - setting that were set from a previous session
  * @param {Array|Object} config
  * @param {M} $rootContainer
+ * @param {Object} meta
  * @constructor
  */
-function ClayConfig(settings, config, $rootContainer) {
+function ClayConfig(settings, config, $rootContainer, meta) {
   var self = this;
 
   var _settings = _.copyObj(settings);
@@ -94,6 +95,8 @@ function ClayConfig(settings, config, $rootContainer) {
     }
     return true;
   }
+
+  self.meta = meta;
 
   self.EVENTS = {
     /**
@@ -183,7 +186,6 @@ function ClayConfig(settings, config, $rootContainer) {
 
   // expose the config to allow developers to update it before the build is run
   self.config = config;
-
 }
 
 /**

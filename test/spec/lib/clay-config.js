@@ -20,10 +20,18 @@ describe('ClayConfig', function() {
       'build',
       'on',
       'off',
-      'trigger'
+      'trigger',
+      'meta'
     ];
     var clayConfig = fixtures.clayConfig(['input']);
     checkReadOnly(clayConfig, properties);
+  });
+
+  describe('.meta', function() {
+    it('populates meta', function() {
+      var clayConfig = fixtures.clayConfig(['input']);
+      assert.deepEqual(clayConfig.meta, fixtures.meta());
+    });
   });
 
   describe('throws when trying to run methods before being built', function() {
