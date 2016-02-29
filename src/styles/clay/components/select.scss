@@ -2,7 +2,10 @@
 @import "clay";
 
 .component-select {
-  position: relative;
+
+  label {
+    position: relative;
+  }
 
   .value {
     $triangle-size: 0.85rem;

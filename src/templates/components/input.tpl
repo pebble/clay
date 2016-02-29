@@ -6,4 +6,7 @@
       {{each key: attributes}}{{key}}="{{this}}"{{/each}}
     />
   </span>
+  {{if description}}
+    <div class="description">{{{description}}}</div>
+  {{/if}}
 </label>

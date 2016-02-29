@@ -30,13 +30,18 @@ module.exports = [
           "limit": 10,
           "required": "required",
           type: "email"
-        }
+        },
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
+
       },
       {
         "type": "toggle",
         "appKey": "cool_stuff",
         "label": "Enable Cool Stuff",
-        "defaultValue": false
+        "defaultValue": false,
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
       },
       {
         "type": "color",
@@ -50,7 +55,9 @@ module.exports = [
         "appKey": "sunnyColorTest",
         "defaultValue": "00FF00",
         "label": "Sunny Color",
-        "sunlight": true
+        "sunlight": true,
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
       }
     ]
   },
@@ -71,7 +78,9 @@ module.exports = [
           { "label": "One really long thing that would not fit", "value": "three" },
           { "label": "Small", "value": "quote' \"test" },
           { "label": "Final thing", "value": "three" }
-        ]
+        ],
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
       },
       {
         "type": "checkboxgroup",
@@ -84,7 +93,9 @@ module.exports = [
           { "label": "One really long thing that would not fit", "value": "three" },
           { "label": "Small", "value": "quote' \"test" },
           { "label": "Final thing", "value": "three" }
-        ]
+        ],
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
       },
       {
         "type": "input",
@@ -108,7 +119,9 @@ module.exports = [
         ],
         "attributes": {
           "required": "required"
-        }
+        },
+        "description": "Some arbitrary text explaining how this all works. " +
+                       "It's cool if this wraps across multiple lines"
       }
     ]
   },
