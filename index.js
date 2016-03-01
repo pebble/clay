@@ -29,11 +29,17 @@ function Clay(config, customFn, options) {
   self.config = config;
   self.customFn = customFn || function() {};
   self.components = {};
+  self.meta = {
+    activeWatchInfo: null,
+    accountToken: '',
+    watchToken: ''
+  };
 
   // Let Clay handle all the magic
   if (options.autoHandleEvents !== false && typeof Pebble !== 'undefined') {
 
     Pebble.addEventListener('showConfiguration', function() {
+      _populateMeta();
       Pebble.openURL(self.generateUrl());
     });
 
@@ -49,6 +55,23 @@ function Clay(config, customFn, options) {
         console.log(JSON.stringify(error));
       });
     });
+  } else if (typeof Pebble !== 'undefined') {
+    Pebble.addEventListener('ready', function() {
+      _populateMeta();
+    });
+  }
+
+  /**
+   * Populate the meta with data from the Pebble object. Make sure to run this inside
+   * either the "showConfiguration" or "ready" event handler
+   * @return {void}
+   */
+  function _populateMeta() {
+    self.meta = {
+      activeWatchInfo: Pebble.getActiveWatchInfo && Pebble.getActiveWatchInfo(),
+      accountToken: Pebble.getAccountToken(),
+      watchToken: Pebble.getWatchToken()
+    };
   }
 
   /**
@@ -107,7 +130,8 @@ Clay.prototype.generateUrl = function() {
     .replace('$$CUSTOM_FN$$', toSource(this.customFn))
     .replace('$$CONFIG$$', toSource(this.config))
     .replace('$$SETTINGS$$', toSource(settings))
-    .replace('$$COMPONENTS$$', toSource(this.components));
+    .replace('$$COMPONENTS$$', toSource(this.components))
+    .replace('$$META$$', toSource(this.meta));
 
   // if we are in the emulator then we need to proxy the data via a webpage to
   // obtain the return_to.

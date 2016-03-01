@@ -1,4 +1,4 @@
-<div class="component component-color">
+<div class="component component-color tap-highlight">
   <label>
     <input
       data-manipulator-target

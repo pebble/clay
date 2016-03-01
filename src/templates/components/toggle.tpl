@@ -1,5 +1,5 @@
 <div class="component component-toggle">
-  <label>
+  <label class="tap-highlight">
     <span class="label">{{{label}}}</span>
     <span class="input">
       <input

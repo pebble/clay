@@ -3,9 +3,7 @@
 
 .component-radio {
 
-  @include tap-highlight(rgba(0,0,0,0));
   display: block;
-
 
   > .label {
     display: block;
@@ -16,7 +14,6 @@
 
     label {
       padding: $item-spacing-v / 2 0;
-      @include tap-highlight();
     }
 
     .label {
@@ -39,7 +36,7 @@
       flex-shrink: 0;
     }
 
-    input:checked ~ i {
+    input:checked + i {
       border-color: $color-orange;
       
       &:after {
