@@ -1,4 +1,4 @@
-<div class="component component-button">
+<div class="component component-submit">
   <button
     data-manipulator-target
     type="submit"

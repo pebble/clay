@@ -8,6 +8,7 @@
     $triangle-size: 0.85rem;
     position: relative;
     padding-right: $triangle-size + 0.25rem;
+    display: block;
 
     &:after {
       content: "";
