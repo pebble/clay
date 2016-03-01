@@ -103,6 +103,7 @@ gulp.task('dev-js', ['js', 'sass'], function() {
     .transform(stringify(stringifyOptions))
     .transform('deamdify')
     .transform(sassify, sassifyOptions)
+    .transform(autoprefixify, autoprefixerOptions)
     .bundle()
     .pipe(source('dev.js'))
     .pipe(gulp.dest('./tmp/'));

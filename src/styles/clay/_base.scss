@@ -83,9 +83,12 @@ label {
   }
 }
 
+.tap-highlight {
+  @include tap-highlight();
+}
+
 .component {
   padding-bottom: $item-spacing-v;
-  @include tap-highlight();
 
   &.disabled {
     opacity: 0.25;
@@ -108,10 +111,10 @@ label {
     &:last-child,
     &:first-child {
       padding-bottom: $item-spacing-v;
-      
-      &:after {
-        display: none;
-      }
+    }
+
+    &:last-child:after {
+      display: none;
     }
 
     &:after {
@@ -130,6 +133,10 @@ label {
   .component-heading:first-child {
     background: $color-gray-3;
     border-radius: $border-radius $border-radius 0 0;
+
+    &:after {
+      display: none;
+    }
   }
 
 }
@@ -160,7 +167,7 @@ a {
     .input {
       display: table-cell;
     }
-    
+
     .input {
       text-align: right;
     }

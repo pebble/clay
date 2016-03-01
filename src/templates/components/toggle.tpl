@@ -1,4 +1,4 @@
-<label class="component component-toggle">
+<label class="component component-toggle tap-highlight">
   <span class="label">{{{label}}}</span>
   <span class="input">
     <input
