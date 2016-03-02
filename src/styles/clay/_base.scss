@@ -17,7 +17,7 @@ html, body {
 
 body {
   background-color: $color-gray-2;
-  padding: $item-spacing-v $item-spacing-h;
+  padding: 0 $item-spacing-h $item-spacing-v;
 }
 
 h1, h2, h3, h4 {
@@ -105,7 +105,7 @@ label {
 }
 
 .component {
-  padding-bottom: $item-spacing-v;
+  padding-top: $item-spacing-v;
 
   &.disabled {
     pointer-events: none;
@@ -118,14 +118,18 @@ label {
 .section {
   background: $color-gray-4;
   border-radius: 0.25rem;
-  margin-bottom: 1rem;
   box-shadow: $color-gray-1 0 0.15rem 0.25rem;
 
   > .component {
-    padding-top: $item-spacing-v;
+    padding-bottom: $item-spacing-v;
     padding-right: $item-spacing-h;
     padding-left: $item-spacing-h;
     position: relative;
+    margin-top: 1rem;
+
+    &:not(.hide) ~ .component {
+      margin-top: 0;
+    }
 
     &:last-child,
     &:first-child {
