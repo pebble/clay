@@ -107,7 +107,7 @@ label {
 .component {
   padding-bottom: $item-spacing-v;
 
-  &.disabled {
+  &.disabled > * {
     opacity: 0.25;
     pointer-events: none;
   }
@@ -130,7 +130,7 @@ label {
       padding-bottom: $item-spacing-v;
     }
 
-    &:last-child:after {
+    &:first-child:after {
       display: none;
     }
 
@@ -139,7 +139,7 @@ label {
       background: $color-gray-6;
       display: block;
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: $item-spacing-h / 2;
       right: $item-spacing-h / 2;
       height: 1px;
@@ -151,7 +151,8 @@ label {
     background: $color-gray-3;
     border-radius: $border-radius $border-radius 0 0;
 
-    &:after {
+    &:after,
+    & + .component:after {
       display: none;
     }
   }
