@@ -136,11 +136,6 @@ label {
       margin-top: 0;
     }
 
-    &:last-child,
-    &:first-child {
-      padding-bottom: $item-spacing-v;
-    }
-
     &:first-child:after {
       display: none;
     }
