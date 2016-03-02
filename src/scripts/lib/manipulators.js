@@ -18,6 +18,22 @@ function enable() {
   return this.trigger('enabled');
 }
 
+/**
+ * @returns {ClayEvents}
+ */
+function hide() {
+  this.$element.set('+hide');
+  return this.trigger('hide');
+}
+
+/**
+ * @returns {ClayEvents}
+ */
+function show() {
+  this.$element.set('-hide');
+  return this.trigger('show');
+}
+
 module.exports = {
   html: {
     get: function() {
@@ -26,7 +42,9 @@ module.exports = {
     set: function(value) {
       this.$manipulatorTarget.set('innerHTML', value);
       return this.trigger('change');
-    }
+    },
+    hide: hide,
+    show: show
   },
   val: {
     get: function() {
@@ -37,7 +55,9 @@ module.exports = {
       return this.trigger('change');
     },
     disable: disable,
-    enable: enable
+    enable: enable,
+    hide: hide,
+    show: show
   },
   checked: {
     get: function() {
@@ -48,7 +68,9 @@ module.exports = {
       return this.trigger('change');
     },
     disable: disable,
-    enable: enable
+    enable: enable,
+    hide: hide,
+    show: show
   },
   radiogroup: {
     get: function() {
@@ -61,7 +83,9 @@ module.exports = {
       return this.trigger('change');
     },
     disable: disable,
-    enable: enable
+    enable: enable,
+    hide: hide,
+    show: show
   },
   checkboxgroup: {
     get: function() {
@@ -83,7 +107,9 @@ module.exports = {
       return self.trigger('change');
     },
     disable: disable,
-    enable: enable
+    enable: enable,
+    hide: hide,
+    show: show
   },
   color: {
     get: function() {
@@ -99,6 +125,8 @@ module.exports = {
       return this.trigger('change');
     },
     disable: disable,
-    enable: enable
+    enable: enable,
+    hide: hide,
+    show: show
   }
 };

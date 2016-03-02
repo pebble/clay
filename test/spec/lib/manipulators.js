@@ -7,7 +7,7 @@ var fixture = require('../../fixture');
 describe('manipulators', function() {
 
   /**
-   * @param {string|Clay~ConfigItem} itemType
+   * @param {string|Object} itemType
    * @param {*} value
    * @param {*} [expected]
    * @return {void}
@@ -31,7 +31,7 @@ describe('manipulators', function() {
   }
 
   /**
-   * @param {string|Clay~ConfigItem} itemType
+   * @param {string|Object} itemType
    * @return {void}
    */
   function testDisable(itemType) {
@@ -57,7 +57,7 @@ describe('manipulators', function() {
   }
 
   /**
-   * @param {string} itemType
+   * @param {string|Object} itemType
    * @return {void}
    */
   function testEnable(itemType) {
@@ -84,14 +84,71 @@ describe('manipulators', function() {
     });
   }
 
+  /**
+   * @param {string|Object} itemType
+   * @return {void}
+   */
+  function testHide(itemType) {
+    describe('.hide()', function() {
+      it('hides the field then triggers a "hide" event', function() {
+        var handlerSpy = sinon.spy();
+        var clayItem = fixture.clayItem(itemType);
+        clayItem.on('hide', handlerSpy);
+
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('hide'),
+          false
+        );
+        clayItem.hide();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('hide'),
+          true
+        );
+        assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
+        assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');
+      });
+    });
+  }
+
+  /**
+   * @param {string|Object} itemType
+   * @return {void}
+   */
+  function testShow(itemType) {
+    describe('.show()', function() {
+      it('shows the field then triggers a "show" event', function() {
+        var handlerSpy = sinon.spy();
+        var clayItem = fixture.clayItem(itemType);
+        clayItem.on('show', handlerSpy);
+
+        clayItem.hide();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('hide'),
+          true
+        );
+        clayItem.show();
+        assert.strictEqual(
+          clayItem.$element[0].classList.contains('hide'),
+          false
+        );
+        assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
+        assert(handlerSpy.calledOn(clayItem), 'handler not called on clayItem');
+      });
+    });
+  }
+
   describe('html', function() {
-    testSetGet('footer', 'test123');
+    testSetGet('text', 'test123');
+    testShow('text');
+    testHide('text');
   });
 
   describe('val', function() {
     testSetGet('input', 'test321');
     testDisable('input');
     testEnable('input');
+    testShow('text');
+    testHide('text');
   });
 
   describe('checked', function() {
@@ -101,6 +158,8 @@ describe('manipulators', function() {
     testSetGet('toggle', 0);
     testDisable('toggle');
     testEnable('toggle');
+    testShow('toggle');
+    testHide('toggle');
   });
 
   describe('radiogroup', function() {
@@ -118,6 +177,8 @@ describe('manipulators', function() {
     testSetGet(item, 'three "quote');
     testDisable(item);
     testEnable(item);
+    testShow(item);
+    testHide(item);
   });
 
   describe('checkboxgroup', function() {
@@ -136,6 +197,8 @@ describe('manipulators', function() {
     testSetGet(item, false, []);
     testDisable(item);
     testEnable(item);
+    testShow(item);
+    testHide(item);
   });
 
   describe('color', function() {
@@ -149,5 +212,7 @@ describe('manipulators', function() {
     testSetGet('color', undefined, 0x000000);
     testDisable('color');
     testEnable('color');
+    testShow('color');
+    testHide('color');
   });
 });

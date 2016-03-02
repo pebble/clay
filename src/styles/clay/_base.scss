@@ -17,7 +17,7 @@ html, body {
 
 body {
   background-color: $color-gray-2;
-  padding: $item-spacing-v $item-spacing-h;
+  padding: 0 $item-spacing-h $item-spacing-v;
 }
 
 h1, h2, h3, h4 {
@@ -48,6 +48,19 @@ h5 {
 
 h6 {
   @include font-size(0.8);
+}
+
+strong {
+  @include font-pfdin(medium);
+  color: $color-orange;
+}
+
+a {
+  color: $color-gray-8;
+
+  &:hover {
+    color: inherit;
+  }
 }
 
 label {
@@ -83,37 +96,47 @@ label {
   }
 }
 
+.hide {
+  display: none !important;
+}
+
 .tap-highlight {
   @include tap-highlight();
 }
 
 .component {
-  padding-bottom: $item-spacing-v;
+  padding-top: $item-spacing-v;
 
   &.disabled {
-    opacity: 0.25;
     pointer-events: none;
+    > * {
+      opacity: 0.25;
+    }
   }
 }
 
 .section {
   background: $color-gray-4;
   border-radius: 0.25rem;
-  margin-bottom: 1rem;
   box-shadow: $color-gray-1 0 0.15rem 0.25rem;
 
-  .component {
-    padding-top: $item-spacing-v;
+  > .component {
+    padding-bottom: $item-spacing-v;
     padding-right: $item-spacing-h;
     padding-left: $item-spacing-h;
     position: relative;
+    margin-top: 1rem;
+
+    &:not(.hide) ~ .component {
+      margin-top: 0;
+    }
 
     &:last-child,
     &:first-child {
       padding-bottom: $item-spacing-v;
     }
 
-    &:last-child:after {
+    &:first-child:after {
       display: none;
     }
 
@@ -122,7 +145,7 @@ label {
       background: $color-gray-6;
       display: block;
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: $item-spacing-h / 2;
       right: $item-spacing-h / 2;
       height: 1px;
@@ -130,28 +153,30 @@ label {
     }
   }
 
-  .component-heading:first-child {
+  // don't show the separator for the first non-hidden item
+  > .component:not(.hide):after {
+    display: none;
+  }
+
+  > .component:not(.hide) ~ .component:not(.hide):after {
+    display: block;
+  }
+
+  > .component-heading:first-child {
     background: $color-gray-3;
     border-radius: $border-radius $border-radius 0 0;
 
-    &:after {
+    // don't show the separator for the first non-hidden item after the heading
+    &:after,
+    ~ .component:not(.hide):after {
       display: none;
+    }
+
+    ~ .component:not(.hide) ~ .component:not(.hide):after {
+      display: block;
     }
   }
 
-}
-
-strong {
-  @include font-pfdin(medium);
-  color: $color-orange;
-}
-
-a {
-  color: $color-gray-8;
-
-  &:hover {
-    color: inherit;
-  }
 }
 
 .inputs {
