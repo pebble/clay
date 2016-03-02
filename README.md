@@ -449,60 +449,75 @@ The submit button for the page. You **MUST** include this component somewhere in
 
 ## Manipulators 
 
-Each component has a **manipulator**. This is a set of methods used to talk to the item on the page. At a minimum, manipulators must have a `.get()` and `.set(value)` method. When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`.
+Each component has a **manipulator**. This is a set of methods used to talk to the item on the page. 
+At a minimum, manipulators must have a `.get()` and `.set(value)` method however there are also methods to assist in interactivity such as `.hide()` and `.disable()`. 
+**NOTE:** There is currently no way to disable or hide an entire section. You must disable/hide each item in the section to achieve this effect. 
+When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. 
+Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`.
 
 #### html
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string\|HTML] value)` | `ClayItem` | `change` | Sets the content of this item. |
-| `.get()` | `string` | Gets the content of this item. |
+| `.get()` | `string` | | Gets the content of this item. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### val
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string] value)` | `ClayItem` | `change` | Sets the value of this item. |
-| `.get()` |  `string` | Gets the content of this item. |
+| `.get()` |  `string` | | Gets the content of this item. |
 | `.disable()` |  `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` |  `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### checked
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [boolean\|int] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
-| `.get()` | `int` | 1 if checked, 0 if not checked |
+| `.get()` | `int` | | 1 if checked, 0 if not checked |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### color
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string\|int] value)` | `ClayItem` | `change` | Sets the color picker to the provided color. If the value is a string, it must be provided in hex notation eg `'FF0000'`. |
-| `.get()` | `int` | Get the chosen color. This is returned as a number in order to make it easy to use on the watch side using `GColorFromHEX()`. |
+| `.get()` | `int` | | Get the chosen color. This is returned as a number in order to make it easy to use on the watch side using `GColorFromHEX()`. |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### radiogroup
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string] value)` | `ClayItem` | `change` | Checks the radio button that corresponds to the provided value. |
-| `.get()` |  `string` | Gets the value of the checked radio button in the list. |
+| `.get()` |  `string` | | Gets the value of the checked radio button in the list. |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### checkboxgroup
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `Array.<string>` | Gets an array of strings representing the list of the values of the checked items |
+| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
-
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 # Extending Clay
 
@@ -597,7 +612,13 @@ module.exports = function(minified) {
     var coolStuffToggle = Clay.getItemByAppKey('cool_stuff');
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
+    
+    // Hide the color picker for aplite
+    if (Clay.meta.activeWatchInfo.platform === 'aplite') {
+      Clay.getItemByAppKey('background').hide();
+    }
   });
+  
 };
 ```
 
