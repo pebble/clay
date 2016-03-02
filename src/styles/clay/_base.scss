@@ -20,6 +20,23 @@ body {
   padding: $item-spacing-v $item-spacing-h;
 }
 
+em {
+  font-style: italic;
+}
+
+strong {
+  @include font-pfdin(medium);
+  color: $color-orange;
+}
+
+a {
+  color: $color-gray-8;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
 h1, h2, h3, h4 {
   text-transform: uppercase;
   @include font-pfdin(medium);
@@ -107,11 +124,6 @@ label {
     position: relative;
     padding: $item-spacing-v $item-spacing-h;
 
-    //&:last-child,
-    //&:first-child {
-    //  padding-bottom: $item-spacing-v;
-    //}
-
     &:last-child:after {
       display: none;
     }
@@ -140,19 +152,6 @@ label {
 
 }
 
-strong {
-  @include font-pfdin(medium);
-  color: $color-orange;
-}
-
-a {
-  color: $color-gray-8;
-
-  &:hover {
-    color: inherit;
-  }
-}
-
 .description {
   padding: 0 $item-spacing-h $item-spacing-v ;
   @include font-size(0.9);
@@ -163,49 +162,5 @@ a {
   display: block;
   width:100%;
   border-collapse: collapse;
-
-  //.section & .component {
-  //  display: table;
-  //  width:100%;
-  //
-  //  .label,
-  //  .input {
-  //    display: table-cell;
-  //  }
-  //
-  //  .input {
-  //    text-align: right;
-  //  }
-  //
-  //  &.invalid {
-  //    .input:after {
-  //      content: "!";
-  //      display: inline-block;
-  //      color: $color-white;
-  //      background: $color-orange;
-  //      border-radius: $border-radius;
-  //      width: 1.2em;
-  //      text-align: center;
-  //      height: 1.2em;
-  //      font-size: 1em;
-  //      vertical-align: middle;
-  //      line-height: 1.3em;
-  //      margin-left: -0.7em;
-  //      position:absolute;
-  //      @include font-pfdin(regular);
-  //    }
-  //
-  //    .input input {
-  //      color: $color-orange;
-  //      padding-right: 1em;
-  //
-  //      @include placeholder {
-  //        color: $color-orange;
-  //      }
-  //
-  //    }
-  //  }
-  //
-  //}
 }
 
