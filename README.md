@@ -67,7 +67,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
 
 ## Components
 
-![Example](src/images/example.png)
+<img src="src/images/example.png" width="360" title="Example">
 
 ### Section
 
