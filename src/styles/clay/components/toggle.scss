@@ -6,6 +6,10 @@
   $slide-width: $small-component-width;
   $marker-diameter: $base-height;
 
+  .section & {
+    padding: 0;
+  }
+
   input {
     display: none; // @todo make sure this doesn't mess up interactivity on iOS
   }

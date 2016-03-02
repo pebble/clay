@@ -77,7 +77,7 @@ describe('ClayItem', function() {
   describe('.$element', function() {
     it('sets $element correctly', function() {
       var clayItem = fixture.clayItem('input');
-      assert.strictEqual(clayItem.$element[0].tagName, 'LABEL');
+      assert.strictEqual(clayItem.$element[0].classList.contains('component'), true);
     });
   });
 

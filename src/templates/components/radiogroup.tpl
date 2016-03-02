@@ -15,4 +15,7 @@
       </label>
     {{/each}}
   </div>
+  {{if description}}
+    <div class="description">{{{description}}}</div>
+  {{/if}}
 </div>

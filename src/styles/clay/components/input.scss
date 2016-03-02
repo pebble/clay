@@ -2,7 +2,13 @@
 
 .component-input {
 
-  display: block;
+  .section & {
+    padding: 0;
+  }
+
+  label {
+    display: block;
+  }
 
   .label {
     padding-bottom: $item-spacing-v;

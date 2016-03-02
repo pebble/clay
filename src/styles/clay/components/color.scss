@@ -2,6 +2,10 @@
 
 .component-color {
 
+  .section & {
+    padding: 0;
+  }
+
   .value {
     width: $small-component-width;
     height: $base-height;

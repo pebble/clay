@@ -67,7 +67,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
 
 ## Components
 
-![Example](src/images/example.png)
+<img src="src/images/example.png" width="360" title="Example">
 
 ### Section
 
@@ -178,6 +178,7 @@ Standard text input field.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attributes such as `required` or `type`. |
 
 
@@ -215,6 +216,7 @@ Switch for a single item.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 
 
@@ -249,6 +251,7 @@ A dropdown menu containing multiple options.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
 
@@ -301,6 +304,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
+| description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
 
 ##### Example
@@ -332,6 +336,7 @@ A list of options allowing the user can only choose one option to submit.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
 
@@ -376,6 +381,7 @@ A list of options where a user may choose more than one option to submit.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
 
