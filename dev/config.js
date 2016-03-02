@@ -98,15 +98,6 @@ module.exports = [
                        "It's cool if this wraps across multiple lines"
       },
       {
-        "type": "input",
-        "appKey": "date",
-        "defaultValue": "",
-        "label": "Range",
-        "attributes": {
-          type: "range"
-        }
-      },
-      {
         "type": "select",
         "appKey": "flavor",
         "defaultValue": "grape",

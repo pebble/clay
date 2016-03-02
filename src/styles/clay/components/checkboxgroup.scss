@@ -5,6 +5,10 @@
 
   display: block;
 
+  .section & {
+    padding-right: $item-spacing-h / 2;
+  }
+
   > .label {
     display: block;
     padding-bottom: $item-spacing-v / 2;
@@ -12,13 +16,14 @@
 
   .checkbox-group {
 
+    padding-bottom: $item-spacing-v / 2;
+
     label {
-      padding: $item-spacing-v / 2 0;
+      padding: $item-spacing-v / 2 $item-spacing-h / 2;
     }
 
     .label {
       font-size: 0.9em;
-      padding: 0 $item-spacing-h / 2;
     }
 
     input {
@@ -56,6 +61,10 @@
 
       }
     }
+  }
 
+  .description {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

@@ -1,12 +1,15 @@
-<label class="component component-input tap-highlight">
-  <span class="label">{{{label}}}</span>
-  <span class="input">
-    <input
+<div class="component component-input">
+  <label class="tap-highlight">
+    <span class="label">{{{label}}}</span>
+    <span class="input">
+      <input
       data-manipulator-target
-      {{each key: attributes}}{{key}}="{{this}}"{{/each}}
+        {{each key: attributes}}{{key}}="{{this}}"{{/each}}
     />
-  </span>
+    </span>
+  </label>
+
   {{if description}}
     <div class="description">{{{description}}}</div>
   {{/if}}
-</label>
+</div>

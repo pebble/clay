@@ -1,5 +1,5 @@
-<div class="component component-color tap-highlight">
-  <label>
+<div class="component component-color">
+  <label class="tap-highlight">
     <input
       data-manipulator-target
       type="hidden"

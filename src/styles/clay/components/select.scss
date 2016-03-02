@@ -3,6 +3,10 @@
 
 .component-select {
 
+  .section & {
+    padding: 0;
+  }
+
   label {
     position: relative;
   }
@@ -19,7 +23,7 @@
       right: 0;
       top: 50%;
       margin-top: -0.1rem;
-      @include triangle($triangle-size, $color-gray-10, down);
+      @include triangle($triangle-size, $color-orange, down);
     }
   }
 

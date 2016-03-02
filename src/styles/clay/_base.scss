@@ -54,6 +54,7 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: $item-spacing-v $item-spacing-h;
 
   .input {
     white-space: nowrap;
@@ -103,15 +104,13 @@ label {
   box-shadow: $color-gray-1 0 0.15rem 0.25rem;
 
   .component {
-    padding-top: $item-spacing-v;
-    padding-right: $item-spacing-h;
-    padding-left: $item-spacing-h;
     position: relative;
+    padding: $item-spacing-v $item-spacing-h;
 
-    &:last-child,
-    &:first-child {
-      padding-bottom: $item-spacing-v;
-    }
+    //&:last-child,
+    //&:first-child {
+    //  padding-bottom: $item-spacing-v;
+    //}
 
     &:last-child:after {
       display: none;
@@ -155,7 +154,7 @@ a {
 }
 
 .description {
-  padding-top: $item-spacing-v;
+  padding: 0 $item-spacing-h $item-spacing-v ;
   @include font-size(0.9);
   color: $color-gray-9;
 }
