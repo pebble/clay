@@ -24,40 +24,32 @@ module.exports = [
         "type": "input",
         "appKey": "email",
         "defaultValue": "",
-        "label": "Email",
+        "label": "Input Field",
+        "description": "This is a description for the input component. " +
+                       "You can add <strong>html</strong> in here too.",
         "attributes": {
-          "placeholder": "eg: name@domain.com",
-          "limit": 10,
-          "required": "required",
-          type: "email"
-        },
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
-
+          "placeholder": "Placeholder set with attributes"
+        }
       },
       {
         "type": "toggle",
         "appKey": "cool_stuff",
-        "label": "Enable Cool Stuff",
-        "defaultValue": false,
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
+        "label": "This is a Toggle",
+        "defaultValue": false
       },
       {
         "type": "color",
         "appKey": "colorTest",
         "defaultValue": "FF0000",
-        "label": "Background Color",
+        "label": "Standard Color Picker",
         "sunlight": false
       },
       {
         "type": "color",
         "appKey": "sunnyColorTest",
         "defaultValue": "00FF00",
-        "label": "Sunny Color",
-        "sunlight": true,
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
+        "label": "Sunny Color Picker",
+        "sunlight": true
       }
     ]
   },
@@ -71,48 +63,38 @@ module.exports = [
       {
         "type": "radiogroup",
         "appKey": "radiogroup-test",
-        "label": "Radio test",
+        "label": "Radio Group",
         "options": [
-          { "label": "Test thing one", "value": "one" },
+          { "label": "Test thing", "value": "one" },
           { "label": "Another thing", "value": "two" },
-          { "label": "One really long thing that would not fit", "value": "three" },
-          { "label": "Small", "value": "quote' \"test" },
-          { "label": "Final thing", "value": "three" }
-        ],
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
+          { "label": "Final thing with <em>html</em>", "value": "three" }
+        ]
       },
       {
         "type": "checkboxgroup",
         "appKey": "checkboxgroup-test",
         "defaultValue": ["quote' \"test", "two"],
-        "label": "Checkbox test",
+        "label": "Checkbox Group",
         "options": [
-          { "label": "Test <strong>thing</strong> one", "value": "one" },
+          { "label": "First thing", "value": "three" },
           { "label": "Another thing", "value": "two" },
-          { "label": "One really long thing that would not fit", "value": "three" },
-          { "label": "Small", "value": "quote' \"test" },
           { "label": "Final thing", "value": "three" }
-        ],
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
+        ]
       },
       {
         "type": "select",
         "appKey": "flavor",
         "defaultValue": "grape",
-        "label": "Favorite Flavor",
+        "label": "Select Menu",
         "options": [
           { "label": "", "value": "" },
           { "label": "Berry", "value": "berry" },
-          { "label": "Grape", "value": "grape" },
+          { "label": "This Option is Selected", "value": "grape" },
           { "label": "Banana", "value": "banana" }
         ],
         "attributes": {
           "required": "required"
-        },
-        "description": "Some arbitrary text explaining how this all works. " +
-                       "It's cool if this wraps across multiple lines"
+        }
       }
     ]
   },
