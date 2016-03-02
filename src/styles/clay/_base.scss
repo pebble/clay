@@ -107,9 +107,11 @@ label {
 .component {
   padding-bottom: $item-spacing-v;
 
-  &.disabled > * {
-    opacity: 0.25;
+  &.disabled {
     pointer-events: none;
+    > * {
+      opacity: 0.25;
+    }
   }
 }
 
@@ -119,7 +121,7 @@ label {
   margin-bottom: 1rem;
   box-shadow: $color-gray-1 0 0.15rem 0.25rem;
 
-  .component {
+  > .component {
     padding-top: $item-spacing-v;
     padding-right: $item-spacing-h;
     padding-left: $item-spacing-h;
@@ -147,13 +149,27 @@ label {
     }
   }
 
-  .component-heading:first-child {
+  // don't show the separator for the first non-hidden item
+  > .component:not(.hide):after {
+    display: none;
+  }
+
+  > .component:not(.hide) ~ .component:not(.hide):after {
+    display: block;
+  }
+
+  > .component-heading:first-child {
     background: $color-gray-3;
     border-radius: $border-radius $border-radius 0 0;
 
+    // don't show the separator for the first non-hidden item after the heading
     &:after,
-    & + .component:after {
+    ~ .component:not(.hide):after {
       display: none;
+    }
+
+    ~ .component:not(.hide) ~ .component:not(.hide):after {
+      display: block;
     }
   }
 
