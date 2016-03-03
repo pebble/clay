@@ -9,7 +9,7 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 Clay will eventually be built into the Pebble SDK. However, while it is still in beta you will need to follow the steps shown below:
 
-1. Download the Clay distribution file from: [dist/clay.js](dist/clay.js).
+1. Download the **clay.js** distribution file from the [latest release](/releases/latest).
 2. Drop `clay.js` in your project's `src/js` directory. 
 3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
 4. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
