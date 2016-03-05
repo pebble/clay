@@ -572,7 +572,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
 |----------|------|-------------|
 | `.config` | Array | Reference to the config passed to the constructor and used for generating the page. **WARNING** this is a direct reference, not a copy of the config so any modification you make to it, will be reflected on the original as well |
 | `.customFn` | Function | Reference to the custom function passed to the constructor. **WARNING** this is a direct reference, not a copy of the custom function so any modification you make to it, will be reflected on the original as well |
-| `.meta` | Object | Contains information about the current user and watch |
+| `.meta` | Object | Contains information about the current user and watch. **WARNING** This will only be populated in the `showConfiguration` event handler. (See example above) |
 | `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
 | `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
 | `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
