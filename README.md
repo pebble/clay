@@ -416,8 +416,6 @@ A list of options where a user may choose more than one option to submit.
 
 **Manipulator:** [`button`](#button)
 
-The submit button for the page. You **MUST** include this component somewhere in the config page (traditionally at the bottom) or users will not be able to save the form. 
-
 ##### Properties
 
 | Property | Type | Description |
