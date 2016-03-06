@@ -6,7 +6,8 @@ module.exports = {
   style: require('../../styles/clay/components/color.scss'),
   manipulator: 'color',
   defaults: {
-    label: ''
+    label: '',
+    description: ''
   },
   initialize: function(minified) {
     var HTML = minified.HTML;

@@ -2,12 +2,20 @@
 @import "clay";
 
 .component-select {
-  position: relative;
+
+  .section & {
+    padding: 0;
+  }
+
+  label {
+    position: relative;
+  }
 
   .value {
     $triangle-size: 0.85rem;
     position: relative;
     padding-right: $triangle-size + 0.25rem;
+    display: block;
 
     &:after {
       content: "";
@@ -15,7 +23,7 @@
       right: 0;
       top: 50%;
       margin-top: -0.1rem;
-      @include triangle($triangle-size, $color-gray-10, down);
+      @include triangle($triangle-size, $color-orange, down);
     }
   }
 

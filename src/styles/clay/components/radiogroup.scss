@@ -3,9 +3,11 @@
 
 .component-radio {
 
-  @include tap-highlight(rgba(0,0,0,0));
   display: block;
 
+  .section & {
+    padding-right: $item-spacing-h / 2;
+  }
 
   > .label {
     display: block;
@@ -14,14 +16,14 @@
 
   .radio-group {
 
+    padding-bottom: $item-spacing-v / 2;
+
     label {
-      padding: $item-spacing-v / 2 0;
-      @include tap-highlight();
+      padding: $item-spacing-v / 2 $item-spacing-h / 2;
     }
 
     .label {
       font-size: 0.9em;
-      padding: 0 $item-spacing-h / 2;
     }
 
     input {
@@ -39,7 +41,7 @@
       flex-shrink: 0;
     }
 
-    input:checked ~ i {
+    input:checked + i {
       border-color: $color-orange;
       
       &:after {
@@ -57,5 +59,10 @@
       }
     }
 
+  }
+
+  .description {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

@@ -7,6 +7,7 @@ module.exports = {
   manipulator: 'checked',
   defaults: {
     label: '',
+    description: '',
     attributes: {}
   }
 };

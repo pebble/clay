@@ -7,6 +7,7 @@ module.exports = {
   manipulator: 'val',
   defaults: {
     label: '',
+    description: '',
     attributes: {}
   }
 };

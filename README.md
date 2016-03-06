@@ -9,7 +9,7 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 Clay will eventually be built into the Pebble SDK. However, while it is still in beta you will need to follow the steps shown below:
 
-1. Download the Clay distribution file from: [dist/clay.js](dist/clay.js).
+1. Download the **clay.js** distribution file from the [latest release](https://github.com/pebble/clay/releases/latest).
 2. Drop `clay.js` in your project's `src/js` directory. 
 3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
 4. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
@@ -27,7 +27,7 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
 Clay will eventually be built into CloudPebble. However while it is still in beta, you will need to follow some steps
 
 1. Create a new JavaScript file called `clay.js`.
-2. Copy the contents of the Clay distribution file from [dist/clay.js](dist/clay.js) into your newly created `clay.js` file.
+2. Copy the contents from the **clay.js** distribution file found in the [latest release](https://github.com/pebble/clay/releases/latest) into your newly created `clay.js` file.
 3. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
 
   ```javascript
@@ -67,7 +67,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
 
 ## Components
 
-![Example](src/images/example.png)
+<img src="src/images/example.png" width="360" title="Example">
 
 ### Section
 
@@ -178,6 +178,7 @@ Standard text input field.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attributes such as `required` or `type`. |
 
 
@@ -215,6 +216,7 @@ Switch for a single item.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 
 
@@ -249,6 +251,7 @@ A dropdown menu containing multiple options.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
 
@@ -301,6 +304,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
+| description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
 
 ##### Example
@@ -332,6 +336,7 @@ A list of options allowing the user can only choose one option to submit.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
 
@@ -376,6 +381,7 @@ A list of options where a user may choose more than one option to submit.
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
+| description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
 
@@ -443,60 +449,75 @@ The submit button for the page. You **MUST** include this component somewhere in
 
 ## Manipulators 
 
-Each component has a **manipulator**. This is a set of methods used to talk to the item on the page. At a minimum, manipulators must have a `.get()` and `.set(value)` method. When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`.
+Each component has a **manipulator**. This is a set of methods used to talk to the item on the page. 
+At a minimum, manipulators must have a `.get()` and `.set(value)` method however there are also methods to assist in interactivity such as `.hide()` and `.disable()`. 
+**NOTE:** There is currently no way to disable or hide an entire section. You must disable/hide each item in the section to achieve this effect. 
+When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. 
+Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`.
 
 #### html
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string\|HTML] value)` | `ClayItem` | `change` | Sets the content of this item. |
-| `.get()` | `string` | Gets the content of this item. |
+| `.get()` | `string` | | Gets the content of this item. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### val
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string] value)` | `ClayItem` | `change` | Sets the value of this item. |
-| `.get()` |  `string` | Gets the content of this item. |
+| `.get()` |  `string` | | Gets the content of this item. |
 | `.disable()` |  `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` |  `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### checked
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [boolean\|int] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
-| `.get()` | `int` | 1 if checked, 0 if not checked |
+| `.get()` | `int` | | 1 if checked, 0 if not checked |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### color
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string\|int] value)` | `ClayItem` | `change` | Sets the color picker to the provided color. If the value is a string, it must be provided in hex notation eg `'FF0000'`. |
-| `.get()` | `int` | Get the chosen color. This is returned as a number in order to make it easy to use on the watch side using `GColorFromHEX()`. |
+| `.get()` | `int` | | Get the chosen color. This is returned as a number in order to make it easy to use on the watch side using `GColorFromHEX()`. |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### radiogroup
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [string] value)` | `ClayItem` | `change` | Checks the radio button that corresponds to the provided value. |
-| `.get()` |  `string` | Gets the value of the checked radio button in the list. |
+| `.get()` |  `string` | | Gets the value of the checked radio button in the list. |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 #### checkboxgroup
 
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `Array.<string>` | Gets an array of strings representing the list of the values of the checked items |
+| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
-
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
 
 # Extending Clay
 
@@ -591,7 +612,13 @@ module.exports = function(minified) {
     var coolStuffToggle = Clay.getItemByAppKey('cool_stuff');
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
+    
+    // Hide the color picker for aplite
+    if (Clay.meta.activeWatchInfo.platform === 'aplite') {
+      Clay.getItemByAppKey('background').hide();
+    }
   });
+  
 };
 ```
 

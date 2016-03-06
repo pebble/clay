@@ -8,6 +8,7 @@ module.exports = {
   defaults: {
     label: '',
     options: [],
+    description: '',
     attributes: {}
   },
   initialize: function() {
@@ -15,8 +16,10 @@ module.exports = {
 
     var $value = self.$element.select('.value');
 
-    self.on('change', function(ev) {
-      var value = self.$manipulatorTarget.select('option:checked').get('innerHTML');
+    self.on('change', function() {
+      var selectedIndex = self.$manipulatorTarget.get('selectedIndex');
+      var $options = self.$manipulatorTarget.select('option');
+      var value = $options[selectedIndex] && $options[selectedIndex].innerHTML;
       $value.set('innerHTML', value);
     });
   }
