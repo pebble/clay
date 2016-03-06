@@ -46,6 +46,19 @@ module.exports = {
     hide: hide,
     show: show
   },
+  button: {
+    get: function() {
+      return this.$manipulatorTarget.get('innerHTML');
+    },
+    set: function(value) {
+      this.$manipulatorTarget.set('innerHTML', value);
+      return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable,
+    hide: hide,
+    show: show
+  },
   val: {
     get: function() {
       return this.$manipulatorTarget.get('value');

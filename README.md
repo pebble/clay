@@ -108,7 +108,7 @@ Sections help divide up the page into logical groups of items. It is recommended
 
 ### Heading
 
-**Manipulator:** `html`
+**Manipulator:** [`html`](#html)
 
 Headings can be used in anywhere and can have their size adjusted to suit the context. If you place a heading item at the first position of a section's `items` array then it will automatically be styled as the header for that section. 
 
@@ -138,7 +138,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 
 ### Text
 
-**Manipulator:** `html`
+**Manipulator:** [`html`](#html)
 
 Text is used to provide descriptions of sections or to explain complex parts of your page. Feel free to add any extra HTML you require to the `defaultValue` 
 
@@ -165,7 +165,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 
 ### Input
 
-**Manipulator:** `val`
+**Manipulator:** [`val`](#val)
 
 Standard text input field. 
 
@@ -203,7 +203,7 @@ Standard text input field.
 
 #### Toggle
 
-**Manipulator:** `checked`
+**Manipulator:** [`checked`](#checked)
 
 Switch for a single item. 
 
@@ -238,7 +238,7 @@ Switch for a single item.
 
 #### Select
 
-**Manipulator:** `val`
+**Manipulator:** [`val`](#val)
 
 A dropdown menu containing multiple options.
 
@@ -291,7 +291,7 @@ A dropdown menu containing multiple options.
 
 #### Color
 
-**Manipulator:** `color`
+**Manipulator:** [`color`](#color)
 
 A color picker containing the 64 supported colors on Basalt and Chalk.
 
@@ -323,7 +323,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 
 #### RadioGroup
 
-**Manipulator:** `radiogroup`
+**Manipulator:** [`radiogroup`](#radiogroup)
 
 A list of options allowing the user can only choose one option to submit.
 
@@ -368,7 +368,7 @@ A list of options allowing the user can only choose one option to submit.
 
 #### CheckboxGroup
 
-**Manipulator:** `checkboxgroup`
+**Manipulator:** [`checkboxgroup`](#checkboxgroup)
 
 A list of options where a user may choose more than one option to submit.
 
@@ -412,9 +412,37 @@ A list of options where a user may choose more than one option to submit.
 
 ---
 
+### Generic Button
+
+**Manipulator:** [`button`](#button)
+
+The submit button for the page. You **MUST** include this component somewhere in the config page (traditionally at the bottom) or users will not be able to save the form. 
+
+##### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| type | string | Set to `button`. |
+| defaultValue | string | The text displayed on the button. |
+| primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
+| attributes | object | An object containing HTML attributes to set on the input field. |
+| description | string | Optional sub-text to include below the component |
+
+##### Example
+
+```javascript
+{
+  "type": "button",
+  "primary": true,
+  "defaultValue": "Send"
+}
+```
+
+---
+
 ### Submit
 
-**Manipulator:** `html`
+**Manipulator:** [`button`](#button)
 
 The submit button for the page. You **MUST** include this component somewhere in the config page (traditionally at the bottom) or users will not be able to save the form. 
 
@@ -440,7 +468,6 @@ The submit button for the page. You **MUST** include this component somewhere in
 ### Coming Soon
 
 - Range Slider
-- Generic Button
 - Tabs
 - Footer
 - Dynamic + draggable list
@@ -461,6 +488,17 @@ Many of these methods fire an event when the method is called. You can listen fo
 |--------|---------|-------------| ------------|
 | `.set( [string\|HTML] value)` | `ClayItem` | `change` | Sets the content of this item. |
 | `.get()` | `string` | | Gets the content of this item. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
+
+#### button
+
+| Method | Returns | Event Fired | Description | 
+|--------|---------|-------------| ------------|
+| `.set( [string\|HTML] value)` | `ClayItem` | `change` | Sets the content of this item. |
+| `.get()` | `string` | | Gets the content of this item. |
+| `.disable()` |  `ClayItem` | `disabled` | Prevents this item from being clicked by the user. |
+| `.enable()` |  `ClayItem` | `enabled` | Allows this item to be clicked by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
 | `.show()` | `ClayItem` | `show` | Shows the item |
 
