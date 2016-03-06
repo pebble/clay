@@ -321,7 +321,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 
 ---
 
-#### RadioGroup
+#### Radio Group
 
 **Manipulator:** [`radiogroup`](#radiogroup)
 
@@ -366,7 +366,7 @@ A list of options allowing the user can only choose one option to submit.
 
 ---
 
-#### CheckboxGroup
+#### Checkbox Group
 
 **Manipulator:** [`checkboxgroup`](#checkboxgroup)
 
