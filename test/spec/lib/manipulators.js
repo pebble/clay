@@ -168,10 +168,10 @@ describe('manipulators', function() {
   });
 
   describe('checked', function() {
-    testSetGet({type: 'toggle', defaultValue: 0}, true, 1);
-    testSetGet({type: 'toggle', defaultValue: 0}, 1);
-    testSetGet({type: 'toggle', defaultValue: 1}, false, 0);
-    testSetGet({type: 'toggle', defaultValue: 1}, 0);
+    testSetGet({type: 'toggle', defaultValue: false}, 1, true);
+    testSetGet({type: 'toggle', defaultValue: false}, true);
+    testSetGet({type: 'toggle', defaultValue: true}, 0, false);
+    testSetGet({type: 'toggle', defaultValue: true}, false);
     testDisable('toggle');
     testEnable('toggle');
     testShow('toggle');
