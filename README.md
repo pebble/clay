@@ -306,6 +306,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 | defaultValue | string OR int | The default color. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
+| layout | 2D Array | The layout to use for the color picker. Any items must be either a hex string (6 characters, lowercase, no leading `#`s, all sub-arrays must have the same length) or `false`. Example: `[["ff0000", "00ff00", "0000ff", false, "ffffff", "000000"]]` |
 
 ##### Example
 
@@ -315,7 +316,10 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
   "appKey": "background",
   "defaultValue": "FF0000",
   "label": "Background Color",
-  "sunlight": true
+  "sunlight": true,
+  "layout": [[false,    '00ffff', false   ],
+             ['00aaff', '55aaff', '0055ff'],
+             [false,    '0000aa', false   ]]
 }
 ```
 
