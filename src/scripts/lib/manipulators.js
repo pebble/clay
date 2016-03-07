@@ -62,6 +62,7 @@ module.exports = {
       return this.$manipulatorTarget.get('innerHTML');
     },
     set: function(value) {
+      if (this.get() === value.toString(10)) { return this; }
       this.$manipulatorTarget.set('innerHTML', value);
       return this.trigger('change');
     },
