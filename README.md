@@ -565,7 +565,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
 | `Clay( [array] config, [function] customFn=null, [object] options={autoHandleEvents: true})` <br> `config` - an Array representing your config <br> `customFn` - function to be run in the context of the generated page <br> `options.autoHandleEvents` - set to `false` to prevent Clay from automatically handling the "showConfiguration" and "webviewclosed" events | `Clay` - a new instance of Clay. |
 | `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`. |  
 | `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()` to use the Clay-generated config page. |
-| `.getSettings(response)` <br> `response` - the response object provided to the "webviewclosed" event | `Object` - object of keys and values for each config page item with an `appKey`, where the key is the `appKey` and the value is the chosen value of that item. |
+| `.getSettings(response)` <br> `response` - the response object provided to the "webviewclosed" event | `Object` - object of keys and values for each config page item with an `appKey`, where the key is the `appKey` and the value is the chosen value of that item. This method may do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0` |
 
 ---
 
