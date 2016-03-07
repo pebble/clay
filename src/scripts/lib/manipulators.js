@@ -61,7 +61,7 @@ module.exports = {
   },
   checked: {
     get: function() {
-      return this.$manipulatorTarget.get('checked') ? 1 : 0;
+      return this.$manipulatorTarget.get('checked');
     },
     set: function(value) {
       this.$manipulatorTarget.set('checked', !!value);

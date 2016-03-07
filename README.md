@@ -480,7 +480,7 @@ Many of these methods fire an event when the method is called. You can listen fo
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [boolean\|int] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
-| `.get()` | `int` | | 1 if checked, 0 if not checked |
+| `.get()` | `boolean` | | `true` if checked, `false` if not. **NOTE** this will be converted to a `1` or `0` when sent to the watch. See [`ClayConfig.getSettings()`](#methods-1) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
@@ -513,7 +513,7 @@ Many of these methods fire an event when the method is called. You can listen fo
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items |
+| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items. **NOTE:** each item in the array will be separated by a zero when sent to the watch. See [`ClayConfig.getSettings()`](#methods-1) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
