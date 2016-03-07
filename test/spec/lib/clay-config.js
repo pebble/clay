@@ -108,7 +108,12 @@ describe('ClayConfig', function() {
             {label: 'label-1', value: 'val-1'},
             {label: 'label-2', value: 'val-2'}
           ]},
-          {type: 'toggle', appKey: 'test3'}
+          {type: 'toggle', appKey: 'test3'},
+          {type: 'checkboxgroup', appKey: 'test4', options: [
+            {label: 'label-1', value: 'cb-1'},
+            {label: 'label-2', value: 'cb-2'},
+            {label: 'label-2', value: 'cb-3'}
+          ]}
         ],
         true,
         true,
@@ -120,16 +125,19 @@ describe('ClayConfig', function() {
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'default val',
         test2: 'val-2',
-        test3: 0
+        test3: 0,
+        test4: []
       });
 
       clayConfig.getItemByAppKey('test1').set('val-1');
       clayConfig.getItemByAppKey('test3').set(true);
+      clayConfig.getItemByAppKey('test4').set(['cb-1', 'cb-3']);
 
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'val-1',
         test2: 'val-2',
-        test3: 1
+        test3: 1,
+        test4: ['cb-1', 0, 'cb-3', 0]
       });
     });
   });
