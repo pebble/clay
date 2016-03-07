@@ -144,8 +144,18 @@ describe('manipulators', function() {
 
   describe('html', function() {
     testSetGet('text', 'test123');
+    testSetGet('button', '<span>some HTML</span>');
     testShow('text');
     testHide('text');
+  });
+
+  describe('button', function() {
+    testSetGet('button', 'test123');
+    testSetGet('button', '<span>some HTML</span>');
+    testDisable('button');
+    testEnable('button');
+    testShow('button');
+    testHide('button');
   });
 
   describe('val', function() {

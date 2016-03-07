@@ -57,6 +57,20 @@ module.exports = {
     hide: hide,
     show: show
   },
+  button: {
+    get: function() {
+      return this.$manipulatorTarget.get('innerHTML');
+    },
+    set: function(value) {
+      if (this.get() === value.toString(10)) { return this; }
+      this.$manipulatorTarget.set('innerHTML', value);
+      return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable,
+    hide: hide,
+    show: show
+  },
   val: {
     get: function() {
       return this.$manipulatorTarget.get('value');
