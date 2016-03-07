@@ -452,8 +452,12 @@ The submit button for the page. You **MUST** include this component somewhere in
 Each component has a **manipulator**. This is a set of methods used to talk to the item on the page. 
 At a minimum, manipulators must have a `.get()` and `.set(value)` method however there are also methods to assist in interactivity such as `.hide()` and `.disable()`. 
 **NOTE:** There is currently no way to disable or hide an entire section. You must disable/hide each item in the section to achieve this effect. 
+
 When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. 
-Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`.
+
+Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`. 
+**NOTE** These events will only be fired if the state actually changes. 
+Eg: If you run the `.show()` manipulator on an item that is already visible, the `show` event will not be triggered.
 
 #### html
 
