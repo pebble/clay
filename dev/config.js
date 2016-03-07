@@ -50,6 +50,14 @@ module.exports = [
         "defaultValue": "00FF00",
         "label": "Sunny Color Picker",
         "sunlight": true
+      },
+      {
+        type: 'button',
+        id: 'testButton',
+        primary: false,
+        defaultValue: 'Generic Button',
+        description: 'This is a generic button. ' +
+                     'You can listen for standard events like "click"'
       }
     ]
   },

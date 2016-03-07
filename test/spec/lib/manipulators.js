@@ -19,9 +19,10 @@ describe('manipulators', function() {
       it('sets: "' + value + '" and gets: "' + expected + '" then triggers "change"',
       function() {
         var handlerSpy = sinon.spy();
-        var clayItem = fixture.clayItem(itemType);
+        var clayItem = fixture.clayConfig([itemType]).getAllItems()[0];
         clayItem.on('change', handlerSpy);
 
+        clayItem.set(value);
         clayItem.set(value);
         assert.deepEqual(clayItem.get(), expected);
         assert.strictEqual(handlerSpy.callCount, 1, 'handler not called once');
@@ -44,6 +45,7 @@ describe('manipulators', function() {
           clayItem.$element[0].classList.contains('disabled'),
           false
         );
+        clayItem.disable();
         clayItem.disable();
         assert.strictEqual(
           clayItem.$element[0].classList.contains('disabled'),
@@ -73,6 +75,7 @@ describe('manipulators', function() {
           true
         );
         clayItem.enable();
+        clayItem.enable();
         assert.strictEqual(
           clayItem.$element[0].classList.contains('disabled'),
           false
@@ -99,6 +102,7 @@ describe('manipulators', function() {
           clayItem.$element[0].classList.contains('hide'),
           false
         );
+        clayItem.hide();
         clayItem.hide();
         assert.strictEqual(
           clayItem.$element[0].classList.contains('hide'),
@@ -127,6 +131,7 @@ describe('manipulators', function() {
           true
         );
         clayItem.show();
+        clayItem.show();
         assert.strictEqual(
           clayItem.$element[0].classList.contains('hide'),
           false
@@ -139,12 +144,23 @@ describe('manipulators', function() {
 
   describe('html', function() {
     testSetGet('text', 'test123');
+    testSetGet('button', '<span>some HTML</span>');
     testShow('text');
     testHide('text');
   });
 
+  describe('button', function() {
+    testSetGet('button', 'test123');
+    testSetGet('button', '<span>some HTML</span>');
+    testDisable('button');
+    testEnable('button');
+    testShow('button');
+    testHide('button');
+  });
+
   describe('val', function() {
     testSetGet('input', 'test321');
+    testSetGet('input', 1234, '1234');
     testDisable('input');
     testEnable('input');
     testShow('text');
@@ -152,10 +168,10 @@ describe('manipulators', function() {
   });
 
   describe('checked', function() {
-    testSetGet('toggle', true);
-    testSetGet('toggle', 1, true);
-    testSetGet('toggle', false);
-    testSetGet('toggle', 0, false);
+    testSetGet({type: 'toggle', defaultValue: false}, 1, true);
+    testSetGet({type: 'toggle', defaultValue: false}, true);
+    testSetGet({type: 'toggle', defaultValue: true}, 0, false);
+    testSetGet({type: 'toggle', defaultValue: true}, false);
     testDisable('toggle');
     testEnable('toggle');
     testShow('toggle');
@@ -185,6 +201,7 @@ describe('manipulators', function() {
     var item = {
       type: 'checkboxgroup',
       clayId: 1,
+      defaultValue: ['two'],
       options: [
         { label: '1', value: 'one' },
         { label: '2', value: 'two' },
@@ -207,9 +224,9 @@ describe('manipulators', function() {
     testSetGet('color', '0xFF0000', 0xff0000);
     testSetGet('color', '#ff0000', 0xff0000);
     testSetGet('color', 0xff0000, 0xff0000);
-    testSetGet('color', '', 0x000000);
-    testSetGet('color', false, 0x000000);
-    testSetGet('color', undefined, 0x000000);
+    testSetGet({type: 'color', defaultValue: 0x00ff00}, '', 0x000000);
+    testSetGet({type: 'color', defaultValue: 0x00ff00}, false, 0x000000);
+    testSetGet({type: 'color', defaultValue: 0x00ff00}, undefined, 0x000000);
     testDisable('color');
     testEnable('color');
     testShow('color');

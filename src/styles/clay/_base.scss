@@ -183,6 +183,7 @@ label {
   padding: 0 $item-spacing-h $item-spacing-v ;
   @include font-size(0.9);
   color: $color-gray-9;
+  text-align: left;
 }
 
 .inputs {

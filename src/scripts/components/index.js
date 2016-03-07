@@ -10,5 +10,6 @@ module.exports = {
   text: require('./text'),
   toggle: require('./toggle'),
   radiogroup: require('./radiogroup'),
-  checkboxgroup: require('./checkboxgroup')
+  checkboxgroup: require('./checkboxgroup'),
+  button: require('./button')
 };

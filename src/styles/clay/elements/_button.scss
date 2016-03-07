@@ -3,52 +3,30 @@
 button,
 .button {
   @include font-pfdin(medium);
+  @include font-size(1);
   text-transform: uppercase;
-  background-color: $color-gray-4;
+  background-color: $color-gray-7;
   border-radius: $border-radius;
-  font-size: 1rem;
-  line-height: 1;
   border: none;
   display: inline-block;
 
   color: $color-white;
   min-width: 12rem;
   text-align: center;
-  margin: 0 auto;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-
+  margin: 0 auto $item-spacing-v;
   padding: $button-padding;
+
+  @include tap-highlight($color-gray-8);
 
   .platform-ios & {
     padding: $button-padding-ios;
   }
 
-  &:disabled {
-    background-color: $color-gray-3;
-    color: $color-gray-8;
-  }
-
-  &:not(:disabled):active {
-    background-color: $color-gray-8;
-  }
-
-  &.orange, &[type="submit"] {
+  &.primary, &[type="submit"] {
     background-color: $color-orange;
 
-    &:disabled {
-      background-color: $color-orange-dark;
-      color: $color-gray-3;
-    }
-
-    &:not(:disabled):active {
-      background-color: $color-red;
-    }
+    @include tap-highlight($color-red);
   }
-
-  &.light-grey {
-    background-color: $color-gray-5;
-  }
-
 }
 
 a.button {

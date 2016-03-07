@@ -3,7 +3,7 @@
 var assert = require('chai').assert;
 var fixture = require('../../fixture');
 
-describe('component - color', function() {
+describe('component - select', function() {
   it('sets the value display to the correct value on change', function() {
     var clayConfig = fixture.clayConfig([
       {
