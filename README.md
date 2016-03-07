@@ -536,15 +536,23 @@ Example:
 ```javascript
 var Clay = require('./clay');
 var clayConfig = require('./config');
+var clayConfigAplite = require('./config-aplite');
 var clay = new Clay(clayConfig, null, { autoHandleEvents: false });
 
 Pebble.addEventListener('showConfiguration', function(e) {
+  
+  // This is an example of how you might load a different config based on platform.
+  var platform = clay.meta.activeWatchInfo.platform || 'aplite';
+  if (platform === 'aplite') {
+    clay.config = clayConfigAplite;
+  }
+  
   Pebble.openURL(clay.generateUrl());
 });
 
 Pebble.addEventListener('webviewclosed', function(e) {
-  if (e && !e.response) { 
-    return; 
+  if (e && !e.response) {
+    return;
   }
 
   // Get the keys and values from each config item
@@ -561,6 +569,17 @@ Pebble.addEventListener('webviewclosed', function(e) {
 ```
 
 ### `Clay([Array] config, [function] customFn, [object] options)`
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `.config` | Array | Reference to the config passed to the constructor and used for generating the page. **WARNING** this is a direct reference, not a copy of the config so any modification you make to it, will be reflected on the original as well |
+| `.customFn` | Function | Reference to the custom function passed to the constructor. **WARNING** this is a direct reference, not a copy of the custom function so any modification you make to it, will be reflected on the original as well |
+| `.meta` | Object | Contains information about the current user and watch. **WARNING** This will only be populated in the `showConfiguration` event handler. (See example above) |
+| `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
+| `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
+| `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
 
 #### Methods
 
@@ -599,27 +618,27 @@ var clay = new Clay(clayConfig, customClay);
 
 ```javascript
 module.exports = function(minified) {
-  var Clay = this;
+  var clayConfig = this;
   var _ = minified._;
   var $ = minified.$;
   var HTML = minified.HTML;
 
   function toggleBackground() {
     if (this.get()) {
-      Clay.getItemByAppKey('background').enable();
+      clayConfig.getItemByAppKey('background').enable();
     } else {
-      Clay.getItemByAppKey('background').disable();
+      clayConfig.getItemByAppKey('background').disable();
     }
   }
 
-  Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
-    var coolStuffToggle = Clay.getItemByAppKey('cool_stuff');
+  clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
+    var coolStuffToggle = clayConfig.getItemByAppKey('cool_stuff');
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
     
     // Hide the color picker for aplite
-    if (Clay.meta.activeWatchInfo.platform === 'aplite') {
-      Clay.getItemByAppKey('background').hide();
+    if (!clayConfig.meta.activeWatchInfo || clayConfig.meta.activeWatchInfo.platform === 'aplite') {
+      clayConfig.getItemByAppKey('background').hide();
     }
   });
   
@@ -630,7 +649,7 @@ module.exports = function(minified) {
 
 ### `ClayConfig([Object] settings, [Array] config, [$Minified] $rootContainer)`
 
-This is the main way of talking to your generated config page.
+This is the main way of talking to your generated config page. An instance of this class will be passed as the context of your custom function when it runs on the generated config page. 
 
 #### Properties
 
