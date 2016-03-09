@@ -133,7 +133,7 @@ module.exports = {
 
       values.map(function(value) {
         self.$element
-          .select('input[value="' + value.replace('"', '\\"') + '"]')
+          .select('input[value="' + value.toString(10).replace('"', '\\"') + '"]')
           .set('checked', true);
       });
       return self.trigger('change');
