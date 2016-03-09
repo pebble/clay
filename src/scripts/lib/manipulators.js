@@ -85,6 +85,21 @@ module.exports = {
     hide: hide,
     show: show
   },
+  slider: {
+    get: function() {
+      return parseFloat(this.$manipulatorTarget.get('value'));
+    },
+    set: function(value) {
+      var initVal = this.get();
+      this.$manipulatorTarget.set('value', value);
+      if (this.get() === initVal) { return this; }
+      return this.trigger('change');
+    },
+    disable: disable,
+    enable: enable,
+    hide: hide,
+    show: show
+  },
   checked: {
     get: function() {
       return this.$manipulatorTarget.get('checked');

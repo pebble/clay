@@ -170,6 +170,26 @@ describe('manipulators', function() {
     testHide(type);
   });
 
+  describe('slider', function() {
+    var type = {
+      type: 'slider',
+      min: 0,
+      max: 100,
+      step: 0.1
+    };
+
+    testSetGet(type, '12', 12);
+    testSetGet(type, 12);
+    testSetGet(type, '12.3', 12.3);
+    testSetGet(type, 12.3);
+    testSetGet(type, 12.34, 12.3);
+    testSetGet(type, '12.34', 12.3);
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
+  });
+
   describe('checked', function() {
     var type = 'toggle';
     testSetGet({type: type, defaultValue: false}, 1, true);
