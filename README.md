@@ -520,7 +520,7 @@ Eg: If you run the `.show()` manipulator on an item that is already visible, the
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [boolean\|int] value)` | `ClayItem` | `change` | Check/uncheck the state of this item. |
-| `.get()` | `boolean` | | `true` if checked, `false` if not. **NOTE** this will be converted to a `1` or `0` when sent to the watch. See [`ClayConfig.getSettings()`](#methods-1) |
+| `.get()` | `boolean` | | `true` if checked, `false` if not. **NOTE** this will be converted to a `1` or `0` when sent to the watch. See [`ClayConfig.getSettings()`](#methods) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
@@ -624,7 +624,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
 | `Clay( [array] config, [function] customFn=null, [object] options={autoHandleEvents: true})` <br> `config` - an Array representing your config <br> `customFn` - function to be run in the context of the generated page <br> `options.autoHandleEvents` - set to `false` to prevent Clay from automatically handling the "showConfiguration" and "webviewclosed" events | `Clay` - a new instance of Clay. |
 | `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`. |  
 | `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()` to use the Clay-generated config page. |
-| `.getSettings(response)` <br> `response` - the response object provided to the "webviewclosed" event | `Object` - object of keys and values for each config page item with an `appKey`, where the key is the `appKey` and the value is the chosen value of that item. |
+| `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `appKey`, where the key is the `appKey` and the value is the chosen value of that item.  This method will do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`, Pass `false` as the second parameter to disable this behavior |
 
 ---
 
@@ -708,7 +708,7 @@ This is the main way of talking to your generated config page. An instance of th
 | `.getItemByAppKey( [string] appKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `appKey`, otherwise `undefined`. |
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id`, otherwise `undefined`. |
 | `.getItemsByType( [string] type )` | `Array.<ConfigItem>` - an array of config items that match the provided `type`. |
-| `.getSettings()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is the result of running `.get()` on the Clay item. This method may do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0` |
+| `.getSettings()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is the result of running `.get()` on the Clay item. |
 | `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. | `ClayConfig` |
 | `.on( [string] events, [function] handler )` <br> Register an event to the provided handler. The handler will be called with this instance of `ClayConfig` as the context. If you wish to register multiple events to the same handler, then separate the events with a space | `ClayConfig` |
 | `.off( [function] handler )` <br> Remove the given event handler. **NOTE:** This will remove the handler from all registered events. | `ClayConfig` |

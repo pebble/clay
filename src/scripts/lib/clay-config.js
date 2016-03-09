@@ -158,7 +158,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   self.getSettings = function() {
     _checkBuilt('getSettings');
     _.eachObj(_itemsByAppKey, function(appKey, item) {
-      _settings[appKey] = utils.prepareForAppMessage(item.get());
+      _settings[appKey] = item.get();
     });
     return _settings;
   };
