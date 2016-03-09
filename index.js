@@ -3,6 +3,7 @@
 var configPageHtml = require('./tmp/config-page.html');
 var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
+var utils = require('./src/scripts/lib/utils');
 
 /**
  * @param {Array} config - the Clay config
@@ -149,9 +150,10 @@ Clay.prototype.generateUrl = function() {
 /**
  * Parse the response from the webviewclosed event data
  * @param {string} response
+ * @param {boolean} [convert=true]
  * @returns {Object}
  */
-Clay.prototype.getSettings = function(response) {
+Clay.prototype.getSettings = function(response, convert) {
   // Decode and parse config data as JSON
   var settings = {};
 
@@ -162,7 +164,8 @@ Clay.prototype.getSettings = function(response) {
   }
 
   localStorage.setItem('clay-settings', JSON.stringify(settings));
-  return settings;
+
+  return convert === false ? settings : utils.prepareSettingsForAppMessage(settings);
 };
 
 /**

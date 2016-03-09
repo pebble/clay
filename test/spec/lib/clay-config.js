@@ -101,31 +101,29 @@ describe('ClayConfig', function() {
 
   describe('.getSettings()', function() {
     it('returns the correct settings', function() {
-      var clayConfig = fixtures.clayConfig(
-        [
-          {type: 'input', appKey: 'test1', defaultValue: 'default val'},
-          {type: 'select', appKey: 'test2', options: [
-            {label: 'label-1', value: 'val-1'},
-            {label: 'label-2', value: 'val-2'}
-          ]},
-          {type: 'toggle', appKey: 'test3'},
-          {type: 'checkboxgroup', appKey: 'test4', options: [
-            {label: 'label-1', value: 'cb-1'},
-            {label: 'label-2', value: 'cb-2'},
-            {label: 'label-2', value: 'cb-3'}
-          ]}
-        ],
-        true,
-        true,
-        {
-          test2: 'val-2' // set one of the values via settings
-        }
-      );
+      var config = [
+        {type: 'input', appKey: 'test1', defaultValue: 'default val'},
+        {type: 'select', appKey: 'test2', options: [
+          {label: 'label-1', value: 'val-1'},
+          {label: 'label-2', value: 'val-2'}
+        ]},
+        {type: 'toggle', appKey: 'test3'},
+        {type: 'checkboxgroup', appKey: 'test4', options: [
+          {label: 'label-1', value: 'cb-1'},
+          {label: 'label-2', value: 'cb-2'},
+          {label: 'label-2', value: 'cb-3'}
+        ]}
+      ];
+      var settings = {
+        test2: 'val-2'
+      };
+
+      var clayConfig = fixtures.clayConfig(config, true, true, settings);
 
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'default val',
         test2: 'val-2',
-        test3: 0,
+        test3: false,
         test4: []
       });
 
@@ -136,8 +134,15 @@ describe('ClayConfig', function() {
       assert.deepEqual(clayConfig.getSettings(), {
         test1: 'val-1',
         test2: 'val-2',
-        test3: 1,
-        test4: ['cb-1', 0, 'cb-3', 0]
+        test3: true,
+        test4: ['cb-1', 'cb-3']
+      });
+
+      // make sure the result of getSettings() can actually be fed back in to
+      // a new instance of ClayConfig
+      assert.doesNotThrow(function() {
+        settings = clayConfig.getSettings();
+        fixtures.clayConfig(config, true, true, settings);
       });
     });
   });

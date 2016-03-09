@@ -86,6 +86,7 @@ gulp.task('clay', ['inlineHtml'], function() {
     debug: false,
     standalone: 'clay'
   })
+    .transform('deamdify')
     .transform(stringify(stringifyOptions))
     .transform(sassify, sassifyOptions)
     .transform(autoprefixify, autoprefixerOptions)

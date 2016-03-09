@@ -254,6 +254,47 @@ describe('Clay', function() {
       }, /Not Valid JSON/i);
       assert.equal(localStorage.getItem('clay-settings'), '{"appKey":"value"}');
     });
+
+    it('Prepares the settings for sendAppMessage', function() {
+      var clay = fixture.clay([]);
+      var response = encodeURIComponent(JSON.stringify({
+        test1: false,
+        test2: 'val-2',
+        test3: true,
+        test4: ['cb-1', 'cb-3'],
+        test5: 12345,
+        test6: [1, 2, 3, 4],
+        test7: [true, false, true]
+      }));
+      var expected = {
+        test1: 0,
+        test2: 'val-2',
+        test3: 1,
+        test4: ['cb-1', 0, 'cb-3', 0],
+        test5: 12345,
+        test6: [1, 2, 3, 4],
+        test7: [1, 0, 1]
+      };
+
+      assert.deepEqual(clay.getSettings(response), expected);
+    });
+
+    it('does not prepare the settings for sendAppMessage if convert is false',
+    function() {
+      var clay = fixture.clay([]);
+      var settings = {
+        test1: false,
+        test2: 'val-2',
+        test3: true,
+        test4: ['cb-1', 'cb-3'],
+        test5: 12345,
+        test6: [1, 2, 3, 4],
+        test7: [true, false, true]
+      };
+      var response = encodeURIComponent(JSON.stringify(settings));
+
+      assert.deepEqual(clay.getSettings(response, false), settings);
+    });
   });
 
   describe('.meta', function() {

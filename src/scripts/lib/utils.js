@@ -53,3 +53,18 @@ module.exports.prepareForAppMessage = function(val) {
 
   return result;
 };
+
+/**
+ * Converts a Clay settings dict into one that is compatible with
+ * Pebble.sendAppMessage();
+ * @see {prepareForAppMessage}
+ * @param {Object} settings
+ * @returns {{}}
+ */
+module.exports.prepareSettingsForAppMessage = function(settings) {
+  var result = {};
+  Object.keys(settings).forEach(function(key) {
+    result[key] = module.exports.prepareForAppMessage(settings[key]);
+  });
+  return result;
+};
