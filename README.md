@@ -556,7 +556,7 @@ Eg: If you run the `.show()` manipulator on an item that is already visible, the
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items. **NOTE:** each item in the array will be separated by a zero when sent to the watch. See [`ClayConfig.getSettings()`](#methods-1) |
+| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items. **NOTE:** each item in the array will be separated by a zero when sent to the watch. See [`ClayConfig.getSettings()`](#methods) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
