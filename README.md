@@ -53,7 +53,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
 #### Example
 
 ```javascript
-[
+module.exports = [
   { 
     "type": "heading", 
     "defaultValue": "Example Header Item" 
@@ -62,7 +62,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
     "type": "text", 
     "defaultValue": "Example text item." 
   }
-]
+];
 ```
 
 ## Components
