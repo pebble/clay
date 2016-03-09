@@ -24,7 +24,8 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
 
 # Getting Started (CloudPebble)
 
-Clay will eventually be built into CloudPebble. However while it is still in beta, you will need to follow some steps
+Clay will eventually be built into CloudPebble. However while it is still in beta, you will need to follow some steps.
+NOTE these are similar to using the SDK but instead of a data file called config.json, a javascript file config.js is required.
 
 1. Create a new JavaScript file called `clay.js`.
 2. Copy the contents from the **clay.js** distribution file found in the [latest release](https://github.com/pebble/clay/releases/latest) into your newly created `clay.js` file.
@@ -51,6 +52,8 @@ Clay uses JavaScript object notation (or JSON) to generate the config page for y
 Your root element **must** be an array. This represents the entire page. Inside this array you place your config items. Each config item is an object with some properties that configure how each item should be displayed. 
 
 #### Example
+
+NOTE for config.js (rather than config.json) a leading `module.exports =` is required.
 
 ```javascript
 [
