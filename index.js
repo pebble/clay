@@ -4,6 +4,7 @@ var configPageHtml = require('./tmp/config-page.html');
 var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
 var utils = require('./src/scripts/lib/utils');
+var deepcopy = require('deepcopy/build/deepcopy.min');
 
 /**
  * @param {Array} config - the Clay config
@@ -27,7 +28,7 @@ function Clay(config, customFn, options) {
 
   options = options || {};
 
-  self.config = config;
+  self.config = deepcopy(config);
   self.customFn = customFn || function() {};
   self.components = {};
   self.meta = {

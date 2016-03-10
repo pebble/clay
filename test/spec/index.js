@@ -135,6 +135,15 @@ describe('Clay', function() {
     });
   });
 
+  describe('.config', function() {
+    it('is a copy not a reference', function() {
+      var config = fixture.config(['input', 'text', 'color']);
+      var clay = fixture.clay(config);
+      assert.notStrictEqual(clay.config, config);
+      assert.deepEqual(clay.config, config);
+    });
+  });
+
   describe('.registerComponent()', function() {
     it('adds the component to the this.components', function() {
       var clay = fixture.clay([]);
