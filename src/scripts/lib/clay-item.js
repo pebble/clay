@@ -59,7 +59,7 @@ function ClayItem(config) {
   };
 
   // attach event methods
-  ClayEvents.call(self, self.$element);
+  ClayEvents.call(self, self.$manipulatorTarget);
 
   // attach the manipulator methods to the clayItem
   _.eachObj(_component.manipulator, function(methodName, method) {

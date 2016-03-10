@@ -8,7 +8,6 @@
           type="checkbox"
           value="{{this.value}}"
           name="clay-{{clayId}}"
-          data-manipulator-target
           {{each key: attributes}}{{key}}="{{this}}"{{/each}}
         />
         <i></i>
