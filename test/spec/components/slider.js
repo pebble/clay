@@ -3,7 +3,7 @@
 var assert = require('chai').assert;
 var fixture = require('../../fixture');
 
-describe('component - select', function() {
+describe('component - slider', function() {
   it('sets the value display to the correct value on set', function() {
     var clayConfig = fixture.clayConfig(['slider']);
     var sliderItem = clayConfig.getItemsByType('slider')[0];
@@ -54,5 +54,15 @@ describe('component - select', function() {
     assert.strictEqual($slider.get('value'), '50');
     $valueDisplay.set('value', 75).trigger('change');
     assert.strictEqual($slider.get('value'), '75');
+  });
+
+  it('sets the precision correctly', function() {
+    var clayConfig = fixture.clayConfig([{
+      type: 'slider',
+      step: 0.25
+    }]);
+    var sliderItem = clayConfig.getItemsByType('slider')[0];
+
+    assert.strictEqual(sliderItem.precision, 2);
   });
 });

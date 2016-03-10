@@ -29,6 +29,10 @@ module.exports = {
       $valuePad.set('innerHTML', value);
     }
 
+    var step = self.$manipulatorTarget.get('step');
+    step = step.toString(10).split('.')[1];
+    self.precision = step ? step.length : 0;
+
     self.on('change', setValueDisplay);
     setValueDisplay();
 

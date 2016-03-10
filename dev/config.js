@@ -38,8 +38,8 @@ module.exports = [
         "label": "Slider",
         description: "This is the description for the slider",
         "min": 10,
-        "max": 18,
-        "step": 0.5
+        "max": 20,
+        "step": 0.25
       },
       {
         "type": "toggle",

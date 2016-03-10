@@ -441,6 +441,49 @@ A list of options where a user may choose more than one option to submit.
 
 ---
 
+### Range Slider
+
+**Manipulator:** [`slider`](#slider)
+
+The range slider is used to allow users to select numbers between two values. 
+
+**NOTE** If you set the `step` property to anything less than `1`, 
+it will multiply the final value sent to the watch by 10 to the power of the number of decimal places in the value of `step`.
+Eg: If you set the `step` to `0.25` and the slider has value of `34.5`, the watch will receive `3450`. 
+The reason why this is necessary, is because you can not send floats to the watch via `Pebble.sendAppMessage()`. 
+This allows your users to still be able to input values that have decimals, 
+you must just remember to divide the received value on the watch accordingly. 
+
+##### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| type | string | Set to `slider`. |
+| defaultValue | number | The value of the slider. |
+| label | string | The label that should appear next to this item. |
+| min | number | The minimum allowed value of the slider. Defaults to `100` |
+| max | number | The maximum allowed value of the slider. Defaults to `0` |
+| step | number | The multiple of the values allowed to be set on the slider. The slider will snap to these values. This value also determines the precision used when the value is sent to the watch. Defaults to 1 |
+| attributes | object | An object containing HTML attributes to set on the input field. |
+| description | string | Optional sub-text to include below the component |
+
+##### Example
+
+```javascript
+{
+  "type": "slider",
+  "appKey": "slider",
+  "defaultValue": 15,
+  "label": "Slider",
+  "description": "This is the description for the slider",
+  "min": 10,
+  "max": 20,
+  "step": 0.25
+},
+```
+
+---
+
 ### Submit
 
 **Manipulator:** [`button`](#button)
@@ -468,7 +511,6 @@ The submit button for the page. You **MUST** include this component somewhere in
 
 ### Coming Soon
 
-- Range Slider
 - Tabs
 - Footer
 - Dynamic + draggable list
@@ -559,6 +601,17 @@ Eg: If you run the `.show()` manipulator on an item that is already visible, the
 | `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items. **NOTE:** each item in the array will be separated by a zero when sent to the watch. See [`Clay.getSettings()`](#methods) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
+| `.hide()` | `ClayItem` | `hide` | Hides the item |
+| `.show()` | `ClayItem` | `show` | Shows the item |
+
+#### slider
+
+| Method | Returns | Event Fired | Description | 
+|--------|---------|-------------| ------------|
+| `.set( [number] value)` | `ClayItem` | `change` | Sets the value of this item. |
+| `.get()` |  `number` | | Gets the value of this item. |
+| `.disable()` |  `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
+| `.enable()` |  `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
 | `.show()` | `ClayItem` | `show` | Shows the item |
 
@@ -711,7 +764,7 @@ This is the main way of talking to your generated config page. An instance of th
 | `.getItemByAppKey( [string] appKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `appKey`, otherwise `undefined`. |
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id`, otherwise `undefined`. |
 | `.getItemsByType( [string] type )` | `Array.<ConfigItem>` - an array of config items that match the provided `type`. |
-| `.getSettings()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is the result of running `.get()` on the Clay item. |
+| `.serialize()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is an object with the `value` property set to the result of running `.get()` on the Clay item. If the Clay item has a `precision` property set, it is included in the object |
 | `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. | `ClayConfig` |
 | `.on( [string] events, [function] handler )` <br> Register an event to the provided handler. The handler will be called with this instance of `ClayConfig` as the context. If you wish to register multiple events to the same handler, then separate the events with a space | `ClayConfig` |
 | `.off( [function] handler )` <br> Remove the given event handler. **NOTE:** This will remove the handler from all registered events. | `ClayConfig` |

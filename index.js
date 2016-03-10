@@ -3,7 +3,6 @@
 var configPageHtml = require('./tmp/config-page.html');
 var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
-var utils = require('./src/scripts/lib/utils');
 
 /**
  * @param {Array} config - the Clay config
@@ -163,9 +162,19 @@ Clay.prototype.getSettings = function(response, convert) {
     throw new Error('The provided response was not valid JSON');
   }
 
-  localStorage.setItem('clay-settings', JSON.stringify(settings));
+  // flatten the settings for localStorage
+  var settingsStorage = {};
+  Object.keys(settings).forEach(function(key) {
+    if (typeof settings[key] === 'object' && settings[key]) {
+      settingsStorage[key] = settings[key].value;
+    } else {
+      settingsStorage[key] = settings[key];
+    }
+  });
 
-  return convert === false ? settings : utils.prepareSettingsForAppMessage(settings);
+  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
+
+  return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
 };
 
 /**
@@ -222,6 +231,90 @@ Clay.encodeDataUri = function(input, prefix) {
   }
 
   return prefix + encodeURIComponent(out.join(''));
+};
+
+/**
+ * Converts the val into a type compatible with Pebble.sendAppMessage().
+ *  - Strings will be returned without modification
+ *  - Numbers will be returned without modification
+ *  - Booleans will be converted to a 0 or 1
+ *  - Arrays that contain strings will be split with a zero.
+ *    eg: ['one', 'two'] becomes ['one', 0, 'two', 0]
+ *  - Arrays that contain numbers will be returned without modification
+ *    eg: [1, 2] becomes [1, 2]
+ *  - Arrays that contain booleans will be converted to a 0 or 1
+ *    eg: [true, false] becomes [1, 0]
+ *  - Arrays must be single dimensional
+ *  - Objects that have a "value" property will apply the above rules to the type of
+ *    value. If the value is a number or an array of numbers and the optional
+ *    property: "precision" is provided, then the number will be multipled by 10 to
+ *    the power of precision (value * 10 ^ precision) and then floored.
+ *    Eg: 1.4567 with a precision set to 3 will become 1456
+ * @param {number|string|boolean|Array|Object} val
+ * @param {number|string|boolean|Array} val.value
+ * @param {number} [val.precision=0]
+ * @returns {number|string|Array}
+ */
+Clay.prepareForAppMessage = function(val) {
+
+  /**
+   * moves the decimal place of a number by precision then drop any remaining decimal
+   * places.
+   * @param {number} number
+   * @param {number} precision - number of decimal places to move
+   * @returns {number}
+   * @private
+   */
+  function _normalizeToPrecision(number, precision) {
+    return Math.floor(number * Math.pow(10, precision || 0));
+  }
+
+  var result;
+
+  if (Array.isArray(val)) {
+    result = [];
+    val.forEach(function(item) {
+      var itemConverted = Clay.prepareForAppMessage(item);
+      result.push(itemConverted);
+      if (typeof itemConverted === 'string') {
+        result.push(0);
+      }
+    });
+  } else if (typeof val === 'object' && val) {
+    if (typeof val.value === 'number') {
+      result = _normalizeToPrecision(val.value, val.precision);
+    } else if (Array.isArray(val.value)) {
+      result = val.value.map(function(item) {
+        if (typeof item === 'number') {
+          return _normalizeToPrecision(item, val.precision);
+        }
+        return item;
+      });
+    } else {
+      result = Clay.prepareForAppMessage(val.value);
+    }
+  } else if (typeof val === 'boolean') {
+    result = val ? 1 : 0;
+  } else {
+    result = val;
+  }
+
+  return result;
+};
+
+/**
+ * Converts a Clay settings dict into one that is compatible with
+ * Pebble.sendAppMessage();
+ * @see {prepareForAppMessage}
+ * @param {Object} settings
+ * @returns {{}}
+ */
+Clay.prepareSettingsForAppMessage = function(settings) {
+  var result = {};
+  Object.keys(settings).forEach(function(key) {
+    result[key] = Clay.prepareForAppMessage(settings[key]);
+  });
+  return result;
 };
 
 module.exports = Clay;
