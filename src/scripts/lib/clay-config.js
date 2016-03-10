@@ -155,8 +155,8 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   /**
    * @returns {Object}
    */
-  self.getSettings = function() {
-    _checkBuilt('getSettings');
+  self.serialize = function() {
+    _checkBuilt('serialize');
     _.eachObj(_itemsByAppKey, function(appKey, item) {
       _settings[appKey] = item.get();
     });

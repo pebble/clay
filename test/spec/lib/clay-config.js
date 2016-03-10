@@ -15,7 +15,7 @@ describe('ClayConfig', function() {
       'getItemByAppKey',
       'getItemById',
       'getItemsByType',
-      'getSettings',
+      'serialize',
       'registerComponent',
       'build',
       'on',
@@ -39,7 +39,7 @@ describe('ClayConfig', function() {
       'getItemByAppKey',
       'getItemById',
       'getItemsByType',
-      'getSettings'
+      'serialize'
     ].forEach(function(method) {
       it('.' + method + '()', function() {
         var clayConfig = fixtures.clayConfig(['input', 'text'], false);
@@ -99,7 +99,7 @@ describe('ClayConfig', function() {
     });
   });
 
-  describe('.getSettings()', function() {
+  describe('.serialize()', function() {
     it('returns the correct settings', function() {
       var config = [
         {type: 'input', appKey: 'test1', defaultValue: 'default val'},
@@ -120,7 +120,7 @@ describe('ClayConfig', function() {
 
       var clayConfig = fixtures.clayConfig(config, true, true, settings);
 
-      assert.deepEqual(clayConfig.getSettings(), {
+      assert.deepEqual(clayConfig.serialize(), {
         test1: 'default val',
         test2: 'val-2',
         test3: false,
@@ -131,17 +131,17 @@ describe('ClayConfig', function() {
       clayConfig.getItemByAppKey('test3').set(true);
       clayConfig.getItemByAppKey('test4').set(['cb-1', 'cb-3']);
 
-      assert.deepEqual(clayConfig.getSettings(), {
+      assert.deepEqual(clayConfig.serialize(), {
         test1: 'val-1',
         test2: 'val-2',
         test3: true,
         test4: ['cb-1', 'cb-3']
       });
 
-      // make sure the result of getSettings() can actually be fed back in to
+      // make sure the result of serialize() can actually be fed back in to
       // a new instance of ClayConfig
       assert.doesNotThrow(function() {
-        settings = clayConfig.getSettings();
+        settings = clayConfig.serialize();
         fixtures.clayConfig(config, true, true, settings);
       });
     });

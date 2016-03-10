@@ -28,7 +28,7 @@ var clayConfig = new ClayConfig(settings, config, $mainForm, clayMeta);
 $mainForm.on('submit', function() {
   // Set the return URL depending on the runtime environment
   location.href = returnTo +
-                  encodeURIComponent(JSON.stringify(clayConfig.getSettings()));
+                  encodeURIComponent(JSON.stringify(clayConfig.serialize()));
 });
 
 // Run the custom function in the context of the ClayConfig
