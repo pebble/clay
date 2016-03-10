@@ -609,6 +609,16 @@ Pebble.addEventListener('webviewclosed', function(e) {
 
 ### `Clay([Array] config, [function] customFn, [object] options)`
 
+#### Constructor Parameters
+
+| Parameter | Type | Description |
+|----------|-------|-------------|
+| `config` | Array | The config that will be used to generate the configuration page |
+| `customFn` | Function\|null | (Optional) The [custom function](#custom-function) to be injected into the generated configuration page.  |
+| `options` | Object | (Optional) See below for properties |
+| `options.autoHandleEvents` | Boolean | (Optional) Defaults to `true`. If set to `false`, Clay will not [auto handle the `showConfiguration` and `webviewclosed` events](#handling-the-showconfiguration-and-webviewclosed-events-manually) |
+| `options.userData` | Any | (Optional) Any arbitrary data you want to pass to your config page. It will be available in your custom function as `this.meta.userData` |
+
 #### Properties
 
 | Property | Type | Description |
@@ -619,6 +629,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
 | `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
 | `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
 | `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
+| `.meta.userData` | Any | A deep copy of the arbitrary data provided in the `options.userData`. Defaults to an empty object |
 
 #### Methods
 
@@ -650,7 +661,8 @@ Make sure to always wait for the config page to be built before manipulating ite
 var Clay = require('./clay');
 var clayConfig = require('./config');
 var customClay = require('./custom-clay');
-var clay = new Clay(clayConfig, customClay);
+var userData = {token: 'abc123'}
+var clay = new Clay(clayConfig, customClay, {userData: userData});
 ```
 
 ##### custom-clay.js
@@ -679,6 +691,15 @@ module.exports = function(minified) {
     if (!clayConfig.meta.activeWatchInfo || clayConfig.meta.activeWatchInfo.platform === 'aplite') {
       clayConfig.getItemByAppKey('background').hide();
     }
+    
+    // Set the value of an item based on the userData
+    $.request('get', 'https://some.cool/api', {token: clayConfig.meta.userData.token})
+      .then(function(result) {
+        // Do something interesting with the data from the server
+      })
+      .error(function(status, statusText, responseText) {
+        // Handle the error
+      });
   });
   
 };
@@ -701,6 +722,7 @@ This is the main way of talking to your generated config page. An instance of th
 | `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
 | `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
 | `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
+| `.meta.userData` | Any | The data passed in the `options.userData` of the [Clay constructor.](#clayarray-config-function-customfn-object-options) |
 
 
 #### Methods

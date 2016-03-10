@@ -11,8 +11,10 @@ var deepcopy = require('deepcopy/build/deepcopy.min');
  * @param {function} [customFn] - Custom code to run from the config page. Will run
  *   with the ClayConfig instance as context
  * @param {Object} [options] - Additional options to pass to Clay
- * @param {boolean} [options.autoHandleEvents] - If false, Clay will not
+ * @param {boolean} [options.autoHandleEvents=true] - If false, Clay will not
  *   automatically handle the 'showConfiguration' and 'webviewclosed' events
+ * @param {*} [options.userData={}] - Arbitrary data to pass to the config page. Will
+ *   be available os `clayConfig.meta.userData`
  * @constructor
  */
 function Clay(config, customFn, options) {
@@ -34,8 +36,23 @@ function Clay(config, customFn, options) {
   self.meta = {
     activeWatchInfo: null,
     accountToken: '',
-    watchToken: ''
+    watchToken: '',
+    userData: {}
   };
+
+  /**
+   * Populate the meta with data from the Pebble object. Make sure to run this inside
+   * either the "showConfiguration" or "ready" event handler
+   * @return {void}
+   */
+  function _populateMeta() {
+    self.meta = {
+      activeWatchInfo: Pebble.getActiveWatchInfo && Pebble.getActiveWatchInfo(),
+      accountToken: Pebble.getAccountToken(),
+      watchToken: Pebble.getWatchToken(),
+      userData: deepcopy(options.userData || {})
+    };
+  }
 
   // Let Clay handle all the magic
   if (options.autoHandleEvents !== false && typeof Pebble !== 'undefined') {
@@ -61,19 +78,6 @@ function Clay(config, customFn, options) {
     Pebble.addEventListener('ready', function() {
       _populateMeta();
     });
-  }
-
-  /**
-   * Populate the meta with data from the Pebble object. Make sure to run this inside
-   * either the "showConfiguration" or "ready" event handler
-   * @return {void}
-   */
-  function _populateMeta() {
-    self.meta = {
-      activeWatchInfo: Pebble.getActiveWatchInfo && Pebble.getActiveWatchInfo(),
-      accountToken: Pebble.getAccountToken(),
-      watchToken: Pebble.getWatchToken()
-    };
   }
 
   /**

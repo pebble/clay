@@ -11,12 +11,13 @@ var componentRegistry = require('../src/scripts/lib/component-registry');
 var idCounter = 0;
 
 /**
+ * @param {Object} [extra] - add/replace keys in the meta
  * @returns {{accountToken: string, watchToken: string, activeWatchInfo: {platform:
  *   string, model: string, language: string, firmware: {major: number, minor:
- *   number, patch: number, suffix: string}}}}
+ *   number, patch: number, suffix: string}}, userData: {}}}
  */
-module.exports.meta = function() {
-  return {
+module.exports.meta = function(extra) {
+  var result = {
     accountToken: '0123456789abcdef0123456789abcdef',
     watchToken: '0123456789abcdef0123456789abcdef',
     activeWatchInfo: {
@@ -29,8 +30,15 @@ module.exports.meta = function() {
         patch: 2,
         suffix: ''
       }
-    }
+    },
+    userData: {}
   };
+
+  _.eachObj(extra || {}, function(key, val) {
+    result[key] = val;
+  });
+
+  return result;
 };
 
 /**
@@ -106,6 +114,8 @@ module.exports.clayConfig = function(types, build, autoRegister, settings) {
  * @param {Object} [options] - Additional options to pass to Clay
  * @param {boolean} [options.autoHandleEvents] - If false, Clay will not
  *   automatically handle the 'showConfiguration' and 'webviewclosed' events
+ * @param {*} [options.userData={}] - Arbitrary data to pass to the config page. Will
+ *   be available os `clayConfig.meta.userData`
  * @param {boolean} [destroyLocalStorage=true]
  * @return {Clay}
  */

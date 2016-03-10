@@ -21,4 +21,6 @@ module.exports = function() {
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
   });
+
+  console.log('userData: ', Clay.meta.userData);
 };
