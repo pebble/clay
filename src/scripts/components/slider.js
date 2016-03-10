@@ -18,6 +18,7 @@ module.exports = {
 
     var $value = self.$element.select('.value');
     var $valuePad = self.$element.select('.value-pad');
+    var $slider = self.$manipulatorTarget;
 
     /**
      * Sets the value display
@@ -29,14 +30,15 @@ module.exports = {
       $valuePad.set('innerHTML', value);
     }
 
-    var step = self.$manipulatorTarget.get('step');
+    var step = $slider.get('step');
     step = step.toString(10).split('.')[1];
     self.precision = step ? step.length : 0;
 
     self.on('change', setValueDisplay);
+    $slider.on('|input', setValueDisplay);
     setValueDisplay();
 
-    $value.on('|keyup', function() {
+    $value.on('|input', function() {
       $valuePad.set('innerHTML', this.get('value'));
     });
 
