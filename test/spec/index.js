@@ -7,31 +7,19 @@ var standardComponents = require('../../src/scripts/components');
 var sinon = require('sinon');
 var toSource = require('tosource');
 
-var accountToken = '0123456789abcdef0123456789abcdef';
-var watchToken = '0123456789abcdef0123456789abcdef';
-var activeWatchInfo = {
-  platform: 'chalk',
-  model: 'qemu_platform_chalk',
-  language: 'en_US',
-  firmware: {
-    major: 3,
-    minor: 3,
-    patch: 2,
-    suffix: ''
-  }
-};
-
 /**
  * @return {void}
  */
 function stubPebble() {
+  var meta = fixture.meta();
+
   global.Pebble = {
     addEventListener: sinon.stub(),
     openURL: sinon.stub(),
     sendAppMessage: sinon.stub(),
-    getActiveWatchInfo: sinon.stub().returns(activeWatchInfo),
-    getAccountToken: sinon.stub().returns(accountToken),
-    getWatchToken: sinon.stub().returns(watchToken)
+    getActiveWatchInfo: sinon.stub().returns(meta.activeWatchInfo),
+    getAccountToken: sinon.stub().returns(meta.accountToken),
+    getWatchToken: sinon.stub().returns(meta.watchToken)
   };
 }
 
@@ -132,6 +120,15 @@ describe('Clay', function() {
         Pebble.addEventListener.withArgs('showConfiguration').called,
         false
       );
+    });
+  });
+
+  describe('.config', function() {
+    it('is a copy not a reference', function() {
+      var config = fixture.config(['input', 'text', 'color']);
+      var clay = fixture.clay(config);
+      assert.notStrictEqual(clay.config, config);
+      assert.deepEqual(clay.config, config);
     });
   });
 
@@ -323,37 +320,34 @@ describe('Clay', function() {
     var emptyMeta = {
       activeWatchInfo: null,
       accountToken: '',
-      watchToken: ''
+      watchToken: '',
+      userData: {}
     };
 
     it('populates the meta in the showConfiguration handler', function() {
       stubPebble();
-      var clay = fixture.clay([]);
+      var userData = {foo: 'bar'};
+      var clay = fixture.clay([], null, {userData: userData});
 
       // meta only gets populated after showConfiguration happens
       assert.deepEqual(clay.meta, emptyMeta);
       Pebble.addEventListener.withArgs('showConfiguration').callArg(1);
-
-      assert.deepEqual(clay.meta, {
-        activeWatchInfo: activeWatchInfo,
-        accountToken: accountToken,
-        watchToken: watchToken
-      });
+      assert.deepEqual(clay.meta, fixture.meta({userData: userData}));
     });
 
     it('populates the meta in the ready handler', function() {
       stubPebble();
-      var clay = fixture.clay([], null, {autoHandleEvents: false});
+      var userData = {foo: 'bar'};
+      var clay = fixture.clay([], null, {
+        autoHandleEvents: false,
+        userData: userData
+      });
 
       // meta only gets populated after ready happens
       assert.deepEqual(clay.meta, emptyMeta);
       Pebble.addEventListener.withArgs('ready').callArg(1);
 
-      assert.deepEqual(clay.meta, {
-        activeWatchInfo: activeWatchInfo,
-        accountToken: accountToken,
-        watchToken: watchToken
-      });
+      assert.deepEqual(clay.meta, fixture.meta({userData: userData}));
     });
 
     it('populates the meta with with empty values when there is no Pebble global',

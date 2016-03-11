@@ -94,7 +94,9 @@ gulp.task('clay', ['inlineHtml'], function() {
     .bundle()
     .pipe(source('clay.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(uglify({
+      preserveComments: 'license'
+    }))
     .pipe(insert.prepend(versionMessage))
     .pipe(gulp.dest('./dist/'));
 });
