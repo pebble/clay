@@ -7,6 +7,7 @@ var HTML = require('../../../src/scripts/vendor/minified').HTML;
 var components = require('../../../src/scripts/components');
 var manipulators = require('../../../src/scripts/lib/manipulators');
 var fixture = require('../../fixture');
+var sinon = require('sinon');
 
 var componentSchema = Joi.object().keys({
   name: Joi.string().required(),
@@ -39,6 +40,20 @@ describe('components', function() {
       it('is able to be passed to ClayConfig', function() {
         fixture.clayConfig([component.name]);
       });
+
+      it('only has one $manipulatorTarget', function() {
+        var configItem = fixture.clayConfig([component.name]).getAllItems()[0];
+        assert.strictEqual(configItem.$manipulatorTarget.length, 1);
+      });
+
+      it('only dispatches change events once', function() {
+        var configItem = fixture.clayConfig([component.name]).getAllItems()[0];
+        var handler = sinon.spy();
+        configItem.on('change', handler);
+        configItem.trigger('change');
+        assert.strictEqual(handler.callCount, 1);
+      });
+
     });
   });
 });
