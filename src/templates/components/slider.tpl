@@ -4,7 +4,7 @@
       <span class="label">{{{label}}}</span>
       <span class="value-wrap">
         <span class="value-pad"></span>
-        <input type="tel" class="value" />
+        <input type="text" class="value" />
       </span>
     </span>
     <span class="input">
