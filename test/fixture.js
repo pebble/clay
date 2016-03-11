@@ -115,7 +115,7 @@ module.exports.clayConfig = function(types, build, autoRegister, settings) {
  * @param {boolean} [options.autoHandleEvents] - If false, Clay will not
  *   automatically handle the 'showConfiguration' and 'webviewclosed' events
  * @param {*} [options.userData={}] - Arbitrary data to pass to the config page. Will
- *   be available os `clayConfig.meta.userData`
+ *   be available as `clayConfig.meta.userData`
  * @param {boolean} [destroyLocalStorage=true]
  * @return {Clay}
  */

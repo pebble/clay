@@ -14,7 +14,7 @@ var deepcopy = require('deepcopy/build/deepcopy.min');
  * @param {boolean} [options.autoHandleEvents=true] - If false, Clay will not
  *   automatically handle the 'showConfiguration' and 'webviewclosed' events
  * @param {*} [options.userData={}] - Arbitrary data to pass to the config page. Will
- *   be available os `clayConfig.meta.userData`
+ *   be available as `clayConfig.meta.userData`
  * @constructor
  */
 function Clay(config, customFn, options) {
