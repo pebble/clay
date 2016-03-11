@@ -31,7 +31,7 @@ describe('component - slider', function() {
     assert.strictEqual($valueDisplayPad.get('innerHTML'), '75');
   });
 
-  it('sets the value-pqd to the same value as the user is typing', function() {
+  it('sets the value-pad to the same value as what the user is typing', function() {
     var clayConfig = fixture.clayConfig(['slider']);
     var sliderItem = clayConfig.getItemsByType('slider')[0];
     var $valueDisplay = sliderItem.$element.select('.value');
@@ -39,7 +39,7 @@ describe('component - slider', function() {
 
     assert.strictEqual($valueDisplay.get('value'), '50');
     assert.strictEqual($valueDisplayPad.get('innerHTML'), '50');
-    $valueDisplay.set('value', 75).trigger('keyup');
+    $valueDisplay.set('value', 75).trigger('input');
     assert.strictEqual($valueDisplay.get('value'), '75');
     assert.strictEqual($valueDisplayPad.get('innerHTML'), '75');
   });
