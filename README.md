@@ -292,11 +292,16 @@ A dropdown menu containing multiple options.
 
 ---
 
-#### Color
+#### Color Picker
 
 **Manipulator:** [`color`](#color)
 
-A color picker containing the 64 supported colors on Basalt and Chalk.
+A color picker that allows users to choose a color from the ones that are compatible with their Pebble smartwatch. 
+The color picker will automatically show a different layout depending on the watch connected: 
+
+ - aplite (Firmware 2.x) - Black and White
+ - aplite (Firmware 3.x) - Black, White and Gray
+ - basalt/chalk - The 64 colors available compatible with color Pebble smartwatches. 
 
 ##### Properties
 
@@ -309,6 +314,7 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 | defaultValue | string OR int | The default color. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
+| layout | string OR array | Optional. Use a custom layout for the color picker. Defaults to automatically choosing the most appropriate layout for the connected watch. The layout is represented by a two dimensional array. Use `false` to insert blank spaces. You may also use one of the preset layouts by setting `layout` to one of the following: `"COLOR"`, `"GRAY"`, `"BLACK_WHITE"` |
 
 ##### Example
 
@@ -316,9 +322,27 @@ A color picker containing the 64 supported colors on Basalt and Chalk.
 {
   "type": "color",
   "appKey": "background",
-  "defaultValue": "FF0000",
+  "defaultValue": "ff0000",
   "label": "Background Color",
-  "sunlight": true
+  "sunlight": true,
+  "layout": [
+    [false, '00aaff', false],
+    ['0055ff, '0000ff', '0000aa],
+    [false, '5555ff', false]
+  ]
+}
+```
+
+##### Example
+
+```javascript
+{
+  "type": "color",
+  "appKey": "background",
+  "defaultValue": "ffffff",
+  "label": "Background Color",
+  "sunlight": false,
+  "layout": "BLACK_WHITE"
 }
 ```
 
