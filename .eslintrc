@@ -9,7 +9,7 @@
   },
   "rules": {
     "new-cap": [0],
-    "max-params": [2, 4],
+    "max-params": [2, 5],
     "require-jsdoc": [2, {
       "require": {
         "FunctionDeclaration": true,

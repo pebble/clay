@@ -95,14 +95,15 @@ module.exports.config = function(types, autoRegister) {
  * @param {boolean} [build=true] - run the build method on the result
  * @param {boolean} [autoRegister=true]
  * @param {Object} [settings] - settings to pass to constructor
+ * @param {Object} [meta] - override the meta
  * @returns {ClayConfig}
  */
-module.exports.clayConfig = function(types, build, autoRegister, settings) {
+module.exports.clayConfig = function(types, build, autoRegister, settings, meta) {
   var clayConfig = new ClayConfig(
     settings || {},
     module.exports.config(types, autoRegister),
     $(HTML('<div>')),
-    module.exports.meta()
+    module.exports.meta(meta)
   );
   return build === false ? clayConfig : clayConfig.build();
 };
