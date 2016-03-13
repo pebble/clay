@@ -326,9 +326,9 @@ The color picker will automatically show a different layout depending on the wat
   "label": "Background Color",
   "sunlight": true,
   "layout": [
-    [false, '00aaff', false],
-    ['0055ff, '0000ff', '0000aa],
-    [false, '5555ff', false]
+    [false, "00aaff", false],
+    ["0055ff", "0000ff", "0000aa"],
+    [false, "5555ff", false]
   ]
 }
 ```
