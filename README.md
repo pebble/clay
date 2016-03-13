@@ -311,7 +311,7 @@ The color picker will automatically show a different layout depending on the wat
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
-| defaultValue | string OR int | The default color. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
+| defaultValue | string OR int | The default color. One of the [64 colors](https://developer.pebble.com/guides/tools-and-resources/color-picker/) compatible with Pebble smartwatches. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
 | layout | string OR array | Optional. Use a custom layout for the color picker. Defaults to automatically choosing the most appropriate layout for the connected watch. The layout is represented by a two dimensional array. Use `false` to insert blank spaces. You may also use one of the preset layouts by setting `layout` to: `"COLOR"`, `"GRAY"` or `"BLACK_WHITE"` |
