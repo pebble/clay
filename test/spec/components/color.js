@@ -111,16 +111,24 @@ function testCustomLayout(layout, expectedColors) {
 /**
  * @param {string} platform
  * @param {Array} layout
- * @param {string} [desc]
+ * @param {boolean} allowGray
+ * @param {string} desc
  * @param {Object} activeWatchInfo
  * @return {void}
  */
-function testAutoLayout(platform, layout, desc, activeWatchInfo) {
-  it('chooses the best layout for the ' + (desc || platform) + ' platform',
+function testAutoLayout(platform, layout, allowGray, desc, activeWatchInfo) {
+  it('chooses the best layout for the ' + (desc || platform) +
+     ' platform when allowGray is ' + allowGray,
   function() {
-    var clayConfig = fixture.clayConfig(['color'], true, true, {}, {
-      activeWatchInfo: activeWatchInfo
-    });
+    var clayConfig = fixture.clayConfig(
+      [{type: 'color', allowGray: allowGray}],
+      true,
+      true,
+      {},
+      {
+        activeWatchInfo: activeWatchInfo
+      }
+    );
     var colorItem = clayConfig.getItemsByType('color')[0];
     assert.deepEqual(colorItem._layout, layout);
   });
@@ -285,8 +293,11 @@ describe('component - color', function() {
 
   describe('layouts', function() {
 
-    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, 'aplite (2.x)', null);
-    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, 'aplite (2.x)', {
+    // allow gray does nothing for 2.x
+    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, true, 'aplite (2.x)',
+      null
+    );
+    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, true, 'aplite (2.x)', {
       platform: 'aplite',
       model: 'qemu_platform_aplite',
       language: 'en_US',
@@ -297,7 +308,21 @@ describe('component - color', function() {
         suffix: ''
       }
     });
-    testAutoLayout('aplite', standardLayouts.GRAY, 'aplite (3.x)', {
+    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, false, 'aplite (2.x)',
+      null
+    );
+    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, false, 'aplite (2.x)', {
+      platform: 'aplite',
+      model: 'qemu_platform_aplite',
+      language: 'en_US',
+      firmware: {
+        major: 2,
+        minor: 10,
+        patch: 0,
+        suffix: ''
+      }
+    });
+    testAutoLayout('aplite', standardLayouts.BLACK_WHITE, false, 'aplite (3.x)', {
       platform: 'aplite',
       model: 'qemu_platform_aplite',
       language: 'en_US',
@@ -308,7 +333,18 @@ describe('component - color', function() {
         suffix: ''
       }
     });
-    testAutoLayout('basalt', standardLayouts.COLOR, '', {
+    testAutoLayout('aplite', standardLayouts.GRAY, true, 'aplite (3.x)', {
+      platform: 'aplite',
+      model: 'qemu_platform_aplite',
+      language: 'en_US',
+      firmware: {
+        major: 3,
+        minor: 10,
+        patch: 0,
+        suffix: ''
+      }
+    });
+    testAutoLayout('basalt', standardLayouts.COLOR, true, '', {
       platform: 'basalt',
       model: 'qemu_platform_basalt',
       language: 'en_US',
@@ -319,7 +355,7 @@ describe('component - color', function() {
         suffix: ''
       }
     });
-    testAutoLayout('chalk', standardLayouts.COLOR, '', {
+    testAutoLayout('chalk', standardLayouts.COLOR, true, '', {
       platform: 'chalk',
       model: 'qemu_platform_chalk',
       language: 'en_US',

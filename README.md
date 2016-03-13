@@ -300,7 +300,7 @@ A color picker that allows users to choose a color from the ones that are compat
 The color picker will automatically show a different layout depending on the watch connected: 
 
  - Aplite (Firmware 2.x) - Black and white
- - Aplite (Firmware 3.x) - Black, white and gray
+ - Aplite (Firmware 3.x) - Black and white. Will also include gray (`#AAAAAA`) if `allowGray` is set to `true`
  - Basalt/chalk - The 64 colors compatible with color Pebble smartwatches. 
 
 ##### Properties
@@ -315,6 +315,7 @@ The color picker will automatically show a different layout depending on the wat
 | description | string | Optional sub-text to include below the component |
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
 | layout | string OR array | Optional. Use a custom layout for the color picker. Defaults to automatically choosing the most appropriate layout for the connected watch. The layout is represented by a two dimensional array. Use `false` to insert blank spaces. You may also use one of the preset layouts by setting `layout` to: `"COLOR"`, `"GRAY"` or `"BLACK_WHITE"` |
+| allowGray | boolean | Optional. Set this to `true` to include gray (`#AAAAAA`) in the color picker for aplite running on firmware 3 and above. This is optional because only a subset of the drawing operations support gray on aplite. Defaults to `false` |
 
 ##### Example
 
@@ -343,6 +344,19 @@ The color picker will automatically show a different layout depending on the wat
   "label": "Background Color",
   "sunlight": false,
   "layout": "BLACK_WHITE"
+}
+```
+
+##### Example
+
+```javascript
+{
+  "type": "color",
+  "appKey": "background",
+  "defaultValue": "aaaaaa",
+  "label": "Background Color",
+  "sunlight": false,
+  "allowGray": true
 }
 ```
 

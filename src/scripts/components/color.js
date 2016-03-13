@@ -48,14 +48,15 @@ module.exports = {
      * @returns {Array}
      */
     function autoLayout() {
-      if (!clay.meta.activeWatchInfo) {
+      if (!clay.meta.activeWatchInfo ||
+          clay.meta.activeWatchInfo.firmware.major === 2 ||
+          clay.meta.activeWatchInfo.platform === 'aplite' &&
+          !self.config.allowGray) {
         return standardLayouts.BLACK_WHITE;
       }
 
-      if (clay.meta.activeWatchInfo.platform === 'aplite') {
-        return clay.meta.activeWatchInfo.firmware.major === 2 ?
-          standardLayouts.BLACK_WHITE :
-          standardLayouts.GRAY;
+      if (clay.meta.activeWatchInfo.platform === 'aplite' && self.config.allowGray) {
+        return standardLayouts.GRAY;
       }
 
       return standardLayouts.COLOR;
