@@ -12,6 +12,12 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['browserify', 'source-map-support', 'mocha'],
 
+    client: {
+      mocha: {
+        timeout: 10000 // 10 sec because Travis struggles sometimes.
+      }
+    },
+
     browserify: {
       debug: true,
       transform: [

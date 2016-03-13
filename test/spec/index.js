@@ -62,8 +62,6 @@ describe('Clay', function() {
 
     it('handles the "showConfiguration" event if autoHandleEvents is not false',
     function() {
-      this.timeout(10000); // 10 seconds
-
       stubPebble();
       var clay = fixture.clay([]);
 
