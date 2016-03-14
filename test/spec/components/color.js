@@ -135,6 +135,39 @@ function testAutoLayout(platform, layout, allowGray, desc, activeWatchInfo) {
 }
 
 /**
+ * @param {number|string} input
+ * @param {number} expected
+ * @param {array|string} layout
+ * @return {void}
+ */
+function testClosestToLayout(input, expected, layout) {
+  it('rounds ' + input + ' to ' + expected.toString(16) +
+     ' in layout: ' + JSON.stringify(layout),
+  function() {
+    var clayConfig;
+    var colorItem;
+
+    clayConfig = fixture.clayConfig([{
+      type: 'color',
+      sunlight: false,
+      layout: layout
+    }]);
+    colorItem = clayConfig.getItemsByType('color')[0];
+    colorItem.set(input);
+    assert.strictEqual(colorItem.get(), expected);
+
+    clayConfig = fixture.clayConfig([{
+      type: 'color',
+      sunlight: false,
+      layout: layout
+    }]);
+    colorItem = clayConfig.getItemsByType('color')[0];
+    colorItem.set(input);
+    assert.strictEqual(colorItem.get(), expected);
+  });
+}
+
+/**
  * @param {boolean} sunlight
  * @param {Array|string} [layout=color]
  * @param {Array} [expectedColors]
@@ -289,6 +322,41 @@ describe('component - color', function() {
     assert.strictEqual($picker.get('classList').contains('show'), true);
     $picker[0].click();
     assert.strictEqual($picker.get('classList').contains('show'), false);
+  });
+
+  describe('color rounding', function() {
+    var layout = 'GRAY';
+    testClosestToLayout('000000', 0x000000, layout);
+    testClosestToLayout('005500', 0x000000, layout);
+    testClosestToLayout('55aa55', 0xaaaaaa, layout);
+    testClosestToLayout('ffaaff', 0xaaaaaa, layout);
+    testClosestToLayout('ffffaa', 0xffffff, layout);
+    testClosestToLayout('ffffff', 0xffffff, layout);
+
+    layout = 'BLACK_WHITE';
+    testClosestToLayout('000000', 0x000000, layout);
+    testClosestToLayout('005500', 0x000000, layout);
+    testClosestToLayout('55aa55', 0xffffff, layout);
+    testClosestToLayout('ffaaff', 0xffffff, layout);
+    testClosestToLayout('ffffaa', 0xffffff, layout);
+    testClosestToLayout('ffffff', 0xffffff, layout);
+
+    layout = 'COLOR';
+    testClosestToLayout('000000', 0x000000, layout);
+    testClosestToLayout('005500', 0x005500, layout);
+    testClosestToLayout('55bb55', 0x55aa55, layout);
+    testClosestToLayout('ff99ff', 0xffaaff, layout);
+    testClosestToLayout('ffffee', 0xffffff, layout);
+    testClosestToLayout('ffffff', 0xffffff, layout);
+
+    layout = ['ff0000', 'ff5500', 'ff00ff', '00ff00', '555555'];
+    testClosestToLayout('000000', 0x555555, layout);
+    testClosestToLayout('ff0000', 0xff0000, layout);
+    testClosestToLayout('ff1111', 0xff0000, layout);
+    testClosestToLayout('00aa00', 0x00ff00, layout);
+    testClosestToLayout('ff55ff', 0xff00ff, layout);
+    testClosestToLayout('aaaaaa', 0x555555, layout);
+    testClosestToLayout('ffffff', 0x555555, layout);
   });
 
   describe('layouts', function() {

@@ -10,6 +10,8 @@ module.exports = {
     description: ''
   },
   initialize: function(minified, clay) {
+    var HTML = minified.HTML;
+    var self = this;
 
     /**
      * @param {string|boolean|number} color
@@ -22,13 +24,23 @@ module.exports = {
         return 'transparent';
       }
 
+      color = padColorString(color);
+
+      return '#' + (useSunlight ? sunlightColorMap[color] : color);
+    }
+
+    /**
+     * @param {string} color
+     * @return {string}
+     */
+    function padColorString(color) {
       color = color.toLowerCase();
 
       while (color.length < 6) {
         color = '0' + color;
       }
 
-      return '#' + (useSunlight ? sunlightColorMap[color] : color);
+      return color;
     }
 
     /**
@@ -37,10 +49,64 @@ module.exports = {
      */
     function normalizeColor(value) {
       switch (typeof value) {
-        case 'number': return value.toString(16);
+        case 'number': return padColorString(value.toString(16));
         case 'string': return value.replace(/^#|^0x/, '');
         default: return value;
       }
+    }
+
+    /**
+     * @param {Array.<Array>} layout
+     * @returns {Array}
+     */
+    function flattenLayout(layout) {
+      return layout.reduce(function(a, b) {
+        return a.concat(b);
+      }, []);
+    }
+
+    /**
+     * Convert HEX color to LAB.
+     * Adapted from: https://github.com/antimatter15/rgb-lab
+     * @param {string} hex
+     * @returns {Array} - [l, a, b]
+     */
+    function hex2lab(hex) {
+      hex = hex.replace(/^#|^0x/, '');
+
+      var r = parseInt(hex.slice(0, 2), 16) / 255;
+      var g = parseInt(hex.slice(2, 4), 16) / 255;
+      var b = parseInt(hex.slice(4), 16) / 255;
+
+      r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+      g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+      b = (b > 0.04045) ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
+      var x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+      var y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
+      var z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+
+      x = (x > 0.008856) ? Math.pow(x, 1 / 3) : (7.787 * x) + 16 / 116;
+      y = (y > 0.008856) ? Math.pow(y, 1 / 3) : (7.787 * y) + 16 / 116;
+      z = (z > 0.008856) ? Math.pow(z, 1 / 3) : (7.787 * z) + 16 / 116;
+
+      return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)];
+    }
+
+    /**
+     * Find the perceptual color distance between two LAB colors
+     * @param {Array} labA
+     * @param {Array} labB
+     * @returns {number}
+     */
+    function deltaE(labA, labB) {
+      var deltaL = labA[0] - labB[0];
+      var deltaA = labA[1] - labB[1];
+      var deltaB = labA[2] - labB[2];
+
+      return Math.sqrt(Math.pow(deltaL, 2) +
+                       Math.pow(deltaA, 2) +
+                       Math.pow(deltaB, 2));
     }
 
     /**
@@ -62,8 +128,32 @@ module.exports = {
       return standardLayouts.COLOR;
     }
 
-    var HTML = minified.HTML;
-    var self = this;
+    /**
+     * @param {number|string} color
+     * @return {number}
+     */
+    self.roundColorToLayout = function(color) {
+      var itemValue = normalizeColor(color);
+
+      // if the color is not in the layout we will need find the closest match
+      if (colorList.indexOf(itemValue) === -1) {
+        var itemValueLAB = hex2lab(itemValue);
+        var differenceArr = colorList.map(function(color) {
+          var colorLAB = hex2lab(normalizeColor(color));
+          return deltaE(itemValueLAB, colorLAB);
+        });
+
+        // Get the lowest number from the differenceArray
+        var lowest = Math.min.apply(Math, differenceArr);
+
+        // Get the index for that lowest number
+        var index = differenceArr.indexOf(lowest);
+        itemValue = colorList[index];
+      }
+
+      return parseInt(itemValue, 16);
+    };
+
     var useSunlight = self.config.sunlight !== false;
     var sunlightColorMap = {
       '000000': '000000', '000055': '001e41', '0000aa': '004387', '0000ff': '0068ca',
@@ -117,6 +207,12 @@ module.exports = {
     if (!Array.isArray(layout[0])) {
       layout = [layout];
     }
+
+    var colorList = flattenLayout(layout).map(function(item) {
+      return normalizeColor(item);
+    }).filter(function(item) {
+      return item;
+    });
 
     var grid = '';
     var rows = layout.length;
