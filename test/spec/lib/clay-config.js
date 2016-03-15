@@ -15,7 +15,7 @@ describe('ClayConfig', function() {
       'getItemByAppKey',
       'getItemById',
       'getItemsByType',
-      'getSettings',
+      'serialize',
       'registerComponent',
       'build',
       'on',
@@ -39,7 +39,7 @@ describe('ClayConfig', function() {
       'getItemByAppKey',
       'getItemById',
       'getItemsByType',
-      'getSettings'
+      'serialize'
     ].forEach(function(method) {
       it('.' + method + '()', function() {
         var clayConfig = fixtures.clayConfig(['input', 'text'], false);
@@ -99,7 +99,7 @@ describe('ClayConfig', function() {
     });
   });
 
-  describe('.getSettings()', function() {
+  describe('.serialize()', function() {
     it('returns the correct settings', function() {
       var config = [
         {type: 'input', appKey: 'test1', defaultValue: 'default val'},
@@ -112,7 +112,8 @@ describe('ClayConfig', function() {
           {label: 'label-1', value: 'cb-1'},
           {label: 'label-2', value: 'cb-2'},
           {label: 'label-2', value: 'cb-3'}
-        ]}
+        ]},
+        {type: 'slider', appKey: 'test5', step: 0.05, defaultValue: 12.5}
       ];
       var settings = {
         test2: 'val-2'
@@ -120,29 +121,42 @@ describe('ClayConfig', function() {
 
       var clayConfig = fixtures.clayConfig(config, true, true, settings);
 
-      assert.deepEqual(clayConfig.getSettings(), {
-        test1: 'default val',
-        test2: 'val-2',
-        test3: false,
-        test4: []
+      assert.deepEqual(clayConfig.serialize(), {
+        test1: {value: 'default val'},
+        test2: {value: 'val-2'},
+        test3: {value: false},
+        test4: {value: []},
+        test5: {value: 12.5, precision: 2}
       });
 
       clayConfig.getItemByAppKey('test1').set('val-1');
       clayConfig.getItemByAppKey('test3').set(true);
       clayConfig.getItemByAppKey('test4').set(['cb-1', 'cb-3']);
 
-      assert.deepEqual(clayConfig.getSettings(), {
+      assert.deepEqual(clayConfig.serialize(), {
+        test1: {value: 'val-1'},
+        test2: {value: 'val-2'},
+        test3: {value: true},
+        test4: {value: ['cb-1', 'cb-3']},
+        test5: {value: 12.5, precision: 2}
+      });
+
+      // make sure the result of serialize() can actually be fed back in to
+      // a new instance of ClayConfig
+      var clay = fixtures.clay(config);
+      var response = encodeURIComponent(JSON.stringify(clayConfig.serialize()));
+      clay.getSettings(response);
+      var loadedSettings = JSON.parse(localStorage.getItem('clay-settings'));
+
+      assert.deepEqual(loadedSettings, {
         test1: 'val-1',
         test2: 'val-2',
         test3: true,
-        test4: ['cb-1', 'cb-3']
+        test4: ['cb-1', 'cb-3'],
+        test5: 12.5
       });
-
-      // make sure the result of getSettings() can actually be fed back in to
-      // a new instance of ClayConfig
       assert.doesNotThrow(function() {
-        settings = clayConfig.getSettings();
-        fixtures.clayConfig(config, true, true, settings);
+        fixtures.clayConfig(config, true, true, loadedSettings);
       });
     });
   });

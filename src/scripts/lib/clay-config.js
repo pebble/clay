@@ -155,10 +155,16 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   /**
    * @returns {Object}
    */
-  self.getSettings = function() {
-    _checkBuilt('getSettings');
+  self.serialize = function() {
+    _checkBuilt('serialize');
     _.eachObj(_itemsByAppKey, function(appKey, item) {
-      _settings[appKey] = item.get();
+      _settings[appKey] = {
+        value: item.get()
+      };
+
+      if (item.precision) {
+        _settings[appKey].precision = item.precision;
+      }
     });
     return _settings;
   };

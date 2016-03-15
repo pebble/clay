@@ -11,5 +11,6 @@ module.exports = {
   toggle: require('./toggle'),
   radiogroup: require('./radiogroup'),
   checkboxgroup: require('./checkboxgroup'),
-  button: require('./button')
+  button: require('./button'),
+  slider: require('./slider')
 };

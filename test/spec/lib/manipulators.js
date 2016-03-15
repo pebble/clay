@@ -143,43 +143,67 @@ describe('manipulators', function() {
   }
 
   describe('html', function() {
-    testSetGet('text', 'test123');
-    testSetGet('button', '<span>some HTML</span>');
-    testShow('text');
-    testHide('text');
+    var type = 'text';
+    testSetGet(type, 'test123');
+    testSetGet(type, '<span>some HTML</span>');
+    testShow(type);
+    testHide(type);
   });
 
   describe('button', function() {
-    testSetGet('button', 'test123');
-    testSetGet('button', '<span>some HTML</span>');
-    testDisable('button');
-    testEnable('button');
-    testShow('button');
-    testHide('button');
+    var type = 'button';
+    testSetGet(type, 'test123');
+    testSetGet(type, '<span>some HTML</span>');
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 
   describe('val', function() {
-    testSetGet('input', 'test321');
-    testSetGet('input', 1234, '1234');
-    testDisable('input');
-    testEnable('input');
-    testShow('text');
-    testHide('text');
+    var type = 'input';
+    testSetGet(type, 'test321');
+    testSetGet(type, 1234, '1234');
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
+  });
+
+  describe('slider', function() {
+    var type = {
+      type: 'slider',
+      min: 0,
+      max: 100,
+      step: 0.1
+    };
+
+    testSetGet(type, '12', 12);
+    testSetGet(type, 12);
+    testSetGet(type, '12.3', 12.3);
+    testSetGet(type, 12.3);
+    testSetGet(type, 12.34, 12.3);
+    testSetGet(type, '12.34', 12.3);
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 
   describe('checked', function() {
-    testSetGet({type: 'toggle', defaultValue: false}, 1, true);
-    testSetGet({type: 'toggle', defaultValue: false}, true);
-    testSetGet({type: 'toggle', defaultValue: true}, 0, false);
-    testSetGet({type: 'toggle', defaultValue: true}, false);
-    testDisable('toggle');
-    testEnable('toggle');
-    testShow('toggle');
-    testHide('toggle');
+    var type = 'toggle';
+    testSetGet({type: type, defaultValue: false}, 1, true);
+    testSetGet({type: type, defaultValue: false}, true);
+    testSetGet({type: type, defaultValue: true}, 0, false);
+    testSetGet({type: type, defaultValue: true}, false);
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 
   describe('radiogroup', function() {
-    var item = {
+    var type = {
       type: 'radiogroup',
       clayId: 1,
       options: [
@@ -188,17 +212,17 @@ describe('manipulators', function() {
         { label: '3', value: 'three "quote' }
       ]
     };
-    testSetGet(item, 'one');
-    testSetGet(item, 'two');
-    testSetGet(item, 'three "quote');
-    testDisable(item);
-    testEnable(item);
-    testShow(item);
-    testHide(item);
+    testSetGet(type, 'one');
+    testSetGet(type, 'two');
+    testSetGet(type, 'three "quote');
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 
   describe('checkboxgroup', function() {
-    var item = {
+    var type = {
       type: 'checkboxgroup',
       clayId: 1,
       defaultValue: ['two'],
@@ -208,28 +232,29 @@ describe('manipulators', function() {
         { label: '3', value: 'three "quote' }
       ]
     };
-    testSetGet(item, ['one', 'two']);
-    testSetGet(item, ['three "quote']);
-    testSetGet(item, []);
-    testSetGet(item, false, []);
-    testDisable(item);
-    testEnable(item);
-    testShow(item);
-    testHide(item);
+    testSetGet(type, ['one', 'two']);
+    testSetGet(type, ['three "quote']);
+    testSetGet(type, []);
+    testSetGet(type, false, []);
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 
   describe('color', function() {
-    testSetGet('color', 'FF0000', 0xff0000);
-    testSetGet('color', '#FF0000', 0xff0000);
-    testSetGet('color', '0xFF0000', 0xff0000);
-    testSetGet('color', '#ff0000', 0xff0000);
-    testSetGet('color', 0xff0000, 0xff0000);
-    testSetGet({type: 'color', defaultValue: 0x00ff00}, '', 0x000000);
-    testSetGet({type: 'color', defaultValue: 0x00ff00}, false, 0x000000);
-    testSetGet({type: 'color', defaultValue: 0x00ff00}, undefined, 0x000000);
-    testDisable('color');
-    testEnable('color');
-    testShow('color');
-    testHide('color');
+    var type = 'color';
+    testSetGet(type, 'FF0000', 0xff0000);
+    testSetGet(type, '#FF0000', 0xff0000);
+    testSetGet(type, '0xFF0000', 0xff0000);
+    testSetGet(type, '#ff0000', 0xff0000);
+    testSetGet(type, 0xff0000, 0xff0000);
+    testSetGet({type: type, defaultValue: 0x00ff00}, '', 0x000000);
+    testSetGet({type: type, defaultValue: 0x00ff00}, false, 0x000000);
+    testSetGet({type: type, defaultValue: 0x00ff00}, undefined, 0x000000);
+    testDisable(type);
+    testEnable(type);
+    testShow(type);
+    testHide(type);
   });
 });

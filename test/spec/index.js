@@ -232,13 +232,21 @@ describe('Clay', function() {
     });
   });
 
-  describe('.getSettings()', function() {
+  describe('.getSettings', function() {
     it('stores the response to localStorage and returns the decoded data',
     function() {
       var clay = fixture.clay([]);
-      var result = clay.getSettings('%7B%22appKey%22%3A%22value%22%7D');
-      assert.equal(localStorage.getItem('clay-settings'), '{"appKey":"value"}');
-      assert.deepEqual(result, {appKey: 'value'});
+      var settings = encodeURIComponent(JSON.stringify({
+        key1: 'value1',
+        key2: {value: 'value2'}
+      }));
+      var expected = {
+        key1: 'value1',
+        key2: 'value2'
+      };
+      var result = clay.getSettings(settings);
+      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
+      assert.deepEqual(result, expected);
     });
 
     it('does not store the response if it is invalid JSON and logs an error',
@@ -261,7 +269,15 @@ describe('Clay', function() {
         test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
-        test7: [true, false, true]
+        test7: [true, false, true],
+        test8: {
+          precision: 2,
+          value: 12.34
+        },
+        test9: {
+          precision: 1,
+          value: [1, 2, 3, 4]
+        }
       }));
       var expected = {
         test1: 0,
@@ -270,7 +286,9 @@ describe('Clay', function() {
         test4: ['cb-1', 0, 'cb-3', 0],
         test5: 12345,
         test6: [1, 2, 3, 4],
-        test7: [1, 0, 1]
+        test7: [1, 0, 1],
+        test8: 1234,
+        test9: [10, 20, 30, 40]
       };
 
       assert.deepEqual(clay.getSettings(response), expected);
@@ -286,7 +304,11 @@ describe('Clay', function() {
         test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
-        test7: [true, false, true]
+        test7: [true, false, true],
+        test8: {
+          precision: 2,
+          value: 12.34
+        }
       };
       var response = encodeURIComponent(JSON.stringify(settings));
 
@@ -356,6 +378,100 @@ describe('Clay', function() {
       assert.doesNotThrow(function() {
         Clay.encodeDataUri('♥');
       });
+    });
+  });
+
+  describe('.prepareForAppMessage', function() {
+    it('converts an array correctly when array contains numbers', function() {
+      assert.deepEqual(Clay.prepareForAppMessage([1, 2, 3]), [1, 2, 3]);
+      assert.deepEqual(Clay.prepareForAppMessage(
+        {value: [1.5, 2.34, 3], precision: 2}),
+        [150, 234, 300]
+      );
+    });
+
+    it('converts an array correctly when array contains booleans', function() {
+      assert.deepEqual(Clay.prepareForAppMessage([true, false, true]), [1, 0, 1]);
+      assert.deepEqual(
+        Clay.prepareForAppMessage([{value: true}, false, true]),
+        [1, 0, 1]);
+    });
+
+    it('converts booleans to ints', function() {
+      assert.strictEqual(Clay.prepareForAppMessage(false), 0);
+      assert.strictEqual(Clay.prepareForAppMessage(true), 1);
+      assert.strictEqual(Clay.prepareForAppMessage({value: false}), 0);
+      assert.strictEqual(Clay.prepareForAppMessage({value: true}), 1);
+    });
+
+    it('leaves strings alone', function() {
+      assert.strictEqual(Clay.prepareForAppMessage('test'), 'test');
+      assert.strictEqual(Clay.prepareForAppMessage({value: 'test'}), 'test');
+    });
+
+    it('Multiples the number by the precision', function() {
+      assert.strictEqual(Clay.prepareForAppMessage(123), 123);
+      assert.strictEqual(Clay.prepareForAppMessage({
+        value: 1.23,
+        precision: 3
+      }), 1230);
+      assert.strictEqual(Clay.prepareForAppMessage({
+        value: 123,
+        precision: 2
+      }), 12300);
+      assert.strictEqual(Clay.prepareForAppMessage({
+        value: 1.23456,
+        precision: 4
+      }), 12345);
+    });
+
+    it('ignores precision for anything but numbers', function() {
+      assert.strictEqual(Clay.prepareForAppMessage({
+        value: 'not a number',
+        precision: 3
+      }), 'not a number');
+
+      assert.deepEqual(Clay.prepareForAppMessage({
+        value: ['not', 'a', 'number'],
+        precision: 3
+      }), ['not', 'a', 'number']);
+    });
+
+    it('treats an undefined precision as 0', function() {
+      assert.strictEqual(Clay.prepareForAppMessage({
+        value: 12.45,
+        precision: undefined
+      }), 12);
+    });
+  });
+
+  describe('.prepareSettingsForAppMessage', function() {
+    it('converts the settings correctly', function() {
+      var settings = {
+        test1: false,
+        test2: 'val-2',
+        test3: true,
+        test4: ['cb-1', 'cb-3'],
+        test5: 12345,
+        test6: [1, 2, 3, 4],
+        test7: [true, false, true],
+        test8: {
+          precision: 2,
+          value: 12.34
+        }
+      };
+      var expected = {
+        test1: 0,
+        test2: 'val-2',
+        test3: 1,
+        test4: ['cb-1', 0, 'cb-3', 0],
+        test5: 12345,
+        test6: [1, 2, 3, 4],
+        test7: [1, 0, 1],
+        test8: 1234
+      };
+
+      assert.deepEqual(Clay.prepareSettingsForAppMessage(settings), expected);
     });
   });
 });
