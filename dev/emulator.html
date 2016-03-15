@@ -20,9 +20,14 @@
 
     var returnTo = getQueryParam('return_to');
     var data = decodeURIComponent(location.hash.substring(1));
-    if (data) {
+
+    // Check if we dealing with a base64 encoded URI
+    if (data && data.charAt(0) !== '<') {
       data = window.atob(data).replace('$$RETURN_TO$$', returnTo);
       window.location.href = 'data:text/html;base64,' + encodeURIComponent(window.btoa(data));
+    } else if (data) {
+      data = data.replace('$$RETURN_TO$$', returnTo);
+      window.location.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(data);
     }
   </script>
   <body>

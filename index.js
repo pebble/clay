@@ -175,58 +175,12 @@ Clay.prototype.getSettings = function(response, convert) {
 
 /**
  * @param {string} input
- * @param {string} [prefix]
+ * @param {string} [prefix='data:text/html;charset=utf-8,']
  * @returns {string}
  */
 Clay.encodeDataUri = function(input, prefix) {
-  prefix = typeof prefix !== 'undefined' ? prefix : 'data:text/html;base64,';
-
-  if (window.btoa) {
-    return prefix + encodeURIComponent(window.btoa(input));
-  }
-
-  // iOS doesn't have a window so we need to polyfil window.btoa
-  // extracted from https://github.com/inexorabletash/polyfill
-  var B64_ALPHABET =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-  input = String(input);
-  var position = 0;
-  var out = [];
-  var o1;
-  var o2;
-  var o3;
-  var e1;
-  var e2;
-  var e3;
-  var e4;
-
-  if (/[^\x00-\xFF]/.test(input)) { throw Error('InvalidCharacterError'); }
-
-  while (position < input.length) {
-    o1 = input.charCodeAt(position++);
-    o2 = input.charCodeAt(position++);
-    o3 = input.charCodeAt(position++);
-
-    // 111111 112222 222233 333333
-    e1 = o1 >> 2;
-    e2 = ((o1 & 0x3) << 4) | (o2 >> 4);
-    e3 = ((o2 & 0xf) << 2) | (o3 >> 6);
-    e4 = o3 & 0x3f;
-
-    if (position === input.length + 2) {
-      e3 = 64;
-      e4 = 64;
-    } else if (position === input.length + 1) {
-      e4 = 64;
-    }
-
-    out.push(B64_ALPHABET.charAt(e1),
-      B64_ALPHABET.charAt(e2),
-      B64_ALPHABET.charAt(e3),
-      B64_ALPHABET.charAt(e4));
-  }
-
-  return prefix + encodeURIComponent(out.join(''));
+  prefix = typeof prefix !== 'undefined' ? prefix : 'data:text/html;charset=utf-8,';
+  return prefix + encodeURIComponent(input);
 };
 
 module.exports = Clay;
