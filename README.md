@@ -838,7 +838,7 @@ Components are simple objects with the following properties.
 | `style` | string | no | Any extra CSS styles you want to inject into the page. Make sure to namespace your CSS with a class that is unique to your component in order to avoid conflicts with other components. |
 | `manipulator` | string / manipulator | yes | Provide a string here to use one of the built-in manipulators, such as `val`. If an object is provided, it must have both a `.set(value)` and `.get()` method. |
 | `defaults` | object | Only if your template requires it. | An object of all the defaults your template requires. |
-| `initialize` | function | no | Method which will be called after the item has been added to the page. It will be called with the `ClayItem` as the context (`this`) and with `minified` as the first parameter. |
+| `initialize` | function | no | Method which will be called after the item has been added to the page. It will be called with the `ClayItem` as the context (`this`) and with [`minified`](#minified) as the first parameter and [`clayConfig`](#clayconfigobject-settings-array-config-minified-rootcontainer) as the second paramater |
 
 ### Registering a custom component. 
 
