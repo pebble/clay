@@ -36,7 +36,7 @@ module.exports = [
         "appKey": "slider",
         "defaultValue": 15,
         "label": "Slider",
-        description: "This is the description for the slider",
+        "description": "This is the description for the slider",
         "min": 10,
         "max": 20,
         "step": 0.25
