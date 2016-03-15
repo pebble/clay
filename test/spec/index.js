@@ -153,7 +153,7 @@ describe('Clay', function() {
      * @returns {string}
      */
     function decodeUrl(url) {
-      return atob(decodeURIComponent(url.replace(/^.*?[#,]/, '')));
+      return decodeURIComponent(url.replace(/^.*?[#,]/, ''));
     }
 
     describe('string substitutions', function() {
@@ -360,50 +360,25 @@ describe('Clay', function() {
   });
 
   describe('Clay.encodeDataUri()', function() {
-
-    /**
-     * @return {void}
-     */
-    function testEncodeDataUri() {
-      it('adds the correct prefix', function() {
-        assert.equal(Clay.encodeDataUri('test', 'prefix:'), 'prefix:dGVzdA%3D%3D');
-        assert.equal(
-          Clay.encodeDataUri('test'),
-          'data:text/html;base64,dGVzdA%3D%3D'
-        );
-      });
-
-      it('encodes the data correctly', function() {
-        assert.equal(Clay.encodeDataUri('test', ''), 'dGVzdA%3D%3D');
-        assert.equal(Clay.encodeDataUri('test{2}', ''), 'dGVzdHsyfQ%3D%3D');
-        assert.equal(Clay.encodeDataUri('test{10}', ''), 'dGVzdHsxMH0%3D');
-      });
-
-      it('throws if the input is invalid', function() {
-        assert.throws(function() {
-          Clay.encodeDataUri('♥');
-        });
-      });
-    }
-
-    describe('native', function() {
-      testEncodeDataUri();
+    it('adds the correct prefix', function() {
+      assert.equal(Clay.encodeDataUri('<test>', 'prefix:'), 'prefix:%3Ctest%3E');
+      assert.equal(
+        Clay.encodeDataUri('<test>'),
+        'data:text/html;charset=utf-8,%3Ctest%3E'
+      );
     });
 
-    describe('polyfill', function() {
-      var btoaOriginal = window.btoa;
-
-      before(function() {
-        window.btoa = undefined;
-      });
-
-      testEncodeDataUri();
-
-      after(function() {
-        window.btoa = btoaOriginal;
-      });
+    it('encodes the data correctly', function() {
+      assert.equal(Clay.encodeDataUri('test', ''), 'test');
+      assert.equal(Clay.encodeDataUri('test{2}', ''), 'test%7B2%7D');
+      assert.equal(Clay.encodeDataUri('test{10}', ''), 'test%7B10%7D');
     });
 
+    it('does not throw if unicode character is provided', function() {
+      assert.doesNotThrow(function() {
+        Clay.encodeDataUri('♥');
+      });
+    });
   });
 
   describe('.prepareForAppMessage', function() {
