@@ -67,6 +67,12 @@ h6 {
   @include font-size(0.8);
 }
 
+input {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 label {
   display: flex;
   justify-content: space-between;

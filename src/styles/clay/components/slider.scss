@@ -1,0 +1,127 @@
+@import "clay";
+
+.component-slider {
+
+  .section & {
+    padding: 0;
+  }
+
+  label {
+    display: block;
+  }
+
+  .label-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-bottom: $item-spacing-v;
+  }
+
+  .label {
+    flex: 1;
+    min-width: 1rem;
+    display: block;
+    padding-right: $item-spacing-h;
+  }
+
+  .value-wrap {
+    display: block;
+    position: relative;
+  }
+
+  .value,
+  .value-pad {
+    display: block;
+    background: $color-gray-2;
+    border-radius: $border-radius;
+    padding: $item-spacing-v / 2 $item-spacing-h / 2;
+    border: none;
+    vertical-align: baseline;
+    color: $color-white;
+    text-align: right;
+    margin: 0;
+    min-width: 1rem;
+  }
+
+  .value-pad {
+    visibility: hidden;
+
+    &:before {
+      content: ' ';
+      display: inline-block;
+    }
+  }
+
+  .value {
+    max-width: 100%;
+    position: absolute;
+    left:0;
+    top:0
+  }
+
+  .input-wrap {
+    padding: 0 $item-spacing-h $item-spacing-v;
+  }
+
+  .input {
+    $track-height: rem(3px);
+
+    display: block;
+    position: relative;
+    min-width: 100%;
+    height: $base-height;
+    overflow: hidden;
+    margin-left: 0;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: $track-height;
+      background: $color-gray-6;
+      width: 100%;
+      top: $base-height / 2 - $track-height / 2;
+    }
+
+    .slider {
+      display: block;
+      width: 100%;
+      appearance: none;
+      position: relative;
+      height: $base-height;
+      margin: 0;
+      background-color: transparent;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::-webkit-slider-runnable-track {
+        border: none;
+        height: $base-height;
+        width: 100%;
+        background-color: transparent;
+      }
+
+      &::-webkit-slider-thumb {
+        appearance: none;
+        position: relative;
+        height: $base-height;
+        width: $base-height;
+        background-color: $color-orange;
+        border-radius: 50%;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: -1000px;
+          top: $base-height / 2 - $track-height / 2;
+          height: $track-height;
+          width: 1001px;
+          background: $color-orange;
+        }
+      }
+    }
+  }
+
+}
