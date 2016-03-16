@@ -698,6 +698,51 @@ Pebble.addEventListener('webviewclosed', function(e) {
 });
 ```
 
+## Clay and Pebble.js
+
+If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and would like to use Clay, There are some extra steps to follow:
+
+1. Remove all your `Settings.config` calls. Clay will handle the settings from now on. 
+2. Use the example below to modify your `app.js`. Notice that `autoHandleEvents` is set to `false` in the Clay constructor.: 
+
+```javascript
+var Settings = require('settings');
+var Clay = require('./clay');
+var clayConfig = require('./config');
+var clay = new Clay(clayConfig, null, {autoHandleEvents: false});
+
+Pebble.addEventListener('showConfiguration', function(e) {
+  Pebble.openURL(clay.generateUrl());
+});
+
+Pebble.addEventListener('webviewclosed', function(e) {
+  if (e && !e.response) {
+    return;
+  }
+  var dict = clay.getSettings(e.response);
+  
+  // Save the Clay settings to the Settings module. 
+  Settings.option(dict);
+});
+```
+
+### Caveats
+
+Clay treats colors as numbers. You will need to convert these numbers to CSS colors before they can be used by Pebble.js. Use the function below to convert the colors.
+
+```javascript
+function cssColor(color) {
+  color = color.toString(16);
+  while (color.length < 6) {
+    color = '0' + color;
+  }
+  return '#' + color;
+}
+
+// Example usage with default: 
+cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
+```
+
 ### `Clay([Array] config, [function] customFn, [object] options)`
 
 #### Constructor Parameters
