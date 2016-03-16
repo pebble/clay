@@ -160,16 +160,12 @@ module.exports = {
   },
   color: {
     get: function() {
-      return parseInt(this.$manipulatorTarget.get('value'), 16);
+      return parseInt(this.$manipulatorTarget.get('value'), 10) || 0;
     },
     set: function(value) {
-      switch (typeof value) {
-        case 'number': value = value.toString(16); break;
-        case 'string': value = value.replace(/^#|^0x/, ''); break;
-      }
-      value = value || '000000';
+      value = this.roundColorToLayout(value || 0);
 
-      if (this.get() === parseInt(value, 16)) { return this; }
+      if (this.get() === value) { return this; }
       this.$manipulatorTarget.set('value', value);
       return this.trigger('change');
     },

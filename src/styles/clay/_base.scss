@@ -113,6 +113,7 @@ label {
 
 .tap-highlight {
   @include tap-highlight();
+  border-radius: $border-radius;
 }
 
 .component {

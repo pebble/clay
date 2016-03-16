@@ -11,8 +11,6 @@ $item-spacing-v: $base-height / 2;
 $item-spacing-h: 0.75rem;
 $small-component-width: $base-height * $golden;
 
-
-
 // ---- Colors ------
 $color-orange: #ff4700;
 $color-orange-dark: #993d19;
@@ -37,4 +35,5 @@ $color-gray-11: #f2f2f2;
 $button-padding: 0.6rem;
 $button-padding-ios: 0.5rem;
 
-$box-shadow-small-components: $color-gray-1 0 0.1rem 0.1rem;
+$box-shadow-small-components: 0 0.1rem 0.1rem $color-gray-1;
+$box-shadow-large-components: 0 rem(3px) rem(15px) rgba(0,0,0,0.4);
