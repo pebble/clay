@@ -702,7 +702,7 @@ function cssColor(color) {
 }
 
 // Example usage with default: 
-cssColor(Settings.data('BACKGROUND_COLOR') || 0xff0000);
+cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 ```
 
 ### `Clay([Array] config, [function] customFn, [object] options)`
