@@ -25,7 +25,7 @@ module.exports = {
      * @return {void}
      */
     function setValueDisplay() {
-      var value = self.get();
+      var value = self.get().toFixed(self.precision);
       $value.set('value', value);
       $valuePad.set('innerHTML', value);
     }

@@ -65,4 +65,31 @@ describe('component - slider', function() {
 
     assert.strictEqual(sliderItem.precision, 2);
   });
+
+  it('always displays decimal when precision is less than 1', function() {
+    var clayConfig = fixture.clayConfig([{
+      type: 'slider',
+      step: 0.05
+    }]);
+    var sliderItem = clayConfig.getItemsByType('slider')[0];
+    var $valueDisplay = sliderItem.$element.select('.value');
+    var $valueDisplayPad = sliderItem.$element.select('.value-pad');
+    var $slider = sliderItem.$element.select('.slider');
+
+    assert.strictEqual($valueDisplay.get('value'), '50.00');
+    assert.strictEqual($valueDisplayPad.get('innerHTML'), '50.00');
+    assert.strictEqual($slider.get('value'), '50');
+    sliderItem.set(75);
+    assert.strictEqual($valueDisplay.get('value'), '75.00');
+    assert.strictEqual($valueDisplayPad.get('innerHTML'), '75.00');
+    assert.strictEqual($slider.get('value'), '75');
+    sliderItem.set(33.25);
+    assert.strictEqual($valueDisplay.get('value'), '33.25');
+    assert.strictEqual($valueDisplayPad.get('innerHTML'), '33.25');
+    assert.strictEqual($slider.get('value'), '33.25');
+    sliderItem.set(17.1);
+    assert.strictEqual($valueDisplay.get('value'), '17.10');
+    assert.strictEqual($valueDisplayPad.get('innerHTML'), '17.10');
+    assert.strictEqual($slider.get('value'), '17.1');
+  });
 });
