@@ -20,7 +20,8 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
   var clayConfig = require('config.json');
   var clay = new Clay(clayConfig);
   ```
-6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+6. Add `configurable` to the `capabilities` array in your `appinfo.json`.
+7. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
 
 # Getting Started (CloudPebble)
 
