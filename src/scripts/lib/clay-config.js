@@ -33,10 +33,22 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   var self = this;
 
   var _settings = _.copyObj(settings);
-  var _items = [];
-  var _itemsById = {};
-  var _itemsByAppKey = {};
-  var _isBuilt = false;
+  var _items;
+  var _itemsById;
+  var _itemsByAppKey;
+  var _isBuilt;
+
+  /**
+   * Initialize the item arrays and objects
+   * @private
+   * @return {void}
+   */
+  function _initializeItems() {
+    _items = [];
+    _itemsById = {};
+    _itemsByAppKey = {};
+    _isBuilt = false;
+  }
 
   /**
    * Add item(s) to the config
@@ -97,6 +109,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   }
 
   self.meta = meta;
+  self.$rootContainer = $rootContainer;
 
   self.EVENTS = {
     /**
@@ -111,7 +124,21 @@ function ClayConfig(settings, config, $rootContainer, meta) {
      * value set
      * @const
      */
-    AFTER_BUILD: 'AFTER_BUILD'
+    AFTER_BUILD: 'AFTER_BUILD',
+
+    /**
+     * Called if .build() is executed after the page has already been built and
+     * before the existing content is destroyed
+     * @const
+     */
+    BEFORE_DESTROY: 'BEFORE_DESTROY',
+
+    /**
+     * Called if .build() is executed after the page has already been built and after
+     * the existing content is destroyed
+     * @const
+     */
+    AFTER_DESTROY: 'AFTER_DESTROY'
   };
   utils.updateProperties(self.EVENTS, {writable: false});
 
@@ -173,16 +200,37 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   self.registerComponent = ClayConfig.registerComponent;
 
   /**
+   * Empties the root container
+   * @return {void}
+   */
+  self.destroy = function() {
+    var el = $rootContainer[0];
+    self.trigger(self.EVENTS.BEFORE_DESTROY);
+    while (el.firstChild) {
+      el.removeChild(el.firstChild);
+    }
+    _initializeItems();
+    self.trigger(self.EVENTS.AFTER_DESTROY);
+  };
+
+  /**
    * Build the config page. This must be run before any of the get methods can be run
+   * If you call this method after the page has already been built, teh page will be
+   * destroyed and built again.
    * @returns {ClayConfig}
    */
   self.build = function() {
+    if (_isBuilt) {
+      self.destroy();
+    }
     self.trigger(self.EVENTS.BEFORE_BUILD);
-    _addItems(config, $rootContainer);
+    _addItems(self.config, $rootContainer);
     _isBuilt = true;
     self.trigger(self.EVENTS.AFTER_BUILD);
     return self;
   };
+
+  _initializeItems();
 
   // attach event methods
   ClayEvents.call(self, $rootContainer);
