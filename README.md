@@ -291,6 +291,60 @@ A dropdown menu containing multiple options.
 }
 ```
 
+If you wish to use optgroups, then use the following format:
+
+```javascript
+{
+  "type": "select",
+  "appKey": "flavor",
+  "defaultValue": "grape",
+  "label": "Favorite Flavor",
+  "options": [
+    { 
+      "label": "", 
+      "value": "" 
+    },
+    {
+      "label": "Fruits",
+      "value": [
+        { 
+          "label": "Berry",
+          "value": "berry" 
+        },
+        { 
+          "label": "Grape",
+          "value": "grape" 
+        },
+        { 
+          "label": "Banana",
+          "value": "banana" 
+        }
+      ]
+    }, 
+    {
+      "label": "Candy",
+      "value": [
+        { 
+          "label": "Chocolate",
+          "value": "chocolate" 
+        },
+        { 
+          "label": "Cream",
+          "value": "cream" 
+        },
+        { 
+          "label": "Lollipop",
+          "value": "lollipop" 
+        }
+      ]
+    }
+  ],
+  "attributes": {
+    "required": "required"
+  }
+}
+```
+
 ---
 
 #### Color Picker
