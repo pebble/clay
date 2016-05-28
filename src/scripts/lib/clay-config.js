@@ -201,7 +201,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
 
   /**
    * Empties the root container
-   * @return {void}
+   * @returns {ClayConfig}
    */
   self.destroy = function() {
     var el = $rootContainer[0];
@@ -211,6 +211,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
     }
     _initializeItems();
     self.trigger(self.EVENTS.AFTER_DESTROY);
+    return self;
   };
 
   /**
