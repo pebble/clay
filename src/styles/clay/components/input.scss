@@ -31,6 +31,8 @@
     vertical-align: baseline;
     color: $color-white;
     font-size: inherit;
+    appearance: none;
+    min-height: $item-spacing-v + ($base-height + 0rem) ;
 
     @include placeholder {
       color: $color-gray-8;
