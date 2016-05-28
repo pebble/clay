@@ -299,6 +299,24 @@ describe('ClayConfig', function() {
   });
 
   describe('.build()', function() {
+    it('Destroys the config if called a consecutive time', function() {
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
+      var destroyHandlerSpy = sinon.spy();
+
+      clayConfig.on(clayConfig.EVENTS.AFTER_DESTROY, destroyHandlerSpy);
+
+      clayConfig.build();
+      assert.strictEqual(clayConfig.getAllItems().length, 3);
+
+      clayConfig.config = fixtures.config(['select']);
+      clayConfig.build();
+      assert.strictEqual(clayConfig.getAllItems().length, 1);
+      assert(destroyHandlerSpy.calledOnce);
+
+      clayConfig.build();
+      assert(destroyHandlerSpy.calledTwice);
+    });
+
     it('dispatches the BEFORE_BUILD event at the right time', function(done) {
       var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
