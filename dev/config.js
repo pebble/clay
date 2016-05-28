@@ -32,6 +32,20 @@ module.exports = [
         }
       },
       {
+        "type": "input",
+        "label": "Time Field",
+        "attributes": {
+          "type": "time"
+        }
+      },
+      {
+        "type": "input",
+        "label": "Date Field",
+        "attributes": {
+          "type": "date"
+        }
+      },
+      {
         "type": "slider",
         "appKey": "slider",
         "defaultValue": 15,
