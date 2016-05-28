@@ -854,6 +854,8 @@ This is the main way of talking to your generated config page. An instance of th
 |----------|------|-------------|
 | `.EVENTS.BEFORE_BUILD` | String | Dispatched prior to building the page. |
 | `.EVENTS.AFTER_BUILD` | String | Dispatched after building the page. |
+| `.EVENTS.BEFORE_DESTROY` | String | Dispatched prior to destroying the page. |
+| `.EVENTS.AFTER_DESTROY` | String | Dispatched after destroying the page. |
 | `.config` | Array | Reference to the config passed to the constructor and used for generating the page. |
 | `.meta` | Object | Contains information about the current user and watch |
 | `.meta.activeWatchInfo` | watchinfo\|null | An object containing information on the currently connected Pebble smartwatch or null if unavailable. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getActiveWatchInfo). |
@@ -871,7 +873,8 @@ This is the main way of talking to your generated config page. An instance of th
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id`, otherwise `undefined`. |
 | `.getItemsByType( [string] type )` | `Array.<ConfigItem>` - an array of config items that match the provided `type`. |
 | `.serialize()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is an object with the `value` property set to the result of running `.get()` on the Clay item. If the Clay item has a `precision` property set, it is included in the object |
-| `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. | `ClayConfig` |
+| `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. If the config page has already been built, then the `ClayConfig.destroy()` method will be executed prior to building the page again. | `ClayConfig` |
+| `.destroy()` <br> Destroys the config page. Will dispatch the `BEFORE_DESTROY` event prior to destroying the page, then the `AFTER_DESTROY` event once it is complete. This method wipes the config page completely, including all existing items. You will need to make sure that you re-attach your event handlers for any items that are replaced | `ClayConfig` |
 | `.on( [string] events, [function] handler )` <br> Register an event to the provided handler. The handler will be called with this instance of `ClayConfig` as the context. If you wish to register multiple events to the same handler, then separate the events with a space | `ClayConfig` |
 | `.off( [function] handler )` <br> Remove the given event handler. **NOTE:** This will remove the handler from all registered events. | `ClayConfig` |
 | `.trigger( [string] name, [object] eventObj={} )` <br> Trigger the provided event and optionally pass extra data to the handler. | `ClayConfig` |
