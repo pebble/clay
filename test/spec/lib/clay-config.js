@@ -254,7 +254,69 @@ describe('ClayConfig', function() {
     });
   });
 
+  describe('.destroy().', function() {
+    it('Destroys all the items on the page and in the items array', function() {
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
+
+      clayConfig.build();
+      clayConfig.destroy();
+
+      // this should throw because the config has not been built yet
+      assert.throws(clayConfig.getAllItems);
+
+      // there should be no DOM inside the container
+      assert.strictEqual(clayConfig.$rootContainer[0].children.length, 0);
+    });
+
+    it('dispatches the BEFORE_DESTROY event at the right time', function(done) {
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
+
+      clayConfig.on(clayConfig.EVENTS.BEFORE_DESTROY, function() {
+        assert.strictEqual(clayConfig.getAllItems().length, 3);
+        done();
+      });
+
+      clayConfig.build();
+      clayConfig.destroy();
+
+      assert.strictEqual(clayConfig.getAllItems().length, 0);
+    });
+
+    it('dispatches the AFTER_DESTROY event at the right time', function(done) {
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
+
+      clayConfig.on(clayConfig.EVENTS.AFTER_DESTROY, function() {
+
+        // this should throw because the config has not been built yet
+        assert.throws(clayConfig.getAllItems);
+        done();
+      });
+
+      clayConfig.build();
+      assert.strictEqual(clayConfig.getAllItems().length, 3);
+      clayConfig.destroy();
+    });
+  });
+
   describe('.build()', function() {
+    it('Destroys the config if called a consecutive time', function() {
+      var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
+      var destroyHandlerSpy = sinon.spy();
+
+      clayConfig.on(clayConfig.EVENTS.AFTER_DESTROY, destroyHandlerSpy);
+
+      clayConfig.build();
+      assert.strictEqual(clayConfig.getAllItems().length, 3);
+
+      clayConfig.config = fixtures.config(['select']);
+      clayConfig.build();
+      assert.strictEqual(clayConfig.getAllItems().length, 1);
+      assert(destroyHandlerSpy.calledOnce);
+
+      clayConfig.build();
+      assert(destroyHandlerSpy.calledTwice);
+    });
+
     it('dispatches the BEFORE_BUILD event at the right time', function(done) {
       var clayConfig = fixtures.clayConfig(['input', 'text', 'input'], false);
       clayConfig.on(clayConfig.EVENTS.BEFORE_BUILD, function() {
