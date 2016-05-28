@@ -4,7 +4,15 @@
     <span class="value"></span>
     <select data-manipulator-target {{each key: attributes}}{{key}}="{{this}}"{{/each}}>
       {{each options}}
-        <option value="{{this.value}}" class="item-select-option">{{this.label}}</option>
+        {{if Array.isArray(this.value)}}
+          <optgroup label="{{this.label}}">
+            {{each this.value}}
+              <option value="{{this.value}}" class="item-select-option">{{this.label}}</option>
+            {{/each}}
+          </optgroup>
+        {{else}}
+          <option value="{{this.value}}" class="item-select-option">{{this.label}}</option>
+        {{/if}}
       {{/each}}
     </select>
   </label>
