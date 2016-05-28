@@ -122,7 +122,14 @@ module.exports = [
           { "label": "", "value": "" },
           { "label": "Berry", "value": "berry" },
           { "label": "This Option is Selected", "value": "grape" },
-          { "label": "Banana", "value": "banana" }
+          { "label": "Banana", "value": "banana" },
+          {
+            "label": "This is an optgroup",
+            "value": [
+              { "label": "Peach", "value": "peach" },
+              { "label": "Mango", "value": "mango" }
+            ]
+          }
         ],
         "attributes": {
           "required": "required"
