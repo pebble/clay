@@ -159,6 +159,26 @@ describe('ClayConfig', function() {
         fixtures.clayConfig(config, true, true, loadedSettings);
       });
     });
+
+    it('only returns the settings present in the config', function() {
+      var config = [
+        {type: 'input', appKey: 'test1', defaultValue: 'default val'},
+        {type: 'select', appKey: 'test2', options: [
+          {label: 'label-1', value: 'val-1'},
+          {label: 'label-2', value: 'val-2'}
+        ]}
+      ];
+      var settings = {
+        test2: 'val-2',
+        notInTheConfig: 'Should not exist'
+      };
+
+      var clayConfig = fixtures.clayConfig(config, true, true, settings);
+      assert.deepEqual(clayConfig.serialize(), {
+        test1: {value: 'default val'},
+        test2: {value: 'val-2'}
+      });
+    });
   });
 
   describe('.registerComponent()', function() {
