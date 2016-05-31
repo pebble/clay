@@ -629,12 +629,14 @@ The "capabilities" property is an array of features that the connected watch mus
 in order for the item or section to be included in the page. Note: all capabilities in 
 the array must be present for item/section to be included. 
 
+You can also prefix the capability with `NOT_` to negate the capability. Eg: `NOT_HEALTH` 
+will only be included in the page if the device does **NOT** support health. 
+
 **Warning:** Items that do not satisfy the capabilities will not be included in the page 
 at all. You will not be able to use methods like `clayConfig.getItemByAppKey()` to 
-obttain a reference to them. However, this does mean that you will be able to have
+obtain a reference to them. However, this does mean that you will be able to have
 multiple items with the same `appKey`as long as they do not both satisfy the 
 same conditions. 
-
 
 ##### Examples
 
@@ -649,11 +651,11 @@ same conditions.
 ```javascript
 {
   "type": "section",
-  "capabilities": ["COLOR"],
+  "capabilities": ["NOT_HEALTH"],
   "items": [
     {
       "type": "text",
-      "defaultValue": "Only visible for color watches"
+      "defaultValue": "Only visible for watches that do not support health"
     }
   ]
 }
@@ -663,11 +665,11 @@ Below is the full list of capabilities
 
 | Capability | Description |
 |------------|-------------|
-| APLITE | Running on Pebble/Pebble Steel.|
-| BASALT | Running on Pebble Time/Pebble Time Steel. |
-| CHALK | Running on Pebble Time Round. |
-| DIORITE | Running on Pebble 2 |
-| EMERY | Running on Time 2. |
+| PLATFORM_APLITE | Running on Pebble/Pebble Steel.|
+| PLATFORM_BASALT | Running on Pebble Time/Pebble Time Steel. |
+| PLATFORM_CHALK | Running on Pebble Time Round. |
+| PLATFORM_DIORITE | Running on Pebble 2 |
+| PLATFORM_EMERY | Running on Time 2. |
 | BW | Running on hardware that supports only black and white. |
 | COLOR | Running on hardware that supports 64 colors. |
 | MICROPHONE | Running on hardware that includes a microphone. |
