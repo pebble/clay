@@ -1,6 +1,6 @@
 {
   "name": "pebble-clay",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Pebble Config Framework",
   "main": "dist/clay.js",
   "directories": {
