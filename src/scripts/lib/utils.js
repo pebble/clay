@@ -19,27 +19,27 @@ module.exports.updateProperties = function(obj, descriptor) {
 };
 
 module.exports.capabilityMap = {
-  APLITE: {
+  PLATFORM_APLITE: {
     platforms: ['aplite'],
     minFwMajor: 0,
     minFwMinor: 0
   },
-  BASALT: {
+  PLATFORM_BASALT: {
     platforms: ['basalt'],
     minFwMajor: 0,
     minFwMinor: 0
   },
-  CHALK: {
+  PLATFORM_CHALK: {
     platforms: ['chalk'],
     minFwMajor: 0,
     minFwMinor: 0
   },
-  DIORITE: {
+  PLATFORM_DIORITE: {
     platforms: ['diorite'],
     minFwMajor: 0,
     minFwMinor: 0
   },
-  EMERY: {
+  PLATFORM_EMERY: {
     platforms: ['emery'],
     minFwMajor: 0,
     minFwMinor: 0
@@ -81,8 +81,8 @@ module.exports.capabilityMap = {
   },
   ROUND: {
     platforms: ['chalk'],
-    minFwMajor: 3,
-    minFwMinor: 4
+    minFwMajor: 0,
+    minFwMinor: 0
   },
   DISPLAY_144x168: {
     platforms: ['aplite', 'basalt', 'diorite'],
@@ -104,25 +104,32 @@ module.exports.capabilityMap = {
 /**
  * Checks if all of the provided capabilities are compatible with the watch
  * @param {Object} activeWatchInfo
- * @param {Array} [capabilities]
+ * @param {Array<string>} [capabilities]
  * @return {boolean}
  */
 module.exports.includesCapability = function(activeWatchInfo, capabilities) {
+  var notRegex = /^NOT_/;
+  var result = [];
+
   if (!capabilities || !capabilities.length) {
     return true;
   }
 
   for (var i = capabilities.length - 1; i >= 0; i--) {
     var capability = capabilities[i];
-    var mapping = module.exports.capabilityMap[capability];
+    var mapping = module.exports.capabilityMap[capability.replace(notRegex, '')];
+
     if (!mapping ||
         mapping.platforms.indexOf(activeWatchInfo.platform) === -1 ||
         mapping.minFwMajor > activeWatchInfo.firmware.major ||
         mapping.minFwMajor === activeWatchInfo.firmware.major &&
         mapping.minFwMinor > activeWatchInfo.firmware.minor
     ) {
-      return false;
+      result.push(!!capability.match(notRegex));
+    } else {
+      result.push(!capability.match(notRegex));
     }
   }
-  return true;
+
+  return result.indexOf(false) === -1;
 };
