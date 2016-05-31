@@ -11,6 +11,7 @@
  * @property {Object} [attributes]
  * @property {Array} [options]
  * @property {Array} [items]
+ * @property {Array} [capabilities]
  */
 
 var HTML = require('../vendor/minified').HTML;
@@ -61,34 +62,36 @@ function ClayConfig(settings, config, $rootContainer, meta) {
       item.forEach(function(item) {
         _addItems(item, $container);
       });
-    } else if (item.type === 'section') {
-      var $wrapper = HTML('<div class="section">');
-      $container.add($wrapper);
-      _addItems(item.items, $wrapper);
-    } else {
-      var _item = _.copyObj(item);
-      _item.clayId = _items.length;
+    } else if (utils.includesCapability(meta.activeWatchInfo, item.capabilities)) {
+      if (item.type === 'section') {
+        var $wrapper = HTML('<div class="section">');
+        $container.add($wrapper);
+        _addItems(item.items, $wrapper);
+      } else {
+        var _item = _.copyObj(item);
+        _item.clayId = _items.length;
 
-      var clayItem = new ClayItem(_item).initialize(self);
+        var clayItem = new ClayItem(_item).initialize(self);
 
-      if (_item.id) {
-        _itemsById[_item.id] = clayItem;
+        if (_item.id) {
+          _itemsById[_item.id] = clayItem;
+        }
+
+        if (_item.appKey) {
+          _itemsByAppKey[_item.appKey] = clayItem;
+        }
+
+        _items.push(clayItem);
+
+        // set the value of the item via the manipulator to ensure consistency
+        var value = typeof _settings[_item.appKey] !== 'undefined' ?
+          _settings[_item.appKey] :
+          (_item.defaultValue || '');
+
+        clayItem.set(value);
+
+        $container.add(clayItem.$element);
       }
-
-      if (_item.appKey) {
-        _itemsByAppKey[_item.appKey] = clayItem;
-      }
-
-      _items.push(clayItem);
-
-      // set the value of the item via the manipulator to ensure consistency
-      var value = typeof _settings[_item.appKey] !== 'undefined' ?
-        _settings[_item.appKey] :
-        (_item.defaultValue || '');
-
-      clayItem.set(value);
-
-      $container.add(clayItem.$element);
     }
   }
 

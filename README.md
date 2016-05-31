@@ -83,6 +83,7 @@ Sections help divide up the page into logical groups of items. It is recommended
 |----------|------|-------------|
 | type | string | Set to `section`. |
 | items | array | Array of items to include in this section. |
+| capabilities | array | Array of features that the connected watch must have for this section to be present |
 
 ##### Example
 
@@ -125,6 +126,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
 ##### Example
@@ -154,6 +156,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
 | appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
 ##### Example
@@ -184,6 +187,7 @@ Standard text input field.
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attributes such as `required` or `type`. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
 ##### Example
@@ -222,6 +226,7 @@ Switch for a single item.
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
 ##### Example
@@ -258,6 +263,7 @@ A dropdown menu containing multiple options.
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -371,6 +377,7 @@ The color picker will automatically show a different layout depending on the wat
 | sunlight | boolean | Use the color-corrected sunlight color palette if `true`, else the uncorrected version. Defaults to `true` if not specified. |
 | layout | string OR array | Optional. Use a custom layout for the color picker. Defaults to automatically choosing the most appropriate layout for the connected watch. The layout is represented by a two dimensional array. Use `false` to insert blank spaces. You may also use one of the preset layouts by setting `layout` to: `"COLOR"`, `"GRAY"` or `"BLACK_WHITE"` |
 | allowGray | boolean | Optional. Set this to `true` to include gray (`#AAAAAA`) in the color picker for aplite running on firmware 3 and above. This is optional because only a subset of the drawing operations support gray on aplite. Defaults to `false` |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -435,6 +442,7 @@ A list of options allowing the user can only choose one option to submit.
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -480,6 +488,7 @@ A list of options where a user may choose more than one option to submit.
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -521,6 +530,7 @@ A list of options where a user may choose more than one option to submit.
 | primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
 | attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -559,6 +569,7 @@ you must just remember to divide the received value on the watch accordingly.
 | step | number | The multiple of the values allowed to be set on the slider. The slider will snap to these values. This value also determines the precision used when the value is sent to the watch. Defaults to 1 |
 | attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -590,6 +601,7 @@ The submit button for the page. You **MUST** include this component somewhere in
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
 | attributes | object | An object containing HTML attributes to set on the input field. |
+| capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
 
@@ -609,6 +621,57 @@ The submit button for the page. You **MUST** include this component somewhere in
 - Dynamic + draggable list
 
 ---
+### Showing items for specific platforms and features
+
+If you want particular items or sections to only be present in the config based on the
+connected watch's capabilities, you can include the "capabilities" property in the item. 
+The "capabilities" property is an array of features that the connected watch must have
+in order for the item or section to be included in the page. Note: all capabilities in 
+the array must be present for item/section to be included. 
+
+##### Examples
+
+```javascript
+{
+  "type": "text",
+  "defaultValue": "This item will only be visible for watches that are rectangular and have a microphone"
+  "capabilities": ["MICROPHONE", "RECT"],
+}
+```
+
+```javascript
+{
+  "type": "section",
+  "capabilities": ["COLOR"],
+  "items": [
+    {
+      "type": "text",
+      "defaultValue": "Only visible for color watches"
+    }
+  ]
+}
+```
+
+Below is the full list of capabilities 
+
+| Capability | Description |
+|------------|-------------|
+| APLITE | Running on Pebble/Pebble Steel.|
+| BASALT | Running on Pebble Time/Pebble Time Steel. |
+| CHALK | Running on Pebble Time Round. |
+| DIORITE | Running on Pebble 2 |
+| EMERY | Running on Time 2. |
+| BW | Running on hardware that supports only black and white. |
+| COLOR | Running on hardware that supports 64 colors. |
+| MICROPHONE | Running on hardware that includes a microphone. |
+| SMARTSTRAP | Running on hardware that includes a smartstrap connector. |
+| SMARTSTRAP_POWER | Running on hardware that includes a powered smartstrap connector. |
+| HEALTH | Running on hardware that supports Pebble Health and the HealthService API. |
+| RECT | Running on hardware with a rectangular display. |
+| ROUND | Running on hardware with a round display. |
+| DISPLAY_144x168 | Running on hardware with a 144x168 pixels display. |
+| DISPLAY_180x180_ROUND | Running on hardware with a 180x180 pixels round display. |
+| DISPLAY_200x228 | Running on hardware with a 200x228 pixels display. |
 
 ## Manipulators 
 

@@ -27,6 +27,177 @@ describe('ClayConfig', function() {
     checkReadOnly(clayConfig, properties);
   });
 
+  /**
+   * Tests if the provided capabilities of the platform match
+   * @param {string} platform
+   * @param {number} fwMajor
+   * @param {number} fwMinor
+   * @param {Array} capabilities
+   * @param {number} expected
+   * @return {void}
+   */
+  function testCapabilities(platform, fwMajor, fwMinor, capabilities, expected) {
+    it(platform + ' is' + (expected ? '' : ' not') + ' included on firmware ' +
+       fwMajor + '.' + fwMinor + ' for capabilities ' + JSON.stringify(capabilities),
+    function() {
+      var item = {
+        type: 'input',
+        capabilities: capabilities
+      };
+      var meta = {
+        activeWatchInfo: {
+          platform: platform,
+          model: 'qemu_platform_' + platform,
+          language: 'en_US',
+          firmware: {
+            major: fwMajor,
+            minor: fwMinor,
+            patch: 0,
+            suffix: ''
+          }
+        }
+      };
+      var clayConfig = fixtures.clayConfig([item], true, true, null, meta);
+
+      assert.strictEqual(clayConfig.getAllItems().length, expected);
+    });
+  }
+
+  describe('capability filtering', function() {
+    testCapabilities('aplite', 2, 9, ['BW'], 1);
+    testCapabilities('aplite', 2, 9, ['COLOR'], 0);
+    testCapabilities('aplite', 2, 9, ['MICROPHONE'], 0);
+    testCapabilities('aplite', 2, 9, ['SMARTSTRAP'], 0);
+    testCapabilities('aplite', 2, 9, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('aplite', 2, 9, ['HEALTH'], 0);
+    testCapabilities('aplite', 2, 9, ['RECT'], 1);
+    testCapabilities('aplite', 2, 9, ['ROUND'], 0);
+    testCapabilities('aplite', 2, 9, ['DISPLAY_144x168'], 1);
+    testCapabilities('aplite', 2, 9, ['DISPLAY_180x180_ROUND'], 0);
+    testCapabilities('aplite', 2, 9, ['DISPLAY_200x228'], 0);
+    testCapabilities('aplite', 2, 9, ['APLITE'], 1);
+    testCapabilities('aplite', 2, 9, ['BASALT'], 0);
+    testCapabilities('aplite', 2, 9, ['CHALK'], 0);
+    testCapabilities('aplite', 2, 9, ['DIORITE'], 0);
+    testCapabilities('aplite', 2, 9, ['EMERY'], 0);
+
+    testCapabilities('aplite', 3, 10, ['BW'], 1);
+    testCapabilities('aplite', 3, 10, ['COLOR'], 0);
+    testCapabilities('aplite', 3, 10, ['MICROPHONE'], 0);
+    testCapabilities('aplite', 3, 10, ['SMARTSTRAP'], 0);
+    testCapabilities('aplite', 3, 4, ['SMARTSTRAP'], 0);
+    testCapabilities('aplite', 3, 3, ['SMARTSTRAP'], 0);
+    testCapabilities('aplite', 3, 10, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('aplite', 3, 10, ['HEALTH'], 0);
+    testCapabilities('aplite', 3, 9, ['HEALTH'], 0);
+    testCapabilities('aplite', 3, 10, ['RECT'], 1);
+    testCapabilities('aplite', 3, 10, ['ROUND'], 0);
+    testCapabilities('aplite', 3, 10, ['DISPLAY_144x168'], 1);
+    testCapabilities('aplite', 3, 10, ['DISPLAY_180x180_ROUND'], 0);
+    testCapabilities('aplite', 3, 10, ['DISPLAY_200x228'], 0);
+    testCapabilities('aplite', 3, 10, ['APLITE'], 1);
+    testCapabilities('aplite', 3, 10, ['BASALT'], 0);
+    testCapabilities('aplite', 3, 10, ['CHALK'], 0);
+    testCapabilities('aplite', 3, 10, ['DIORITE'], 0);
+    testCapabilities('aplite', 3, 10, ['EMERY'], 0);
+
+    testCapabilities('basalt', 3, 10, ['BW'], 0);
+    testCapabilities('basalt', 3, 10, ['COLOR'], 1);
+    testCapabilities('basalt', 3, 10, ['MICROPHONE'], 1);
+    testCapabilities('basalt', 3, 10, ['SMARTSTRAP'], 1);
+    testCapabilities('basalt', 3, 4, ['SMARTSTRAP'], 1);
+    testCapabilities('basalt', 3, 3, ['SMARTSTRAP'], 0);
+    testCapabilities('basalt', 3, 10, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('basalt', 3, 4, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('basalt', 3, 3, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('basalt', 3, 10, ['HEALTH'], 1);
+    testCapabilities('basalt', 3, 9, ['HEALTH'], 0);
+    testCapabilities('basalt', 3, 10, ['RECT'], 1);
+    testCapabilities('basalt', 3, 10, ['ROUND'], 0);
+    testCapabilities('basalt', 3, 10, ['DISPLAY_144x168'], 1);
+    testCapabilities('basalt', 3, 10, ['DISPLAY_180x180_ROUND'], 0);
+    testCapabilities('basalt', 3, 10, ['DISPLAY_200x228'], 0);
+    testCapabilities('basalt', 3, 10, ['APLITE'], 0);
+    testCapabilities('basalt', 3, 10, ['BASALT'], 1);
+    testCapabilities('basalt', 3, 10, ['CHALK'], 0);
+    testCapabilities('basalt', 3, 10, ['DIORITE'], 0);
+    testCapabilities('basalt', 3, 10, ['EMERY'], 0);
+
+    testCapabilities('chalk', 3, 10, ['BW'], 0);
+    testCapabilities('chalk', 3, 10, ['COLOR'], 1);
+    testCapabilities('chalk', 3, 10, ['MICROPHONE'], 1);
+    testCapabilities('chalk', 3, 10, ['SMARTSTRAP'], 1);
+    testCapabilities('chalk', 3, 4, ['SMARTSTRAP'], 1);
+    testCapabilities('chalk', 3, 3, ['SMARTSTRAP'], 0);
+    testCapabilities('chalk', 3, 10, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('chalk', 3, 4, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('chalk', 3, 3, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('chalk', 3, 10, ['HEALTH'], 1);
+    testCapabilities('chalk', 3, 9, ['HEALTH'], 0);
+    testCapabilities('chalk', 3, 10, ['RECT'], 0);
+    testCapabilities('chalk', 3, 10, ['ROUND'], 1);
+    testCapabilities('chalk', 3, 10, ['DISPLAY_144x168'], 0);
+    testCapabilities('chalk', 3, 10, ['DISPLAY_180x180_ROUND'], 1);
+    testCapabilities('chalk', 3, 10, ['DISPLAY_200x228'], 0);
+    testCapabilities('chalk', 3, 10, ['APLITE'], 0);
+    testCapabilities('chalk', 3, 10, ['BASALT'], 0);
+    testCapabilities('chalk', 3, 10, ['CHALK'], 1);
+    testCapabilities('chalk', 3, 10, ['DIORITE'], 0);
+    testCapabilities('chalk', 3, 10, ['EMERY'], 0);
+
+    testCapabilities('diorite', 3, 10, ['BW'], 1);
+    testCapabilities('diorite', 3, 10, ['COLOR'], 0);
+    testCapabilities('diorite', 3, 10, ['MICROPHONE'], 1);
+    testCapabilities('diorite', 3, 10, ['SMARTSTRAP'], 1);
+    testCapabilities('diorite', 3, 4, ['SMARTSTRAP'], 1);
+    testCapabilities('diorite', 3, 3, ['SMARTSTRAP'], 0);
+    testCapabilities('diorite', 3, 10, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('diorite', 3, 4, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('diorite', 3, 3, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('diorite', 3, 10, ['HEALTH'], 1);
+    testCapabilities('diorite', 3, 9, ['HEALTH'], 0);
+    testCapabilities('diorite', 3, 10, ['RECT'], 1);
+    testCapabilities('diorite', 3, 10, ['ROUND'], 0);
+    testCapabilities('diorite', 3, 10, ['DISPLAY_144x168'], 1);
+    testCapabilities('diorite', 3, 10, ['DISPLAY_180x180_ROUND'], 0);
+    testCapabilities('diorite', 3, 10, ['DISPLAY_200x228'], 0);
+    testCapabilities('diorite', 3, 10, ['APLITE'], 0);
+    testCapabilities('diorite', 3, 10, ['BASALT'], 0);
+    testCapabilities('diorite', 3, 10, ['CHALK'], 0);
+    testCapabilities('diorite', 3, 10, ['DIORITE'], 1);
+    testCapabilities('diorite', 3, 10, ['EMERY'], 0);
+
+    testCapabilities('emery', 3, 10, ['BW'], 0);
+    testCapabilities('emery', 3, 10, ['COLOR'], 1);
+    testCapabilities('emery', 3, 10, ['MICROPHONE'], 1);
+    testCapabilities('emery', 3, 10, ['SMARTSTRAP'], 1);
+    testCapabilities('emery', 3, 4, ['SMARTSTRAP'], 1);
+    testCapabilities('emery', 3, 3, ['SMARTSTRAP'], 0);
+    testCapabilities('emery', 3, 10, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('emery', 3, 4, ['SMARTSTRAP_POWER'], 1);
+    testCapabilities('emery', 3, 3, ['SMARTSTRAP_POWER'], 0);
+    testCapabilities('emery', 3, 10, ['HEALTH'], 1);
+    testCapabilities('emery', 3, 9, ['HEALTH'], 0);
+    testCapabilities('emery', 3, 10, ['RECT'], 1);
+    testCapabilities('emery', 3, 10, ['ROUND'], 0);
+    testCapabilities('emery', 3, 10, ['DISPLAY_144x168'], 0);
+    testCapabilities('emery', 3, 10, ['DISPLAY_180x180_ROUND'], 0);
+    testCapabilities('emery', 3, 10, ['DISPLAY_200x228'], 1);
+    testCapabilities('emery', 3, 10, ['APLITE'], 0);
+    testCapabilities('emery', 3, 10, ['BASALT'], 0);
+    testCapabilities('emery', 3, 10, ['CHALK'], 0);
+    testCapabilities('emery', 3, 10, ['DIORITE'], 0);
+    testCapabilities('emery', 3, 10, ['EMERY'], 1);
+
+    testCapabilities('aplite', 3, 10, ['BW', 'HEALTH'], 0);
+    testCapabilities('emery', 3, 10, ['COLOR', 'HEALTH'], 1);
+    testCapabilities('emery', 3, 10, ['MICROPHONE'], 1);
+    testCapabilities('chalk', 3, 10, ['APLITE', 'BASALT', 'DIORITE'], 0);
+    testCapabilities('basalt', 3, 10, ['SMARTSTRAP', 'SMARTSTRAP_POWER'], 1);
+    testCapabilities('aplite', 3, 10, ['COLOR', 'APLITE'], 0);
+    testCapabilities('aplite', 3, 10, ['APLITE', 'COLOR'], 0);
+  });
+
   describe('.meta', function() {
     it('populates meta', function() {
       var clayConfig = fixtures.clayConfig(['input']);
