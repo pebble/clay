@@ -629,6 +629,13 @@ The "capabilities" property is an array of features that the connected watch mus
 in order for the item or section to be included in the page. Note: all capabilities in 
 the array must be present for item/section to be included. 
 
+**Warning:** Items that do not satisfy the capabilities will not be included in the page 
+at all. You will not be able to use methods like `clayConfig.getItemByAppKey()` to 
+obttain a reference to them. However, this does mean that you will be able to have
+multiple items with the same `appKey`as long as they do not both satisfy the 
+same conditions. 
+
+
 ##### Examples
 
 ```javascript
