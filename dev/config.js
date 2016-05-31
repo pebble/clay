@@ -15,10 +15,26 @@ module.exports = [
   },
   {
     "type": "section",
+    "capabilities": ["RECT", "MICROPHONE"],
+    "items": [
+      {
+        "type": "text",
+        "defaultValue": "This section is only visible for rectangular devices that" +
+                        " have a microphone"
+      }
+    ]
+  },
+  {
+    "type": "section",
     "items": [
       {
         "type": "heading",
         "defaultValue": "This is a section"
+      },
+      {
+        "type": "text",
+        "defaultValue": "This is only visible for aplite",
+        "capabilities": ["APLITE"]
       },
       {
         "type": "input",
