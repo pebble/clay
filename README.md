@@ -5,7 +5,17 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 **Clay is still in early development and may be missing some features. We would love your feedback! Pease submit any ideas or features via GitHub Issues.**
 
-> NOTE: Prior to SDK 3.13, require paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('clay')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the Clay module now is done in app.js by using `require('./clay')`.
+# SDK 3.13 Changes
+Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('clay')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the Clay module now is done in app.js by using `require('./clay')`. An incorrect path would result in an error similar to this:
+   ```
+   [14:16:03] javascript> JavaScript Error:
+   Error: Cannot find module 'clay'
+       at Object.loader.require (loader.js:66:11)
+       at _require.require (loader.js:54:48)
+       at Object.loader (src/js/app.js:1:1)
+       at _require (loader.js:57:10)
+       at Object.loader.require (loader.js:69:10)
+   ```
 
 # Getting Started (SDK)
 
