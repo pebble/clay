@@ -186,7 +186,7 @@ Standard text input field.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attributes such as `required` or `type`. |
+| attributes | object | An object containing HTML attributes to set on the input field. Set `type` to values such as "email", "time", "date" etc to adjust the behavior of the component. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
@@ -201,7 +201,6 @@ Standard text input field.
   "attributes": {
     "placeholder": "eg: name@domain.com",
     "limit": 10,
-    "required": "required",
     "type": "email"
   }
 }
@@ -225,7 +224,6 @@ Switch for a single item.
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
@@ -236,10 +234,7 @@ Switch for a single item.
   "type": "toggle",
   "appKey": "invert",
   "label": "Invert Colors",
-  "defaultValue": true,
-  "attributes": {
-    "required": "required"
-  }
+  "defaultValue": true
 }
 ```
 
@@ -261,7 +256,6 @@ A dropdown menu containing multiple options.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -290,10 +284,7 @@ A dropdown menu containing multiple options.
       "label": "Banana",
       "value": "banana" 
     }
-  ],
-  "attributes": {
-    "required": "required"
-  }
+  ]
 }
 ```
 
@@ -344,10 +335,7 @@ If you wish to use optgroups, then use the following format:
         }
       ]
     }
-  ],
-  "attributes": {
-    "required": "required"
-  }
+  ]
 }
 ```
 
@@ -440,7 +428,6 @@ A list of options allowing the user can only choose one option to submit.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -486,7 +473,6 @@ A list of options where a user may choose more than one option to submit.
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -528,7 +514,6 @@ A list of options where a user may choose more than one option to submit.
 | type | string | Set to `button`. |
 | defaultValue | string | The text displayed on the button. |
 | primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -567,7 +552,6 @@ you must just remember to divide the received value on the watch accordingly.
 | min | number | The minimum allowed value of the slider. Defaults to `100` |
 | max | number | The maximum allowed value of the slider. Defaults to `0` |
 | step | number | The multiple of the values allowed to be set on the slider. The slider will snap to these values. This value also determines the precision used when the value is sent to the watch. Defaults to 1 |
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -600,7 +584,6 @@ The submit button for the page. You **MUST** include this component somewhere in
 |----------|------|-------------|
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
