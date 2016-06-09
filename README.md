@@ -33,28 +33,30 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
   var clay = new Clay(clayConfig);
   ```
 6. Add `configurable` to the `capabilities` array in your `appinfo.json`.
-7. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+7. Ensure `enableMultiJS` is set to true in your `appinfo.json`.
+8. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
 
 # Getting Started (CloudPebble)
 
 Clay will eventually be built into CloudPebble. However while it is still in beta, you will need to follow some steps.
 NOTE these are similar to using the SDK but instead of a data file called config.json, a javascript file config.js is required.
 
-1. Create a new JavaScript file called `clay.js`.
-2. Copy the contents from the **clay.js** distribution file found in the [latest release](https://github.com/pebble/clay/releases/latest) into your newly created `clay.js` file.
-3. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
+1. Ensure `JS Handling` is set to `CommonJS-style` in your project settings.
+2. Create a new JavaScript file called `clay.js`.
+3. Copy the contents from the **clay.js** distribution file found in the [latest release](https://github.com/pebble/clay/releases/latest) into your newly created `clay.js` file.
+4. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
 
   ```javascript
   module.exports = [];
   ```
-4. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
   var Clay = require('./clay');
   var clayConfig = require('./config');
   var clay = new Clay(clayConfig);
   ```
-5. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
 
 # Creating Your Config File
 
@@ -198,7 +200,7 @@ Standard text input field.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attributes such as `required` or `type`. |
+| attributes | object | An object containing HTML attributes to set on the input field. Set `type` to values such as "email", "time", "date" etc to adjust the behavior of the component. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
@@ -213,7 +215,6 @@ Standard text input field.
   "attributes": {
     "placeholder": "eg: name@domain.com",
     "limit": 10,
-    "required": "required",
     "type": "email"
   }
 }
@@ -237,7 +238,6 @@ Switch for a single item.
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 
@@ -248,10 +248,7 @@ Switch for a single item.
   "type": "toggle",
   "appKey": "invert",
   "label": "Invert Colors",
-  "defaultValue": true,
-  "attributes": {
-    "required": "required"
-  }
+  "defaultValue": true
 }
 ```
 
@@ -273,7 +270,6 @@ A dropdown menu containing multiple options.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -302,10 +298,7 @@ A dropdown menu containing multiple options.
       "label": "Banana",
       "value": "banana" 
     }
-  ],
-  "attributes": {
-    "required": "required"
-  }
+  ]
 }
 ```
 
@@ -356,10 +349,7 @@ If you wish to use optgroups, then use the following format:
         }
       ]
     }
-  ],
-  "attributes": {
-    "required": "required"
-  }
+  ]
 }
 ```
 
@@ -452,7 +442,6 @@ A list of options allowing the user can only choose one option to submit.
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -498,7 +487,6 @@ A list of options where a user may choose more than one option to submit.
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
 | description | string | Optional sub-text to include below the component |
-| attributes | object | An object containing HTML attributes to set on the input field. You can add basic HTML5 validation this way by setting attribute such as `required`. |
 | options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -540,7 +528,6 @@ A list of options where a user may choose more than one option to submit.
 | type | string | Set to `button`. |
 | defaultValue | string | The text displayed on the button. |
 | primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -579,7 +566,6 @@ you must just remember to divide the received value on the watch accordingly.
 | min | number | The minimum allowed value of the slider. Defaults to `100` |
 | max | number | The maximum allowed value of the slider. Defaults to `0` |
 | step | number | The multiple of the values allowed to be set on the slider. The slider will snap to these values. This value also determines the precision used when the value is sent to the watch. Defaults to 1 |
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -612,7 +598,6 @@ The submit button for the page. You **MUST** include this component somewhere in
 |----------|------|-------------|
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
-| attributes | object | An object containing HTML attributes to set on the input field. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
