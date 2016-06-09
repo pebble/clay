@@ -5,6 +5,18 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 **Clay is still in early development and may be missing some features. We would love your feedback! Pease submit any ideas or features via GitHub Issues.**
 
+# SDK 3.13 Changes
+Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('clay')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the Clay module now is done in app.js by using `require('./clay')`. An incorrect path would result in an error similar to this:
+   ```
+   [14:16:03] javascript> JavaScript Error:
+   Error: Cannot find module 'clay'
+       at Object.loader.require (loader.js:66:11)
+       at _require.require (loader.js:54:48)
+       at Object.loader (src/js/app.js:1:1)
+       at _require (loader.js:57:10)
+       at Object.loader.require (loader.js:69:10)
+   ```
+
 # Getting Started (SDK)
 
 Clay will eventually be built into the Pebble SDK. However, while it is still in beta you will need to follow the steps shown below:
@@ -16,8 +28,8 @@ Clay will eventually be built into the Pebble SDK. However, while it is still in
 5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
-  var Clay = require('clay');
-  var clayConfig = require('config.json');
+  var Clay = require('./clay');
+  var clayConfig = require('./config.json');
   var clay = new Clay(clayConfig);
   ```
 6. Add `configurable` to the `capabilities` array in your `appinfo.json`.
@@ -40,8 +52,8 @@ NOTE these are similar to using the SDK but instead of a data file called config
 5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
-  var Clay = require('clay');
-  var clayConfig = require('config');
+  var Clay = require('./clay');
+  var clayConfig = require('./config');
   var clay = new Clay(clayConfig);
   ```
 6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
@@ -1043,8 +1055,8 @@ Components are simple objects with the following properties.
 Components must be registered before the config page is built. The easiest way to do this is in your `app.js` after you have initialized Clay:
 
 ```javascript
-var Clay = require('clay');
-var clayConfig = require('config.json');
+var Clay = require('./clay');
+var clayConfig = require('./config.json');
 var clay = new Clay(clayConfig);
 
 clay.registerComponent(require('./my-custom-component'));
