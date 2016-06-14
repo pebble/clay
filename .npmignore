@@ -1,0 +1,4 @@
+# We ignore everying except for what is actually used by the pebble tool.
+/**/*
+!/dist.zip
+!/src/js/index.js

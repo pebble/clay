@@ -92,13 +92,13 @@ gulp.task('clay', ['inlineHtml'], function() {
     .transform(autoprefixify, autoprefixerOptions)
     .require(require.resolve('./index'), {expose: 'pebble-clay'})
     .bundle()
-    .pipe(source('clay.js'))
+    .pipe(source('index.js'))
     .pipe(buffer())
     .pipe(uglify({
       preserveComments: 'license'
     }))
     .pipe(insert.prepend(versionMessage))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./src/js'));
 });
 
 gulp.task('dev-js', ['js', 'sass'], function() {
