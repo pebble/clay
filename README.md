@@ -864,6 +864,8 @@ function cssColor(color) {
 cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 ```
 
+## Clay API (app.js)
+
 ### `Clay([Array] config, [function] customFn, [object] options)`
 
 #### Constructor Parameters
@@ -887,6 +889,7 @@ cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 | `.meta.accountToken` | String | A unique account token that is associated with the Pebble account of the current user. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getAccountToken). |
 | `.meta.watchToken` | String | A unique token that can be used to identify a Pebble device. Read more [here](https://developer.pebble.com/docs/js/Pebble/#getWatchToken). |
 | `.meta.userData` | Any | A deep copy of the arbitrary data provided in the `options.userData`. Defaults to an empty object |
+| `.version` | String | The version of Clay currently being used. |
 
 #### Methods
 
@@ -962,7 +965,7 @@ module.exports = function(minified) {
 };
 ```
 
-## Clay API
+## Clay API (Custom Function)
 
 ### `ClayConfig([Object] settings, [Array] config, [$Minified] $rootContainer)`
 

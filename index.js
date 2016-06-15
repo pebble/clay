@@ -4,6 +4,7 @@ var configPageHtml = require('./tmp/config-page.html');
 var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
 var deepcopy = require('deepcopy/build/deepcopy.min');
+var version = require('./package.json').version;
 
 /**
  * @param {Array} config - the Clay config
@@ -38,6 +39,7 @@ function Clay(config, customFn, options) {
     watchToken: '',
     userData: {}
   };
+  self.version = version;
 
   /**
    * Populate the meta with data from the Pebble object. Make sure to run this inside
