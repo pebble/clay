@@ -3,7 +3,7 @@ Clay is a JavaScript library that makes it easy to add offline configuration pag
 
 Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `appKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by [handling the events manually](#handling-the-showconfiguration-and-webviewclosed-events-manually).
 
-**Clay is still in early development and may be missing some features. We would love your feedback! Pease submit any ideas or features via GitHub Issues.**
+**Clay is still in early development and may be missing some features. We would love your feedback! Please submit any ideas or features via GitHub Issues.**
 
 # SDK 3.13 Changes
 Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('clay')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the Clay module now is done in app.js by using `require('./clay')`. An incorrect path would result in an error similar to this:
@@ -17,23 +17,22 @@ Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requ
        at Object.loader.require (loader.js:69:10)
    ```
 
-# Getting Started (SDK)
+# Getting Started (SDK 3.13 or higher)
 
-Clay will eventually be built into the Pebble SDK. However, while it is still in beta you will need to follow the steps shown below:
+Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pebble-packages/) so it is super easy to include in your project.
 
-1. Download the **clay.js** distribution file from the [latest release](https://github.com/pebble/clay/releases/latest).
-2. Drop `clay.js` in your project's `src/js` directory. 
-3. Create a JSON file called `config.json` and place it in your `src/js` directory. 
-4. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
-5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+1. Run `pebble package install pebble-clay` to install the package in your project
+2. Create a JSON file called `config.json` and place it in your `src/js` directory.
+3. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
+4. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
-  var Clay = require('./clay');
+  var Clay = require('pebble-clay');
   var clayConfig = require('./config.json');
   var clay = new Clay(clayConfig);
   ```
-6. Add `configurable` to the `capabilities` array in your `appinfo.json`.
-7. Ensure `enableMultiJS` is set to true in your `appinfo.json`.
+6. Add `configurable` to the `pebble.capabilities` array in your `package.json`.
+7. Ensure `pebble.enableMultiJS` is set to true in your `package.json`.
 8. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
 
 # Getting Started (CloudPebble)
@@ -42,9 +41,8 @@ Clay will eventually be built into CloudPebble. However while it is still in bet
 NOTE these are similar to using the SDK but instead of a data file called config.json, a javascript file config.js is required.
 
 1. Ensure `JS Handling` is set to `CommonJS-style` in your project settings.
-2. Create a new JavaScript file called `clay.js`.
-3. Copy the contents from the **clay.js** distribution file found in the [latest release](https://github.com/pebble/clay/releases/latest) into your newly created `clay.js` file.
-4. Create another JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
+2. Under `Dependencies` in the project navigation, enter `pebble-clay` as the `Package Name` and `^1.0.0` for the `Version`. You may use any specific version you like, however using `^1.0.0` will ensure you receive all minor version updates.
+4. Create a JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
 
   ```javascript
   module.exports = [];
@@ -52,7 +50,7 @@ NOTE these are similar to using the SDK but instead of a data file called config
 5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
-  var Clay = require('./clay');
+  var Clay = require('pebble-clay');
   var clayConfig = require('./config');
   var clay = new Clay(clayConfig);
   ```
@@ -137,7 +135,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 |----------|------|-------------|
 | type | string | Set to `heading`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
@@ -168,7 +166,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 |----------|------|-------------|
 | type | string | Set to `text`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -196,7 +194,7 @@ Standard text input field.
 |----------|------|-------------|
 | type | string | Set to `input`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
@@ -234,7 +232,7 @@ Switch for a single item.
 |----------|------|-------------|
 | type | string | Set to `toggle`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
@@ -266,7 +264,7 @@ A dropdown menu containing multiple options.
 |----------|------|-------------|
 | type | string | Set to `select`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -372,7 +370,7 @@ The color picker will automatically show a different layout depending on the wat
 |----------|------|-------------|
 | type | string | Set to `color`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. One of the [64 colors](https://developer.pebble.com/guides/tools-and-resources/color-picker/) compatible with Pebble smartwatches. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
@@ -438,7 +436,7 @@ A list of options allowing the user can only choose one option to submit.
 |----------|------|-------------|
 | type | string | Set to `radiogroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -483,7 +481,7 @@ A list of options where a user may choose more than one option to submit.
 |----------|------|-------------|
 | type | string | Set to `checkboxgroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `appinfo.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -1048,7 +1046,7 @@ Components are simple objects with the following properties.
 | `style` | string | no | Any extra CSS styles you want to inject into the page. Make sure to namespace your CSS with a class that is unique to your component in order to avoid conflicts with other components. |
 | `manipulator` | string / manipulator | yes | Provide a string here to use one of the built-in manipulators, such as `val`. If an object is provided, it must have both a `.set(value)` and `.get()` method. |
 | `defaults` | object | Only if your template requires it. | An object of all the defaults your template requires. |
-| `initialize` | function | no | Method which will be called after the item has been added to the page. It will be called with the `ClayItem` as the context (`this`) and with [`minified`](#minified) as the first parameter and [`clayConfig`](#clayconfigobject-settings-array-config-minified-rootcontainer) as the second paramater |
+| `initialize` | function | no | Method which will be called after the item has been added to the page. It will be called with the `ClayItem` as the context (`this`) and with [`minified`](#minified) as the first parameter and [`clayConfig`](#clayconfigobject-settings-array-config-minified-rootcontainer) as the second parameter |
 
 ### Registering a custom component. 
 
@@ -1102,7 +1100,7 @@ This is the main entry point for the code that will run in the Pebble app's `src
 
 #### src/scripts/config-page.js
 
-This is the main entry point for the code that runs on the generated config page, and is responsibe for passing the injected config and other components to the `ClayConfig` class. 
+This is the main entry point for the code that runs on the generated config page, and is responsible for passing the injected config and other components to the `ClayConfig` class.
 
 
 ### Building 
@@ -1130,7 +1128,7 @@ While developing components and other functionality for Clay, it is much easier 
 | File | Purpose |
 |----------|-----|
 | `dev.html` | Open this page in a browser after running `$ npm run dev`. |
-| `dev.js` | Injects the components and dependancies things into the window the same way `index.js` would. |
+| `dev.js` | Injects the components and dependencies into the window the same way `index.js` would. |
 | `config.js` | Clay config to use as a sandbox for testing components. |
 | `custom-fn.js` | Clay custom function to be injected by `dev.js`. |
 | `emulator.html` | Copy of the HTML page that is used to make the Clay compatible with the Pebble SDK emulator. |
