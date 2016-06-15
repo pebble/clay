@@ -2,7 +2,7 @@
   "name": "pebble-clay",
   "version": "0.1.7",
   "description": "Pebble Config Framework",
-  "main": "src/js/index.js",
+  "main": "index.js",
   "scripts": {
     "test-travis": "./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
     "test-debug": "(export DEBUG=true && ./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run)",
@@ -19,8 +19,10 @@
     "url": "git+https://github.com/pebble/clay.git"
   },
   "keywords": [
-    "Pebble",
-    "Config"
+    "pebble",
+    "config",
+    "configuration",
+    "pebble-package"
   ],
   "author": "Pebble Technology",
   "license": "MIT",
