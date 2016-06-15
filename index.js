@@ -162,9 +162,10 @@ Clay.prototype.generateUrl = function() {
 Clay.prototype.getSettings = function(response, convert) {
   // Decode and parse config data as JSON
   var settings = {};
+  response = response.match(/^\{/) ? response : decodeURIComponent(response);
 
   try {
-    settings = JSON.parse(decodeURIComponent(response));
+    settings = JSON.parse(response);
   } catch (e) {
     throw new Error('The provided response was not valid JSON');
   }
