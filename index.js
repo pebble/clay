@@ -214,7 +214,7 @@ Clay.encodeDataUri = function(input, prefix) {
  *    Eg: 1.4567 with a precision set to 3 will become 1456
  * @param {number|string|boolean|Array|Object} val
  * @param {number|string|boolean|Array} val.value
- * @param {number} [val.precision=0]
+ * @param {number|undefined} [val.precision=0]
  * @returns {number|string|Array}
  */
 Clay.prepareForAppMessage = function(val) {

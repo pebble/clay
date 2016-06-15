@@ -53,7 +53,7 @@ module.exports.configItem = function(config, autoRegister) {
 
   var result = _.extend({}, {
     label: config.type + '-label',
-    appKey: 'appKey-' + idCounter,
+    messageKey: 'messageKey-' + idCounter,
     id: 'id-' + idCounter
   }, config);
 

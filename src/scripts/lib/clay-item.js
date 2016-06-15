@@ -29,7 +29,7 @@ function ClayItem(config) {
   self.id = config.id || null;
 
   /** @type {string|null} */
-  self.appKey = config.appKey || null;
+  self.messageKey = config.messageKey || null;
 
   /** @type {Object} */
   self.config = config;

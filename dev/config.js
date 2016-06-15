@@ -38,7 +38,7 @@ module.exports = [
       },
       {
         "type": "input",
-        "appKey": "email",
+        "messageKey": "email",
         "defaultValue": "",
         "label": "Input Field",
         "description": "This is a description for the input component. " +
@@ -63,7 +63,7 @@ module.exports = [
       },
       {
         "type": "slider",
-        "appKey": "slider",
+        "messageKey": "slider",
         "defaultValue": 15,
         "label": "Slider",
         "description": "This is the description for the slider",
@@ -73,20 +73,20 @@ module.exports = [
       },
       {
         "type": "toggle",
-        "appKey": "cool_stuff",
+        "messageKey": "cool_stuff",
         "label": "This is a Toggle",
         "defaultValue": false
       },
       {
         "type": "color",
-        "appKey": "colorTest",
+        "messageKey": "colorTest",
         "defaultValue": "FF0000",
         "label": "Standard Color Picker",
         "sunlight": false
       },
       {
         "type": "color",
-        "appKey": "sunnyColorTest",
+        "messageKey": "sunnyColorTest",
         "defaultValue": "00FF00",
         "label": "Sunny Color Picker",
         "sunlight": true
@@ -110,7 +110,7 @@ module.exports = [
       },
       {
         "type": "radiogroup",
-        "appKey": "radiogroup-test",
+        "messageKey": "radiogroup-test",
         "label": "Radio Group",
         "options": [
           { "label": "Test thing", "value": "one" },
@@ -120,7 +120,7 @@ module.exports = [
       },
       {
         "type": "checkboxgroup",
-        "appKey": "checkboxgroup-test",
+        "messageKey": "checkboxgroup-test",
         "defaultValue": ["quote' \"test", "two"],
         "label": "Checkbox Group",
         "options": [
@@ -131,7 +131,7 @@ module.exports = [
       },
       {
         "type": "select",
-        "appKey": "flavor",
+        "messageKey": "flavor",
         "defaultValue": "grape",
         "label": "Select Menu",
         "options": [

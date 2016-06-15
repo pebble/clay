@@ -82,10 +82,10 @@ describe('Clay', function() {
       var logStub = sinon.stub(console, 'log');
       Pebble.addEventListener
         .withArgs('webviewclosed')
-        .callArgWith(1, { response: '%7B%22appKey%22%3A%22value%22%7D' });
+        .callArgWith(1, { response: '%7B%22messageKey%22%3A%22value%22%7D' });
 
       assert(Pebble.addEventListener.calledWith('webviewclosed'));
-      assert(Pebble.sendAppMessage.calledWith({ appKey: 'value' }));
+      assert(Pebble.sendAppMessage.calledWith({ messageKey: 'value' }));
 
       Pebble.sendAppMessage.callArg(1);
       assert(logStub.calledWith('Sent config data to Pebble'));
@@ -165,7 +165,7 @@ describe('Clay', function() {
     describe('string substitutions', function() {
       var customFn = function() { this.getAllItems(); };
       var config = fixture.config(['input', 'color']);
-      var settings = { appKey: 'value' };
+      var settings = { messageKey: 'value' };
       var clay;
       var html;
 
@@ -274,12 +274,12 @@ describe('Clay', function() {
     it('does not store the response if it is invalid JSON and logs an error',
     function() {
       var clay = fixture.clay([]);
-      localStorage.setItem('clay-settings', '{"appKey":"value"}');
+      localStorage.setItem('clay-settings', '{"messageKey":"value"}');
 
       assert.throws(function() {
         clay.getSettings('not valid JSON');
       }, /Not Valid JSON/i);
-      assert.equal(localStorage.getItem('clay-settings'), '{"appKey":"value"}');
+      assert.equal(localStorage.getItem('clay-settings'), '{"messageKey":"value"}');
     });
 
     it('Prepares the settings for sendAppMessage', function() {

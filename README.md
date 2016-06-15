@@ -1,7 +1,7 @@
 # Clay
 Clay is a JavaScript library that makes it easy to add offline configuration pages to your Pebble apps. All you need to get started is a couple lines of JavaScript and a JSON file; no servers or HTML required. 
 
-Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `appKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by [handling the events manually](#handling-the-showconfiguration-and-webviewclosed-events-manually).
+Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `messageKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by [handling the events manually](#handling-the-showconfiguration-and-webviewclosed-events-manually).
 
 **Clay is still in early development and may be missing some features. We would love your feedback! Please submit any ideas or features via GitHub Issues.**
 
@@ -108,12 +108,12 @@ Sections help divide up the page into logical groups of items. It is recommended
     },
     {
       "type": "input",
-      "appKey": "email",
+      "messageKey": "email",
       "label": "Email Address"
     },
     {
       "type": "toggle",
-      "appKey": "enableAnimations",
+      "messageKey": "enableAnimations",
       "label": "Enable Animations"
     }
   ]
@@ -134,7 +134,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 |----------|------|-------------|
 | type | string | Set to `heading`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
@@ -165,7 +165,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 |----------|------|-------------|
 | type | string | Set to `text`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -193,7 +193,7 @@ Standard text input field.
 |----------|------|-------------|
 | type | string | Set to `input`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
@@ -206,7 +206,7 @@ Standard text input field.
 ```javascript
 {
   "type": "input",
-  "appKey": "email",
+  "messageKey": "email",
   "defaultValue": "",
   "label": "Email Address",
   "attributes": {
@@ -231,7 +231,7 @@ Switch for a single item.
 |----------|------|-------------|
 | type | string | Set to `toggle`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
@@ -243,7 +243,7 @@ Switch for a single item.
 ```javascript
 {
   "type": "toggle",
-  "appKey": "invert",
+  "messageKey": "invert",
   "label": "Invert Colors",
   "defaultValue": true
 }
@@ -263,7 +263,7 @@ A dropdown menu containing multiple options.
 |----------|------|-------------|
 | type | string | Set to `select`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -275,7 +275,7 @@ A dropdown menu containing multiple options.
 ```javascript
 {
   "type": "select",
-  "appKey": "flavor",
+  "messageKey": "flavor",
   "defaultValue": "grape",
   "label": "Favorite Flavor",
   "options": [
@@ -304,7 +304,7 @@ If you wish to use optgroups, then use the following format:
 ```javascript
 {
   "type": "select",
-  "appKey": "flavor",
+  "messageKey": "flavor",
   "defaultValue": "grape",
   "label": "Favorite Flavor",
   "options": [
@@ -369,7 +369,7 @@ The color picker will automatically show a different layout depending on the wat
 |----------|------|-------------|
 | type | string | Set to `color`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. One of the [64 colors](https://developer.pebble.com/guides/tools-and-resources/color-picker/) compatible with Pebble smartwatches. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
@@ -383,7 +383,7 @@ The color picker will automatically show a different layout depending on the wat
 ```javascript
 {
   "type": "color",
-  "appKey": "background",
+  "messageKey": "background",
   "defaultValue": "ff0000",
   "label": "Background Color",
   "sunlight": true,
@@ -400,7 +400,7 @@ The color picker will automatically show a different layout depending on the wat
 ```javascript
 {
   "type": "color",
-  "appKey": "background",
+  "messageKey": "background",
   "defaultValue": "ffffff",
   "label": "Background Color",
   "sunlight": false,
@@ -413,7 +413,7 @@ The color picker will automatically show a different layout depending on the wat
 ```javascript
 {
   "type": "color",
-  "appKey": "background",
+  "messageKey": "background",
   "defaultValue": "aaaaaa",
   "label": "Background Color",
   "sunlight": false,
@@ -435,7 +435,7 @@ A list of options allowing the user can only choose one option to submit.
 |----------|------|-------------|
 | type | string | Set to `radiogroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -447,7 +447,7 @@ A list of options allowing the user can only choose one option to submit.
 ```javascript
 {
   "type": "radiogroup",
-  "appKey": "favorite_food",
+  "messageKey": "favorite_food",
   "label": "Favorite Food",
   "options": [
     { 
@@ -480,7 +480,7 @@ A list of options where a user may choose more than one option to submit.
 |----------|------|-------------|
 | type | string | Set to `checkboxgroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -492,7 +492,7 @@ A list of options where a user may choose more than one option to submit.
 ```javascript
 {
   "type": "checkboxgroup",
-  "appKey": "favorite_food",
+  "messageKey": "favorite_food",
   "label": "Favorite Food",
   "defaultValue": ["sushi", "burgers"],
   "options": [
@@ -571,7 +571,7 @@ you must just remember to divide the received value on the watch accordingly.
 ```javascript
 {
   "type": "slider",
-  "appKey": "slider",
+  "messageKey": "slider",
   "defaultValue": 15,
   "label": "Slider",
   "description": "This is the description for the slider",
@@ -627,9 +627,9 @@ You can also prefix the capability with `NOT_` to negate the capability. Eg: `NO
 will only be included in the page if the device does **NOT** support health. 
 
 **Warning:** Items that do not satisfy the capabilities will not be included in the page 
-at all. You will not be able to use methods like `clayConfig.getItemByAppKey()` to 
+at all. You will not be able to use methods like `clayConfig.getItemByMessageKey()` to
 obtain a reference to them. However, this does mean that you will be able to have
-multiple items with the same `appKey`as long as they do not both satisfy the 
+multiple items with the same `messageKey`as long as they do not both satisfy the
 same conditions. 
 
 ##### Examples
@@ -682,7 +682,7 @@ Each component has a **manipulator**. This is a set of methods used to talk to t
 At a minimum, manipulators must have a `.get()` and `.set(value)` method however there are also methods to assist in interactivity such as `.hide()` and `.disable()`. 
 **NOTE:** There is currently no way to disable or hide an entire section. You must disable/hide each item in the section to achieve this effect. 
 
-When the config page is closed, the `.get()` method is run on all components registered with an `appKey` to construct the object sent to the C app. 
+When the config page is closed, the `.get()` method is run on all components registered with an `messageKey` to construct the object sent to the C app.
 
 Many of these methods fire an event when the method is called. You can listen for these events with `ClayItem.on()`. 
 **NOTE** These events will only be fired if the state actually changes. 
@@ -780,7 +780,7 @@ Clay is built to allow developers to add their own basic interactivity to the co
 
 ## Handling The 'showConfiguration' and 'webviewclosed' Events Manually
 
-Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. This allows the `appKey` of each config item to be automatically delivered to the `InboxReceivedHandler` on the watch side. If you wish to override this behavior and handle the events yourself, pass an object as the 3rd parameter of the Clay constructor with `autoHandleEvents` set to `false`. 
+Clay will by default, automatically handle the 'showConfiguration' and 'webviewclosed' events. This allows the `messageKey` of each config item to be automatically delivered to the `InboxReceivedHandler` on the watch side. If you wish to override this behavior and handle the events yourself, pass an object as the 3rd parameter of the Clay constructor with `autoHandleEvents` set to `false`.
 
 Example:
 
@@ -898,7 +898,7 @@ cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 | `Clay( [array] config, [function] customFn=null, [object] options={autoHandleEvents: true})` <br> `config` - an Array representing your config <br> `customFn` - function to be run in the context of the generated page <br> `options.autoHandleEvents` - set to `false` to prevent Clay from automatically handling the "showConfiguration" and "webviewclosed" events | `Clay` - a new instance of Clay. |
 | `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`. |  
 | `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()` to use the Clay-generated config page. |
-| `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `appKey`, where the key is the `appKey` and the value is the chosen value of that item.  This method will do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`. Pass `false` as the second parameter to disable this behavior |
+| `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `messageKey`, where the key is the `messageKey` and the value is the chosen value of that item.  This method will do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`. Pass `false` as the second parameter to disable this behavior |
 
 ---
 
@@ -936,20 +936,20 @@ module.exports = function(minified) {
 
   function toggleBackground() {
     if (this.get()) {
-      clayConfig.getItemByAppKey('background').enable();
+      clayConfig.getItemByMessageKey('background').enable();
     } else {
-      clayConfig.getItemByAppKey('background').disable();
+      clayConfig.getItemByMessageKey('background').disable();
     }
   }
 
   clayConfig.on(clayConfig.EVENTS.AFTER_BUILD, function() {
-    var coolStuffToggle = clayConfig.getItemByAppKey('cool_stuff');
+    var coolStuffToggle = clayConfig.getItemByMessageKey('cool_stuff');
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
     
     // Hide the color picker for aplite
     if (!clayConfig.meta.activeWatchInfo || clayConfig.meta.activeWatchInfo.platform === 'aplite') {
-      clayConfig.getItemByAppKey('background').hide();
+      clayConfig.getItemByMessageKey('background').hide();
     }
     
     // Set the value of an item based on the userData
@@ -992,10 +992,10 @@ This is the main way of talking to your generated config page. An instance of th
 | Method | Returns |
 |--------|---------|
 | `.getAllItems()` | `Array.<ConfigItem>` - an array of all config items. |
-| `.getItemByAppKey( [string] appKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `appKey`, otherwise `undefined`. |
+| `.getItemByMessageKey( [string] messageKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `messageKey`, otherwise `undefined`. |
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id`, otherwise `undefined`. |
 | `.getItemsByType( [string] type )` | `Array.<ConfigItem>` - an array of config items that match the provided `type`. |
-| `.serialize()` | `Object` - an object representing all items with an `appKey` where the key is the `appKey` and the value is an object with the `value` property set to the result of running `.get()` on the Clay item. If the Clay item has a `precision` property set, it is included in the object |
+| `.serialize()` | `Object` - an object representing all items with an `messageKey` where the key is the `messageKey` and the value is an object with the `value` property set to the result of running `.get()` on the Clay item. If the Clay item has a `precision` property set, it is included in the object |
 | `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. If the config page has already been built, then the `ClayConfig.destroy()` method will be executed prior to building the page again. | `ClayConfig` |
 | `.destroy()` <br> Destroys the config page. Will dispatch the `BEFORE_DESTROY` event prior to destroying the page, then the `AFTER_DESTROY` event once it is complete. This method wipes the config page completely, including all existing items. You will need to make sure that you re-attach your event handlers for any items that are replaced | `ClayConfig` |
 | `.on( [string] events, [function] handler )` <br> Register an event to the provided handler. The handler will be called with this instance of `ClayConfig` as the context. If you wish to register multiple events to the same handler, then separate the events with a space | `ClayConfig` |
@@ -1012,7 +1012,7 @@ This is the main way of talking to your generated config page. An instance of th
 | Property | Type | Description |
 |----------|------|-------------|
 | `.id` | String | The ID of the item if provided in the config. |
-| `.appKey` | String | The ID of the item if provided in the config. |
+| `.messageKey` | String | The ID of the item if provided in the config. |
 | `.config` | Object | Reference to the config passed to the constructer. |
 | `$element` | $Minified | A Minified list representing the root HTML element of the config item. |
 | `$manipulatorTarget` | $Minified | A Minified list representing the HTML element with **data-manipulator-target** set. This is generally pointing to the main `<input>` element and will be used for binding events. |
@@ -1140,4 +1140,4 @@ While developing components and other functionality for Clay, it is much easier 
 
 Most of the magic happens in the `src/scripts/lib` directory. `config-page.js` initializes a new instance of `ClayConfig` and calls the injected custom function (`window.customFn`) with the `ClayConfig` as its context. This allows developers to add extra functionality to the config page, such as setting values of items dynamically or registering small custom components. 
 
-Once the `ClayConfig` is initialized, we run the `.build()` method. This iterates over the config and injects each item into the page. Each item is an instance of `ClayItem`. It also indexes the items to later be retrieved with `.getAllItems()`, `.getItemByAppKey()`, `.getItemById()`, `.getItemsByType()`.
+Once the `ClayConfig` is initialized, we run the `.build()` method. This iterates over the config and injects each item into the page. Each item is an instance of `ClayItem`. It also indexes the items to later be retrieved with `.getAllItems()`, `.getItemByMessageKey()`, `.getItemById()`, `.getItemsByType()`.
