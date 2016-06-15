@@ -239,7 +239,7 @@ describe('Clay', function() {
   });
 
   describe('.getSettings', function() {
-    it('stores the response to localStorage and returns the decoded data',
+    it('it writes to localStorage and returns the data when input is encoded',
     function() {
       var clay = fixture.clay([]);
       var settings = encodeURIComponent(JSON.stringify({
@@ -249,6 +249,22 @@ describe('Clay', function() {
       var expected = {
         key1: 'value1',
         key2: 'value2'
+      };
+      var result = clay.getSettings(settings);
+      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
+      assert.deepEqual(result, expected);
+    });
+
+    it('it writes to localStorage and returns the data when input is not encoded',
+    function() {
+      var clay = fixture.clay([]);
+      var settings = JSON.stringify({
+        key1: 'value1',
+        key2: {value: 'value2%7Dbreaks'}
+      });
+      var expected = {
+        key1: 'value1',
+        key2: 'value2%7Dbreaks'
       };
       var result = clay.getSettings(settings);
       assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
