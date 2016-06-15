@@ -121,6 +121,14 @@ describe('Clay', function() {
     });
   });
 
+  describe('.version', function() {
+    it('has the correct version', function() {
+      var config = fixture.config(['input', 'text', 'color']);
+      var clay = fixture.clay(config);
+      assert.strictEqual(clay.version, require('../../package.json').version);
+    });
+  });
+
   describe('.config', function() {
     it('is a copy not a reference', function() {
       var config = fixture.config(['input', 'text', 'color']);
