@@ -2,30 +2,45 @@
   "name": "pebble-clay",
   "version": "0.1.7",
   "description": "Pebble Config Framework",
-  "main": "dist/clay.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "test-travis": "./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
     "test-debug": "(export DEBUG=true && ./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --no-single-run)",
     "test": "./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --single-run",
     "lint": "./node_modules/.bin/eslint ./",
     "build": "gulp",
-    "dev": "gulp dev"
+    "dev": "gulp dev",
+    "pebble-clean": "rm -rf tmp src/js/index.js && pebble clean",
+    "pebble-publish": "npm run pebble-clean && npm run build && pebble build && pebble package publish && npm run pebble-clean",
+    "pebble-build": "npm run build && pebble build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pebble/clay.git"
   },
   "keywords": [
-    "Pebble",
-    "Config"
+    "pebble",
+    "config",
+    "configuration",
+    "pebble-package"
   ],
   "author": "Pebble Technology",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pebble/clay/issues"
+  },
+  "pebble": {
+    "projectType": "package",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery"
+    ],
+    "resources": {
+      "media": []
+    }
   },
   "homepage": "https://github.com/pebble/clay#readme",
   "devDependencies": {

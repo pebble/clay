@@ -2,3 +2,4 @@ coverage/
 dist/
 tmp/
 src/scripts/vendor/
+src/js/index.js
