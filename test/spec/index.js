@@ -31,6 +31,15 @@ describe('Clay', function() {
       }, /must be an Array/i);
     });
 
+    it('throws if the config contains appKeys', function() {
+      assert.throws(function() {
+        fixture.clay([
+          {type: 'input', appKey: 'foo'},
+          {type: 'someCustomComponent', appKey: 'bar'}
+        ]);
+      }, /appKeys are no longer supported/i);
+    });
+
     it('throws if customFn is not a function', function() {
       assert.throws(function() {
         fixture.clay([], {});

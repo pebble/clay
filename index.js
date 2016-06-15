@@ -82,23 +82,50 @@ function Clay(config, customFn, options) {
   }
 
   /**
+   * If this function returns true then the callback will be executed
+   * @callback _scanConfig_testFn
+   * @param {Clay~ConfigItem} item
+   */
+
+  /**
+   * @callback _scanConfig_callback
+   * @param {Clay~ConfigItem} item
+   */
+
+  /**
+   * Scan over the config and run the callback if the testFn resolves to true
    * @private
    * @param {Clay~ConfigItem|Array} item
+   * @param {_scanConfig_testFn} testFn
+   * @param {_scanConfig_callback} callback
    * @return {void}
    */
-  function _registerStandardComponents(item) {
+  function _scanConfig(item, testFn, callback) {
     if (Array.isArray(item)) {
       item.forEach(function(item) {
-        _registerStandardComponents(item);
+        _scanConfig(item, testFn, callback);
       });
     } else if (item.type === 'section') {
-      _registerStandardComponents(item.items);
-    } else if (standardComponents[item.type]) {
-      self.registerComponent(standardComponents[item.type]);
+      _scanConfig(item.items, testFn, callback);
+    } else if (testFn(item)) {
+      callback(item);
     }
   }
 
-  _registerStandardComponents(self.config);
+  // register standard components
+  _scanConfig(self.config, function(item) {
+    return standardComponents[item.type];
+  }, function(item) {
+    self.registerComponent(standardComponents[item.type]);
+  });
+
+  // validate config against teh use of appKeys
+  _scanConfig(self.config, function(item) {
+    return item.appKey;
+  }, function() {
+    throw new Error('appKeys are no longer supported. ' +
+                    'Please follow the migration guide to upgrade your project');
+  });
 }
 
 /**
