@@ -5,11 +5,11 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 **Clay is still in early development and may be missing some features. We would love your feedback! Please submit any ideas or features via GitHub Issues.**
 
-# SDK 3.13 Changes
-Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('clay')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the Clay module now is done in app.js by using `require('./clay')`. An incorrect path would result in an error similar to this:
+# SDK 3.13 Gotchas
+Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('config.json')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the config module now is done in app.js by using `require('./clay-config.json')`. An incorrect path would result in an error similar to this:
    ```
    [14:16:03] javascript> JavaScript Error:
-   Error: Cannot find module 'clay'
+   Error: Cannot find module 'clay-config.json'
        at Object.loader.require (loader.js:66:11)
        at _require.require (loader.js:54:48)
        at Object.loader (src/js/app.js:1:1)
@@ -31,9 +31,8 @@ Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pe
   var clayConfig = require('./config.json');
   var clay = new Clay(clayConfig);
   ```
-6. Add `configurable` to the `pebble.capabilities` array in your `package.json`.
-7. Ensure `pebble.enableMultiJS` is set to true in your `package.json`.
-8. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+5. Ensure `pebble.enableMultiJS` is set to true in your `package.json`.
+6. Next is the fun part - creating your config page. Edit your `config.json` file to build a layout of elements as described in the sections below.
 
 # Getting Started (CloudPebble)
 
@@ -135,7 +134,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 |----------|------|-------------|
 | type | string | Set to `heading`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
@@ -166,7 +165,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 |----------|------|-------------|
 | type | string | Set to `text`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
@@ -194,7 +193,7 @@ Standard text input field.
 |----------|------|-------------|
 | type | string | Set to `input`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
 | description | string | Optional sub-text to include below the component |
@@ -232,7 +231,7 @@ Switch for a single item.
 |----------|------|-------------|
 | type | string | Set to `toggle`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
@@ -264,7 +263,7 @@ A dropdown menu containing multiple options.
 |----------|------|-------------|
 | type | string | Set to `select`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -370,7 +369,7 @@ The color picker will automatically show a different layout depending on the wat
 |----------|------|-------------|
 | type | string | Set to `color`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. One of the [64 colors](https://developer.pebble.com/guides/tools-and-resources/color-picker/) compatible with Pebble smartwatches. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
 | description | string | Optional sub-text to include below the component |
@@ -436,7 +435,7 @@ A list of options allowing the user can only choose one option to submit.
 |----------|------|-------------|
 | type | string | Set to `radiogroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
 | description | string | Optional sub-text to include below the component |
@@ -481,7 +480,7 @@ A list of options where a user may choose more than one option to submit.
 |----------|------|-------------|
 | type | string | Set to `checkboxgroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| appKey | string (unique) | The AppMessage key matching the `appKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| appKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByAppKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
 | description | string | Optional sub-text to include below the component |
