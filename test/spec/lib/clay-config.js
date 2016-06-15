@@ -297,9 +297,9 @@ describe('ClayConfig', function() {
         ]},
         {type: 'toggle', messageKey: 'test3'},
         {type: 'checkboxgroup', messageKey: 'test4', options: [
-          {label: 'label-1', value: 'cb-1'},
-          {label: 'label-2', value: 'cb-2'},
-          {label: 'label-2', value: 'cb-3'}
+          'label-1',
+          'label-2',
+          'label-3'
         ]},
         {type: 'slider', messageKey: 'test5', step: 0.05, defaultValue: 12.5}
       ];
@@ -313,19 +313,19 @@ describe('ClayConfig', function() {
         test1: {value: 'default val'},
         test2: {value: 'val-2'},
         test3: {value: false},
-        test4: {value: []},
+        test4: {value: [false, false, false]},
         test5: {value: 12.5, precision: 2}
       });
 
       clayConfig.getItemByMessageKey('test1').set('val-1');
       clayConfig.getItemByMessageKey('test3').set(true);
-      clayConfig.getItemByMessageKey('test4').set(['cb-1', 'cb-3']);
+      clayConfig.getItemByMessageKey('test4').set([true, false, true]);
 
       assert.deepEqual(clayConfig.serialize(), {
         test1: {value: 'val-1'},
         test2: {value: 'val-2'},
         test3: {value: true},
-        test4: {value: ['cb-1', 'cb-3']},
+        test4: {value: [true, false, true]},
         test5: {value: 12.5, precision: 2}
       });
 
@@ -340,7 +340,7 @@ describe('ClayConfig', function() {
         test1: 'val-1',
         test2: 'val-2',
         test3: true,
-        test4: ['cb-1', 'cb-3'],
+        test4: [true, false, true],
         test5: 12.5
       });
       assert.doesNotThrow(function() {

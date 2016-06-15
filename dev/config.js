@@ -121,13 +121,9 @@ module.exports = [
       {
         "type": "checkboxgroup",
         "messageKey": "checkboxgroup-test",
-        "defaultValue": ["quote' \"test", "two"],
+        "defaultValue": [0, 1, 0],
         "label": "Checkbox Group",
-        "options": [
-          { "label": "First thing", "value": "three" },
-          { "label": "Another thing", "value": "two" },
-          { "label": "Final thing", "value": "three" }
-        ]
+        "options": [ "First thing", "Another thing", "Final thing" ]
       },
       {
         "type": "select",

@@ -8,7 +8,6 @@ module.exports = {
   defaults: {
     label: '',
     options: [],
-    description: '',
-    attributes: {}
+    description: ''
   }
 };

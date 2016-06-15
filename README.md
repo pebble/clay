@@ -482,9 +482,9 @@ A list of options where a user may choose more than one option to submit.
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
-| defaultValue | array of strings | The default selected items. Each value must match one in the `options` array. |
+| defaultValue | array of booleans | The default selected items. |
 | description | string | Optional sub-text to include below the component |
-| options | array of objects | The options you want to appear in the checkbox group. Each option is an object with a `label` and `value` property. |
+| options | array of strings | The labels for each checkbox you want to appear in the checkbox group. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 
 ##### Example
@@ -494,23 +494,12 @@ A list of options where a user may choose more than one option to submit.
   "type": "checkboxgroup",
   "messageKey": "favorite_food",
   "label": "Favorite Food",
-  "defaultValue": ["sushi", "burgers"],
-  "options": [
-    { 
-      "label": "Sushi", 
-      "value": "sushi" 
-    },
-    { 
-      "label": "Pizza", 
-      "value": "pizza" 
-    },
-    { 
-      "label": "Burgers", 
-      "value": "burgers" 
-    }
-  ]
+  "defaultValue": [true, false, true],
+  "options": ["Sushi", "Pizza", "Burgers"]
 }
 ```
+
+In the above example, Sushi and Burgers will be selected by default.
 
 ---
 
@@ -757,7 +746,7 @@ Eg: If you run the `.show()` manipulator on an item that is already visible, the
 | Method | Returns | Event Fired | Description | 
 |--------|---------|-------------| ------------|
 | `.set( [array] value)` | `ClayItem` | `change` | Checks the checkboxes that corresponds to the provided list of values. |
-| `.get()` |  `Array.<string>` | | Gets an array of strings representing the list of the values of the checked items. **NOTE:** each item in the array will be separated by a zero when sent to the watch. See [`Clay.getSettings()`](#methods) |
+| `.get()` |  `Array.<string>` | | Gets an array of booleans representing the list the checked items. **NOTE:** each item in the array will be converted to an `int` when sent to the watch. See [`Clay.getSettings()`](#methods) |
 | `.disable()` | `ClayItem` | `disabled` | Prevents this item from being edited by the user. |
 | `.enable()` | `ClayItem` | `enabled` | Allows this item to be edited by the user. |
 | `.hide()` | `ClayItem` | `hide` | Hides the item |
