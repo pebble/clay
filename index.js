@@ -328,9 +328,7 @@ Clay.prepareSettingsForAppMessage = function(settings) {
     settingArr = Array.isArray(settingArr) ? settingArr : [settingArr];
 
     settingArr.forEach(function(setting, index) {
-      if (typeof setting !== 'undefined') {
-        result[messageKey + index] = setting;
-      }
+      result[messageKey + index] = setting;
     });
   });
 
