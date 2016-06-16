@@ -899,7 +899,39 @@ cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 | `Clay( [array] config, [function] customFn=null, [object] options={autoHandleEvents: true})` <br> `config` - an Array representing your config <br> `customFn` - function to be run in the context of the generated page <br> `options.autoHandleEvents` - set to `false` to prevent Clay from automatically handling the "showConfiguration" and "webviewclosed" events | `Clay` - a new instance of Clay. |
 | `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`. |  
 | `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()` to use the Clay-generated config page. |
-| `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `messageKey`, where the key is the `messageKey` and the value is the chosen value of that item.  This method will do some conversions depending on the type of the setting. Arrays containing strings will have zeros inserted before each item. eg `['one', 'two']` becomes `['one', 0, 'two', 0]`. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`. Pass `false` as the second parameter to disable this behavior |
+| `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `messageKey`, where the key is the `messageKey` and the value is the chosen value of that item.  <br><br>This method will do some conversions depending on the type of the setting. Arrays will use message key array syntax to make the values of each item in the array available as individual message keys. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`. If the value is a number or an array of numbers and the optional property: "precision" is the power of precision (value * 10 ^ precision) and then floored. Eg: `1.4567` with a precision set to `3` will become `1456`. Pass `false` as the second parameter to disable this behavior. See the example below for how this all works |
+
+#### `.getSettings()` Example 
+
+```javascript
+
+// webviewclosed response
+{
+  "favorite_food": {"value": [1, 0, 1]},
+  "cool_things_enabled": {"value": true},
+  "user_name": {"value": "Jane Doe"},
+  "date_of_birth[0]": {"value": 1989},
+  "date_of_birth[1]": {"value": 11},
+  "date_of_birth[2]": {"value": 28},
+  "rating": {"value": 3.5, "precision": 1},
+}
+
+// resulting converted values
+
+var messageKeys = require('message_keys');
+
+messageKeys.favorite_food + 0 = 1;
+messageKeys.favorite_food + 1 = 0;
+messageKeys.favorite_food + 2 = 1;
+messageKeys.cool_things_enabled = 1;
+messageKeys.user_name = 'Jane Doe';
+messageKeys.date_of_birth + 0 = 1989;
+messageKeys.date_of_birth + 1 = 11;
+messageKeys.date_of_birth + 2 = 28;
+messageKeys.rating = 35;
+
+
+``` 
 
 ---
 

@@ -230,8 +230,8 @@ Clay.encodeDataUri = function(input, prefix) {
  *  - Strings will be returned without modification
  *  - Numbers will be returned without modification
  *  - Booleans will be converted to a 0 or 1
- *  - Arrays that contain strings will be split with a zero.
- *    eg: ['one', 'two'] becomes ['one', 0, 'two', 0]
+ *  - Arrays that contain strings will be returned without modification
+ *    eg: ['one', 'two'] becomes ['one', 'two']
  *  - Arrays that contain numbers will be returned without modification
  *    eg: [1, 2] becomes [1, 2]
  *  - Arrays that contain booleans will be converted to a 0 or 1
@@ -239,7 +239,7 @@ Clay.encodeDataUri = function(input, prefix) {
  *  - Arrays must be single dimensional
  *  - Objects that have a "value" property will apply the above rules to the type of
  *    value. If the value is a number or an array of numbers and the optional
- *    property: "precision" is provided, then the number will be multipled by 10 to
+ *    property: "precision" is provided, then the number will be multiplied by 10 to
  *    the power of precision (value * 10 ^ precision) and then floored.
  *    Eg: 1.4567 with a precision set to 3 will become 1456
  * @param {number|string|boolean|Array|Object} val
