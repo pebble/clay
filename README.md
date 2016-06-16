@@ -3,23 +3,9 @@ Clay is a JavaScript library that makes it easy to add offline configuration pag
 
 Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events traditionally implemented by developers to relay configuration settings to the watch side of the app. This step is not required when using Clay, since each config item is given the same `messageKey` as defined in `appinfo.json` (or PebbleKit JS Message Keys on CloudPebble), and is automatically transmitted once the configuration page is submitted by the user. Developers can override this behavior by [handling the events manually](#handling-the-showconfiguration-and-webviewclosed-events-manually).
 
-**Clay is still in early development and may be missing some features. We would love your feedback! Please submit any ideas or features via GitHub Issues.**
-
-# SDK 3.13 Gotchas
-Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('config.json')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the config module now is done in app.js by using `require('./clay-config.json')`. An incorrect path would result in an error similar to this:
-   ```
-   [14:16:03] javascript> JavaScript Error:
-   Error: Cannot find module 'clay-config.json'
-       at Object.loader.require (loader.js:66:11)
-       at _require.require (loader.js:54:48)
-       at Object.loader (src/js/app.js:1:1)
-       at _require (loader.js:57:10)
-       at Object.loader.require (loader.js:69:10)
-   ```
+Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pebble-packages/) so it is super easy to include in your project. If you are upgrading from v0.1.x of Clay you need to follow the [migration guide]() before you can get started.
 
 # Getting Started (SDK 3.13 or higher)
-
-Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pebble-packages/) so it is super easy to include in your project.
 
 1. Run `pebble package install pebble-clay` to install the package in your project
 2. Create a JSON file called `config.json` and place it in your `src/js` directory.
@@ -36,9 +22,6 @@ Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pe
 7. Make sure you have defined all of your `messageKeys` in your `package.json`. More info on how that works [here.](https://developer.pebble.com/guides/communication/using-pebblekit-js/#defining-keys)
 
 # Getting Started (CloudPebble)
-
-Clay will eventually be built into CloudPebble. However while it is still in beta, you will need to follow some steps.
-NOTE these are similar to using the SDK but instead of a data file called config.json, a javascript file config.js is required.
 
 1. Ensure `JS Handling` is set to `CommonJS-style` in your project settings.
 2. Under `Dependencies` in the project navigation, enter `pebble-clay` as the `Package Name` and `^1.0.0` for the `Version`. You may use any specific version you like, however using `^1.0.0` will ensure you receive all minor version updates.
@@ -1159,3 +1142,97 @@ While developing components and other functionality for Clay, it is much easier 
 Most of the magic happens in the `src/scripts/lib` directory. `config-page.js` initializes a new instance of `ClayConfig` and calls the injected custom function (`window.customFn`) with the `ClayConfig` as its context. This allows developers to add extra functionality to the config page, such as setting values of items dynamically or registering small custom components. 
 
 Once the `ClayConfig` is initialized, we run the `.build()` method. This iterates over the config and injects each item into the page. Each item is an instance of `ClayItem`. It also indexes the items to later be retrieved with `.getAllItems()`, `.getItemByMessageKey()`, `.getItemById()`, `.getItemsByType()`.
+
+# Migrating from v0.1.x to v1.x
+
+There were some changes in the 3.13 SDK that required Clay to undergo some major changes. For the majority of developers a simple find and replace over your config will do the trick.
+
+### appKey is now messageKey.
+
+You will need to update your config files and change any items that use `appKey` to `messageKey`
+
+##### Example
+
+```javascript
+{
+  "type": "toggle",
+  "appKey": "invert",
+  "label": "Invert Colors",
+  "defaultValue": true
+}
+```
+becomes:
+
+```javascript
+{
+  "type": "toggle",
+  "messageKey": "invert",
+  "label": "Invert Colors",
+  "defaultValue": true
+}
+```
+
+### clayConfig.getItemByAppKey is now clayConfig.getItemByMessageKey.
+
+If you have a [custom function](#custom-function) and are using the `clayConfig.getItemByAppKey()` method you will need to change this to `clayConfig.getItemByMessageKey()`
+
+### Checkbox groups now use arrays.
+
+In the previous version of Clay, checkbox groups would split the values of the items with zeros. This made for clumsy usage on the C side. Checkbox groups are now much simpler to use thanks to message keys. You will however need to update you config to the new format.
+
+#### Changes:
+ - `defaultValue` and the value that is returned by the `.get()` method is now an array of booleans.
+ - `options` are now an array of labels and do not have their own value
+ - Instead of splitting the result on the C side you now use the message key syntax. In the example below `MESSAGE_KEY_favorite_food + 2` would have a value of `1`
+
+#### Old Format
+
+```javascript
+{
+  "type": "checkboxgroup",
+  "appKey": "favorite_food",
+  "label": "Favorite Food",
+  "defaultValue": ["sushi", "burgers"],
+  "options": [
+    {
+      "label": "Sushi",
+      "value": "sushi"
+    },
+    {
+      "label": "Pizza",
+      "value": "pizza"
+    },
+    {
+      "label": "Burgers",
+      "value": "burgers"
+    }
+  ]
+}
+```
+
+#### New Format
+
+```javascript
+{
+  "type": "checkboxgroup",
+  "messageKey": "favorite_food",
+  "label": "Favorite Food",
+  "defaultValue": [true, false, true],
+  "options": ["Sushi", "Pizza", "Burgers"]
+}
+```
+
+### Clay is now a pebble package
+
+You no longer need to download a file into your project. Clay is now a Pebble package so you can go ahead and delete your `clay.js` and follow the getting started guide above to install clay in your project.
+
+Prior to SDK 3.13, `require` paths were handled in a non-standard way. When requiring modules, the name of the module was sufficient (ie. `require('config.json')`). However, with the release of SDK 3.13, the require paths changed so that you now have to require the module by using its path relative to the file it's being required in. This means requiring the config module now is done in app.js by using `require('./clay-config.json')`. An incorrect path would result in an error similar to this:
+   ```
+   [14:16:03] javascript> JavaScript Error:
+   Error: Cannot find module 'clay-config.json'
+       at Object.loader.require (loader.js:66:11)
+       at _require.require (loader.js:54:48)
+       at Object.loader (src/js/app.js:1:1)
+       at _require (loader.js:57:10)
+       at Object.loader.require (loader.js:69:10)
+   ```
