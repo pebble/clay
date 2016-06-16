@@ -5,6 +5,7 @@ var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
 var deepcopy = require('deepcopy/build/deepcopy.min');
 var version = require('./package.json').version;
+var messageKeys = require('message_keys');
 
 /**
  * @param {Array} config - the Clay config
@@ -209,7 +210,9 @@ Clay.prototype.getSettings = function(response, convert) {
 
   localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
-  return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
+  return convert === false ?
+    settings :
+    Clay.prepareSettingsForAppMessage(settings, messageKeys);
 };
 
 /**
@@ -265,9 +268,6 @@ Clay.prepareForAppMessage = function(val) {
     val.forEach(function(item) {
       var itemConverted = Clay.prepareForAppMessage(item);
       result.push(itemConverted);
-      if (typeof itemConverted === 'string') {
-        result.push(0);
-      }
     });
   } else if (typeof val === 'object' && val) {
     if (typeof val.value === 'number') {
@@ -293,15 +293,23 @@ Clay.prepareForAppMessage = function(val) {
 
 /**
  * Converts a Clay settings dict into one that is compatible with
- * Pebble.sendAppMessage();
+ * Pebble.sendAppMessage(); It also uses the provided messageKeys to correctly
+ * assign arrays into individual keys
  * @see {prepareForAppMessage}
  * @param {Object} settings
+ * @param {Object} messageKeys
  * @returns {{}}
  */
-Clay.prepareSettingsForAppMessage = function(settings) {
+Clay.prepareSettingsForAppMessage = function(settings, messageKeys) {
   var result = {};
   Object.keys(settings).forEach(function(key) {
-    result[key] = Clay.prepareForAppMessage(settings[key]);
+    var messageKey = messageKeys[key];
+    var settingArr = Clay.prepareForAppMessage(settings[key]);
+    settingArr = Array.isArray(settingArr) ? settingArr : [settingArr];
+
+    settingArr.forEach(function(setting, index) {
+      result[messageKey + index] = setting;
+    });
   });
   return result;
 };

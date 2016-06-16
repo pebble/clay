@@ -23,6 +23,24 @@ function stubPebble() {
   };
 }
 
+/**
+ * @param {Array} keys
+ * @return {Object}
+ */
+function stubMessageKeys(keys) {
+  var messageKeys = require('message_keys');
+  Object.keys(messageKeys).forEach(function(key) {
+    delete messageKeys[key];
+  });
+
+  var newKeys = fixture.messageKeys(keys);
+  Object.keys(newKeys).forEach(function(key) {
+    messageKeys[key] = newKeys[key];
+  });
+
+  return messageKeys;
+}
+
 describe('Clay', function() {
   describe('Clay constructor', function() {
     it('throws if the config is not an array', function() {
@@ -89,12 +107,16 @@ describe('Clay', function() {
       stubPebble();
       fixture.clay([]);
       var logStub = sinon.stub(console, 'log');
+      var expected = {someSetting: 'value'};
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
       Pebble.addEventListener
         .withArgs('webviewclosed')
-        .callArgWith(1, { response: '%7B%22messageKey%22%3A%22value%22%7D' });
+        .callArgWith(1, {response: encodeURIComponent(JSON.stringify(expected))});
 
+      var expectedAppMessage = fixture.messageKeysExpected(expected);
       assert(Pebble.addEventListener.calledWith('webviewclosed'));
-      assert(Pebble.sendAppMessage.calledWith({ messageKey: 'value' }));
+      assert(Pebble.sendAppMessage.calledWith(expectedAppMessage));
 
       Pebble.sendAppMessage.callArg(1);
       assert(logStub.calledWith('Sent config data to Pebble'));
@@ -259,9 +281,15 @@ describe('Clay', function() {
         key1: 'value1',
         key2: 'value2'
       };
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
       var result = clay.getSettings(settings);
-      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
-      assert.deepEqual(result, expected);
+      assert.equal(
+        localStorage.getItem('clay-settings'),
+        JSON.stringify(expected)
+      );
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
     });
 
     it('it writes to localStorage and returns the data when input is not encoded',
@@ -275,9 +303,15 @@ describe('Clay', function() {
         key1: 'value1',
         key2: 'value2%7Dbreaks'
       };
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
       var result = clay.getSettings(settings);
-      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
-      assert.deepEqual(result, expected);
+      assert.equal(
+        localStorage.getItem('clay-settings'),
+        JSON.stringify(expected)
+      );
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
     });
 
     it('does not store the response if it is invalid JSON and logs an error',
@@ -314,7 +348,7 @@ describe('Clay', function() {
         test1: 0,
         test2: 'val-2',
         test3: 1,
-        test4: ['cb-1', 0, 'cb-3', 0],
+        test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
         test7: [1, 0, 1],
@@ -322,7 +356,12 @@ describe('Clay', function() {
         test9: [10, 20, 30, 40]
       };
 
-      assert.deepEqual(clay.getSettings(response), expected);
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
+      assert.deepEqual(
+        clay.getSettings(response),
+        fixture.messageKeysExpected(expected)
+      );
     });
 
     it('does not prepare the settings for sendAppMessage if convert is false',
@@ -413,6 +452,16 @@ describe('Clay', function() {
   });
 
   describe('.prepareForAppMessage', function() {
+    it('converts an array correctly when array contains strings', function() {
+      assert.deepEqual(
+        Clay.prepareForAppMessage(['one', 'two', 'three']),
+        ['one', 'two', 'three']
+      );
+      assert.deepEqual(
+        Clay.prepareForAppMessage([{value: 'one'}, 'two', 'three']),
+        ['one', 'two', 'three']);
+    });
+
     it('converts an array correctly when array contains numbers', function() {
       assert.deepEqual(Clay.prepareForAppMessage([1, 2, 3]), [1, 2, 3]);
       assert.deepEqual(Clay.prepareForAppMessage(
@@ -478,6 +527,17 @@ describe('Clay', function() {
 
   describe('.prepareSettingsForAppMessage', function() {
     it('converts the settings correctly', function() {
+      var messageKeys = fixture.messageKeys([
+        'test1',
+        'test2',
+        'test3',
+        'test4[2]',
+        'test5',
+        'test6[4]',
+        'test7[3]',
+        'test8'
+      ]);
+
       var settings = {
         test1: false,
         test2: 'val-2',
@@ -491,18 +551,20 @@ describe('Clay', function() {
           value: 12.34
         }
       };
-      var expected = {
+
+      var expected = fixture.messageKeysExpected({
         test1: 0,
         test2: 'val-2',
         test3: 1,
-        test4: ['cb-1', 0, 'cb-3', 0],
+        test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
         test7: [1, 0, 1],
         test8: 1234
-      };
+      });
 
-      assert.deepEqual(Clay.prepareSettingsForAppMessage(settings), expected);
+      var result = Clay.prepareSettingsForAppMessage(settings, messageKeys);
+      assert.deepEqual(result, expected);
     });
   });
 });

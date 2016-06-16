@@ -53,7 +53,12 @@ module.exports = function(config) {
               ]
           }
         ]
-      ]
+      ],
+      configure: function(bundle) {
+        bundle.on('prebundle', function() {
+          bundle.ignore('message_keys');
+        });
+      }
     },
 
     // list of files / patterns to load in the browser
