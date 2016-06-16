@@ -523,24 +523,21 @@ describe('Clay', function() {
         precision: undefined
       }), 12);
     });
+
+    it('Handles sparse arrays', function() {
+      var sparseArr = [];
+      sparseArr[1] = 'two';
+      sparseArr[2] = 'three';
+      assert.deepEqual(Clay.prepareForAppMessage(sparseArr), sparseArr);
+    });
   });
 
   describe('.prepareSettingsForAppMessage', function() {
     it('converts the settings correctly', function() {
-      var messageKeys = fixture.messageKeys([
-        'test1',
-        'test2',
-        'test3',
-        'test4[2]',
-        'test5',
-        'test6[4]',
-        'test7[3]',
-        'test8'
-      ]);
-
       var settings = {
         test1: false,
-        test2: 'val-2',
+        'test2[0]': 'val-1',
+        'test2[1]': 'val-2',
         test3: true,
         test4: ['cb-1', 'cb-3'],
         test5: 12345,
@@ -549,22 +546,39 @@ describe('Clay', function() {
         test8: {
           precision: 2,
           value: 12.34
-        }
+        },
+        'test9[1]': 'foo'
       };
 
-      var expected = fixture.messageKeysExpected({
+      var expected = {
         test1: 0,
-        test2: 'val-2',
+        test2: ['val-1', 'val-2'],
         test3: 1,
         test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
         test7: [1, 0, 1],
-        test8: 1234
-      });
+        test8: 1234,
+        test9: [undefined, 'foo']
+      };
 
-      var result = Clay.prepareSettingsForAppMessage(settings, messageKeys);
-      assert.deepEqual(result, expected);
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
+      var result = Clay.prepareSettingsForAppMessage(settings);
+
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
+    });
+
+    it('throws if a 2 dimension array is present', function() {
+      var settings = {
+        'test1[1]': ['bad', 'developer!']
+      };
+
+      stubMessageKeys(['test1[2]']);
+
+      assert.throws(function() {
+        Clay.prepareSettingsForAppMessage(settings);
+      }, /2 dimensional array/i);
     });
   });
 });

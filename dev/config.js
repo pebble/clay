@@ -78,6 +78,18 @@ module.exports = [
         "defaultValue": false
       },
       {
+        "type": "toggle",
+        "messageKey": "arrayToggle[0]",
+        "label": "This is a Toggle",
+        "defaultValue": false
+      },
+      {
+        "type": "toggle",
+        "messageKey": "arrayToggle[1]",
+        "label": "This is a Toggle",
+        "defaultValue": false
+      },
+      {
         "type": "color",
         "messageKey": "colorTest",
         "defaultValue": "FF0000",

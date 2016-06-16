@@ -172,7 +172,9 @@ module.exports.messageKeysExpected = function(expected) {
   Object.keys(expected).forEach(function(key) {
     var expectedVal = Array.isArray(expected[key]) ? expected[key] : [expected[key]];
     expectedVal.forEach(function(val, index) {
-      result[messageKeys[key] + index] = val;
+      if (typeof val !== 'undefined') {
+        result[messageKeys[key] + index] = val;
+      }
     });
   });
 
