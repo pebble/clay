@@ -311,7 +311,7 @@ Clay.prepareSettingsForAppMessage = function(settings) {
       return;
     }
 
-    var position = parseInt(matches[2] || 0, 10);
+    var position = parseInt(matches[2], 10);
     key = matches[1];
 
     if (typeof flatSettings[key] === 'undefined') {
