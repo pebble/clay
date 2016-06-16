@@ -5,7 +5,7 @@
  * @typedef {Object} Clay~ConfigItem
  * @property {string} type
  * @property {string|boolean|number} defaultValue
- * @property {string} [appKey]
+ * @property {string} [messageKey]
  * @property {string} [id]
  * @property {string} [label]
  * @property {Object} [attributes]
@@ -36,7 +36,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   var _settings = _.copyObj(settings);
   var _items;
   var _itemsById;
-  var _itemsByAppKey;
+  var _itemsByMessageKey;
   var _isBuilt;
 
   /**
@@ -47,7 +47,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   function _initializeItems() {
     _items = [];
     _itemsById = {};
-    _itemsByAppKey = {};
+    _itemsByMessageKey = {};
     _isBuilt = false;
   }
 
@@ -77,15 +77,15 @@ function ClayConfig(settings, config, $rootContainer, meta) {
           _itemsById[_item.id] = clayItem;
         }
 
-        if (_item.appKey) {
-          _itemsByAppKey[_item.appKey] = clayItem;
+        if (_item.messageKey) {
+          _itemsByMessageKey[_item.messageKey] = clayItem;
         }
 
         _items.push(clayItem);
 
         // set the value of the item via the manipulator to ensure consistency
-        var value = typeof _settings[_item.appKey] !== 'undefined' ?
-          _settings[_item.appKey] :
+        var value = typeof _settings[_item.messageKey] !== 'undefined' ?
+          _settings[_item.messageKey] :
           (_item.defaultValue || '');
 
         clayItem.set(value);
@@ -154,12 +154,12 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   };
 
   /**
-   * @param {string} appKey
+   * @param {string} messageKey
    * @returns {ClayItem}
    */
-  self.getItemByAppKey = function(appKey) {
-    _checkBuilt('getItemByAppKey');
-    return _itemsByAppKey[appKey];
+  self.getItemByMessageKey = function(messageKey) {
+    _checkBuilt('getItemByMessageKey');
+    return _itemsByMessageKey[messageKey];
   };
 
   /**
@@ -190,13 +190,13 @@ function ClayConfig(settings, config, $rootContainer, meta) {
 
     _settings = {};
 
-    _.eachObj(_itemsByAppKey, function(appKey, item) {
-      _settings[appKey] = {
+    _.eachObj(_itemsByMessageKey, function(messageKey, item) {
+      _settings[messageKey] = {
         value: item.get()
       };
 
       if (item.precision) {
-        _settings[appKey].precision = item.precision;
+        _settings[messageKey].precision = item.precision;
       }
     });
     return _settings;

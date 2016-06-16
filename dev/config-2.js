@@ -21,7 +21,7 @@ module.exports = [
       },
       {
         "type": "input",
-        "appKey": "email",
+        "messageKey": "email",
         "defaultValue": "",
         "label": "Input Field",
         "description": "This is a new field",

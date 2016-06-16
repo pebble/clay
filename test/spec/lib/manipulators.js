@@ -225,17 +225,20 @@ describe('manipulators', function() {
     var type = {
       type: 'checkboxgroup',
       clayId: 1,
-      defaultValue: ['two'],
-      options: [
-        { label: '1', value: 'one' },
-        { label: '2', value: 'two' },
-        { label: '3', value: 'three "quote' }
-      ]
+      defaultValue: [true, true, true],
+      options: ['First', 'Second', 'Third']
     };
-    testSetGet(type, ['one', 'two']);
-    testSetGet(type, ['three "quote']);
-    testSetGet(type, []);
-    testSetGet(type, false, []);
+    testSetGet(type, [false, false, true]);
+    testSetGet(type, [true, false], [true, false, false]);
+    testSetGet(type, [1, 0], [true, false, false]);
+    testSetGet(type, [true], [true, false, false]);
+    testSetGet(type, [1], [true, false, false]);
+    testSetGet(type, [], [false, false, false]);
+
+    // any non-array values should result in all false
+    testSetGet(type, false, [false, false, false]);
+    testSetGet(type, true, [false, false, false]);
+    testSetGet(type, null, [false, false, false]);
     testDisable(type);
     testEnable(type);
     testShow(type);

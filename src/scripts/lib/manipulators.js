@@ -133,24 +133,27 @@ module.exports = {
   checkboxgroup: {
     get: function() {
       var result = [];
-      this.$element.select('input:checked').each(function(item) {
-        result.push(item.value);
+      this.$element.select('input').each(function(item) {
+        result.push(!!item.checked);
       });
       return result;
     },
     set: function(values) {
       var self = this;
-      values = values || [];
+      values = Array.isArray(values) ? values : [];
+
+      while (values.length < this.get().length) {
+        values.push(false);
+      }
 
       if (_.equals(this.get(), values)) { return this; }
 
-      self.$element.select('input').set('checked', false);
+      self.$element.select('input')
+        .set('checked', false)
+        .each(function(item, index) {
+          item.checked = !!values[index];
+        });
 
-      values.map(function(value) {
-        self.$element
-          .select('input[value="' + value.toString(10).replace('"', '\\"') + '"]')
-          .set('checked', true);
-      });
       return self.trigger('change');
     },
     disable: disable,

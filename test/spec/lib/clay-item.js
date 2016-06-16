@@ -12,7 +12,7 @@ describe('ClayItem', function() {
   it('defines read-only properties', function() {
     var properties = [
       'id',
-      'appKey',
+      'messageKey',
       'config',
       '$element',
       '$manipulatorTarget',
@@ -53,24 +53,25 @@ describe('ClayItem', function() {
     });
   });
 
-  describe('.appKey', function() {
-    it('sets appKey correctly', function() {
+  describe('.messageKey', function() {
+    it('sets messageKey correctly', function() {
       var config = fixture.configItem('input');
       var clayItem = new ClayItem(config);
-      assert.strictEqual(clayItem.appKey, config.appKey);
+      assert.strictEqual(clayItem.messageKey, config.messageKey);
     });
 
-    it('sets appKey to null if there is no appKey in the config', function() {
-      var clayItem = fixture.clayItem({type: 'input', appKey: undefined});
-      assert.strictEqual(clayItem.appKey, null);
+    it('sets messageKey to null if there is no messageKey in the config',
+    function() {
+      var clayItem = fixture.clayItem({type: 'input', messageKey: undefined});
+      assert.strictEqual(clayItem.messageKey, null);
     });
   });
 
   describe('.config', function() {
-    it('sets appKey correctly', function() {
+    it('sets messageKey correctly', function() {
       var config = fixture.configItem('input');
       var clayItem = new ClayItem(config);
-      assert.strictEqual(clayItem.appKey, config.appKey);
+      assert.strictEqual(clayItem.messageKey, config.messageKey);
     });
   });
 
@@ -104,7 +105,8 @@ describe('ClayItem', function() {
 
     it('returns itself for chaining', function() {
       var clayItem = fixture.clayItem('select');
-      assert.strictEqual(clayItem.initialize(), clayItem);
+      var clayConfig = fixture.clayConfig([]);
+      assert.strictEqual(clayItem.initialize(clayConfig), clayItem);
     });
 
     it('does nothing if there is no initialize function', function() {

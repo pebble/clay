@@ -23,12 +23,39 @@ function stubPebble() {
   };
 }
 
+/**
+ * @param {Array} keys
+ * @return {Object}
+ */
+function stubMessageKeys(keys) {
+  var messageKeys = require('message_keys');
+  Object.keys(messageKeys).forEach(function(key) {
+    delete messageKeys[key];
+  });
+
+  var newKeys = fixture.messageKeys(keys);
+  Object.keys(newKeys).forEach(function(key) {
+    messageKeys[key] = newKeys[key];
+  });
+
+  return messageKeys;
+}
+
 describe('Clay', function() {
   describe('Clay constructor', function() {
     it('throws if the config is not an array', function() {
       assert.throws(function() {
         fixture.clay({});
       }, /must be an Array/i);
+    });
+
+    it('throws if the config contains appKeys', function() {
+      assert.throws(function() {
+        fixture.clay([
+          {type: 'input', appKey: 'foo'},
+          {type: 'someCustomComponent', appKey: 'bar'}
+        ]);
+      }, /appKeys are no longer supported/i);
     });
 
     it('throws if customFn is not a function', function() {
@@ -80,12 +107,16 @@ describe('Clay', function() {
       stubPebble();
       fixture.clay([]);
       var logStub = sinon.stub(console, 'log');
+      var expected = {someSetting: 'value'};
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
       Pebble.addEventListener
         .withArgs('webviewclosed')
-        .callArgWith(1, { response: '%7B%22appKey%22%3A%22value%22%7D' });
+        .callArgWith(1, {response: encodeURIComponent(JSON.stringify(expected))});
 
+      var expectedAppMessage = fixture.messageKeysExpected(expected);
       assert(Pebble.addEventListener.calledWith('webviewclosed'));
-      assert(Pebble.sendAppMessage.calledWith({ appKey: 'value' }));
+      assert(Pebble.sendAppMessage.calledWith(expectedAppMessage));
 
       Pebble.sendAppMessage.callArg(1);
       assert(logStub.calledWith('Sent config data to Pebble'));
@@ -165,7 +196,7 @@ describe('Clay', function() {
     describe('string substitutions', function() {
       var customFn = function() { this.getAllItems(); };
       var config = fixture.config(['input', 'color']);
-      var settings = { appKey: 'value' };
+      var settings = { messageKey: 'value' };
       var clay;
       var html;
 
@@ -250,9 +281,15 @@ describe('Clay', function() {
         key1: 'value1',
         key2: 'value2'
       };
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
       var result = clay.getSettings(settings);
-      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
-      assert.deepEqual(result, expected);
+      assert.equal(
+        localStorage.getItem('clay-settings'),
+        JSON.stringify(expected)
+      );
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
     });
 
     it('it writes to localStorage and returns the data when input is not encoded',
@@ -266,20 +303,26 @@ describe('Clay', function() {
         key1: 'value1',
         key2: 'value2%7Dbreaks'
       };
+
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
       var result = clay.getSettings(settings);
-      assert.equal(localStorage.getItem('clay-settings'), JSON.stringify(expected));
-      assert.deepEqual(result, expected);
+      assert.equal(
+        localStorage.getItem('clay-settings'),
+        JSON.stringify(expected)
+      );
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
     });
 
     it('does not store the response if it is invalid JSON and logs an error',
     function() {
       var clay = fixture.clay([]);
-      localStorage.setItem('clay-settings', '{"appKey":"value"}');
+      localStorage.setItem('clay-settings', '{"messageKey":"value"}');
 
       assert.throws(function() {
         clay.getSettings('not valid JSON');
       }, /Not Valid JSON/i);
-      assert.equal(localStorage.getItem('clay-settings'), '{"appKey":"value"}');
+      assert.equal(localStorage.getItem('clay-settings'), '{"messageKey":"value"}');
     });
 
     it('Prepares the settings for sendAppMessage', function() {
@@ -305,7 +348,7 @@ describe('Clay', function() {
         test1: 0,
         test2: 'val-2',
         test3: 1,
-        test4: ['cb-1', 0, 'cb-3', 0],
+        test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
         test7: [1, 0, 1],
@@ -313,7 +356,12 @@ describe('Clay', function() {
         test9: [10, 20, 30, 40]
       };
 
-      assert.deepEqual(clay.getSettings(response), expected);
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
+      assert.deepEqual(
+        clay.getSettings(response),
+        fixture.messageKeysExpected(expected)
+      );
     });
 
     it('does not prepare the settings for sendAppMessage if convert is false',
@@ -404,6 +452,16 @@ describe('Clay', function() {
   });
 
   describe('.prepareForAppMessage', function() {
+    it('converts an array correctly when array contains strings', function() {
+      assert.deepEqual(
+        Clay.prepareForAppMessage(['one', 'two', 'three']),
+        ['one', 'two', 'three']
+      );
+      assert.deepEqual(
+        Clay.prepareForAppMessage([{value: 'one'}, 'two', 'three']),
+        ['one', 'two', 'three']);
+    });
+
     it('converts an array correctly when array contains numbers', function() {
       assert.deepEqual(Clay.prepareForAppMessage([1, 2, 3]), [1, 2, 3]);
       assert.deepEqual(Clay.prepareForAppMessage(
@@ -465,13 +523,21 @@ describe('Clay', function() {
         precision: undefined
       }), 12);
     });
+
+    it('Handles sparse arrays', function() {
+      var sparseArr = [];
+      sparseArr[1] = 'two';
+      sparseArr[2] = 'three';
+      assert.deepEqual(Clay.prepareForAppMessage(sparseArr), sparseArr);
+    });
   });
 
   describe('.prepareSettingsForAppMessage', function() {
     it('converts the settings correctly', function() {
       var settings = {
         test1: false,
-        test2: 'val-2',
+        'test2[0]': 'val-1',
+        'test2[1]': 'val-2',
         test3: true,
         test4: ['cb-1', 'cb-3'],
         test5: 12345,
@@ -480,20 +546,39 @@ describe('Clay', function() {
         test8: {
           precision: 2,
           value: 12.34
-        }
+        },
+        'test9[1]': 'foo'
       };
+
       var expected = {
         test1: 0,
-        test2: 'val-2',
+        test2: ['val-1', 'val-2'],
         test3: 1,
-        test4: ['cb-1', 0, 'cb-3', 0],
+        test4: ['cb-1', 'cb-3'],
         test5: 12345,
         test6: [1, 2, 3, 4],
         test7: [1, 0, 1],
-        test8: 1234
+        test8: 1234,
+        test9: [undefined, 'foo']
       };
 
-      assert.deepEqual(Clay.prepareSettingsForAppMessage(settings), expected);
+      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+
+      var result = Clay.prepareSettingsForAppMessage(settings);
+
+      assert.deepEqual(result, fixture.messageKeysExpected(expected));
+    });
+
+    it('throws if a 2 dimension array is present', function() {
+      var settings = {
+        'test1[1]': ['bad', 'developer!']
+      };
+
+      stubMessageKeys(['test1[2]']);
+
+      assert.throws(function() {
+        Clay.prepareSettingsForAppMessage(settings);
+      }, /2 dimensional array/i);
     });
   });
 });

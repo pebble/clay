@@ -15,6 +15,7 @@ var uglify = require('gulp-uglify');
 var sassify = require('sassify');
 var autoprefixify = require('./src/scripts/vendor/autoprefixify');
 var insert = require('gulp-insert');
+var clayPackage = require('./package.json');
 
 var sassIncludePaths = [].concat(
   require('bourbon').includePaths,
@@ -37,7 +38,7 @@ var autoprefixerOptions = {
 
 var stringifyOptions = ['.html', '.tpl'];
 var versionMessage = '/* Clay - https://github.com/pebble/clay - Version: ' +
-                     require('./package.json').version +
+                     clayPackage.version +
                      ' - Build Date: ' + new Date().toISOString() + ' */\n';
 
 gulp.task('clean-js', function() {
@@ -84,13 +85,14 @@ gulp.task('inlineHtml', ['js', 'sass'], function() {
 gulp.task('clay', ['inlineHtml'], function() {
   return browserify('index.js', {
     debug: false,
-    standalone: 'clay'
+    standalone: clayPackage.name
   })
     .transform('deamdify')
     .transform(stringify(stringifyOptions))
     .transform(sassify, sassifyOptions)
     .transform(autoprefixify, autoprefixerOptions)
-    .require(require.resolve('./index'), {expose: 'pebble-clay'})
+    .require(require.resolve('./index'), {expose: clayPackage.name})
+    .exclude('message_keys')
     .bundle()
     .pipe(source('index.js'))
     .pipe(buffer())

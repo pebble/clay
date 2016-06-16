@@ -12,7 +12,7 @@ describe('ClayConfig', function() {
   it('defines read-only properties', function() {
     var properties = [
       'EVENTS',
-      'getItemByAppKey',
+      'getItemByMessageKey',
       'getItemById',
       'getItemsByType',
       'serialize',
@@ -34,7 +34,7 @@ describe('ClayConfig', function() {
    * @param {number} fwMinor
    * @param {Array} capabilities
    * @param {number} expected
-   * @param {number} notExpected
+   * @param {number} [notExpected] - defaults to the inverse of `expected`
    * @return {void}
    */
   function testCapabilities(platform, fwMajor, fwMinor, capabilities, expected,
@@ -221,7 +221,7 @@ describe('ClayConfig', function() {
 
   describe('throws when trying to run methods before being built', function() {
     [
-      'getItemByAppKey',
+      'getItemByMessageKey',
       'getItemById',
       'getItemsByType',
       'serialize'
@@ -249,14 +249,17 @@ describe('ClayConfig', function() {
     });
   });
 
-  describe('.getItemByAppKey()', function() {
+  describe('.getItemByMessageKey()', function() {
     it('it returns the correct item', function() {
       var config = fixtures.config([
-        {type: 'input', appKey: 'test-app-key', clayId: 0},
-        {type: 'input', appKey: undefined, clayId: 1}
+        {type: 'input', messageKey: 'test-app-key', clayId: 0},
+        {type: 'input', messageKey: undefined, clayId: 1}
       ]);
       var clayConfig = fixtures.clayConfig(config);
-      assert.deepEqual(clayConfig.getItemByAppKey('test-app-key').config, config[0]);
+      assert.deepEqual(
+        clayConfig.getItemByMessageKey('test-app-key').config,
+        config[0]
+      );
     });
   });
 
@@ -287,18 +290,18 @@ describe('ClayConfig', function() {
   describe('.serialize()', function() {
     it('returns the correct settings', function() {
       var config = [
-        {type: 'input', appKey: 'test1', defaultValue: 'default val'},
-        {type: 'select', appKey: 'test2', options: [
+        {type: 'input', messageKey: 'test1', defaultValue: 'default val'},
+        {type: 'select', messageKey: 'test2', options: [
           {label: 'label-1', value: 'val-1'},
           {label: 'label-2', value: 'val-2'}
         ]},
-        {type: 'toggle', appKey: 'test3'},
-        {type: 'checkboxgroup', appKey: 'test4', options: [
-          {label: 'label-1', value: 'cb-1'},
-          {label: 'label-2', value: 'cb-2'},
-          {label: 'label-2', value: 'cb-3'}
+        {type: 'toggle', messageKey: 'test3'},
+        {type: 'checkboxgroup', messageKey: 'test4', options: [
+          'label-1',
+          'label-2',
+          'label-3'
         ]},
-        {type: 'slider', appKey: 'test5', step: 0.05, defaultValue: 12.5}
+        {type: 'slider', messageKey: 'test5', step: 0.05, defaultValue: 12.5}
       ];
       var settings = {
         test2: 'val-2'
@@ -310,19 +313,19 @@ describe('ClayConfig', function() {
         test1: {value: 'default val'},
         test2: {value: 'val-2'},
         test3: {value: false},
-        test4: {value: []},
+        test4: {value: [false, false, false]},
         test5: {value: 12.5, precision: 2}
       });
 
-      clayConfig.getItemByAppKey('test1').set('val-1');
-      clayConfig.getItemByAppKey('test3').set(true);
-      clayConfig.getItemByAppKey('test4').set(['cb-1', 'cb-3']);
+      clayConfig.getItemByMessageKey('test1').set('val-1');
+      clayConfig.getItemByMessageKey('test3').set(true);
+      clayConfig.getItemByMessageKey('test4').set([true, false, true]);
 
       assert.deepEqual(clayConfig.serialize(), {
         test1: {value: 'val-1'},
         test2: {value: 'val-2'},
         test3: {value: true},
-        test4: {value: ['cb-1', 'cb-3']},
+        test4: {value: [true, false, true]},
         test5: {value: 12.5, precision: 2}
       });
 
@@ -337,7 +340,7 @@ describe('ClayConfig', function() {
         test1: 'val-1',
         test2: 'val-2',
         test3: true,
-        test4: ['cb-1', 'cb-3'],
+        test4: [true, false, true],
         test5: 12.5
       });
       assert.doesNotThrow(function() {
@@ -347,8 +350,8 @@ describe('ClayConfig', function() {
 
     it('only returns the settings present in the config', function() {
       var config = [
-        {type: 'input', appKey: 'test1', defaultValue: 'default val'},
-        {type: 'select', appKey: 'test2', options: [
+        {type: 'input', messageKey: 'test1', defaultValue: 'default val'},
+        {type: 'select', messageKey: 'test2', options: [
           {label: 'label-1', value: 'val-1'},
           {label: 'label-2', value: 'val-2'}
         ]}

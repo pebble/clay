@@ -5,6 +5,7 @@ var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
 var deepcopy = require('deepcopy/build/deepcopy.min');
 var version = require('./package.json').version;
+var messageKeys = require('message_keys');
 
 /**
  * @param {Array} config - the Clay config
@@ -82,23 +83,50 @@ function Clay(config, customFn, options) {
   }
 
   /**
+   * If this function returns true then the callback will be executed
+   * @callback _scanConfig_testFn
+   * @param {Clay~ConfigItem} item
+   */
+
+  /**
+   * @callback _scanConfig_callback
+   * @param {Clay~ConfigItem} item
+   */
+
+  /**
+   * Scan over the config and run the callback if the testFn resolves to true
    * @private
    * @param {Clay~ConfigItem|Array} item
+   * @param {_scanConfig_testFn} testFn
+   * @param {_scanConfig_callback} callback
    * @return {void}
    */
-  function _registerStandardComponents(item) {
+  function _scanConfig(item, testFn, callback) {
     if (Array.isArray(item)) {
       item.forEach(function(item) {
-        _registerStandardComponents(item);
+        _scanConfig(item, testFn, callback);
       });
     } else if (item.type === 'section') {
-      _registerStandardComponents(item.items);
-    } else if (standardComponents[item.type]) {
-      self.registerComponent(standardComponents[item.type]);
+      _scanConfig(item.items, testFn, callback);
+    } else if (testFn(item)) {
+      callback(item);
     }
   }
 
-  _registerStandardComponents(self.config);
+  // register standard components
+  _scanConfig(self.config, function(item) {
+    return standardComponents[item.type];
+  }, function(item) {
+    self.registerComponent(standardComponents[item.type]);
+  });
+
+  // validate config against teh use of appKeys
+  _scanConfig(self.config, function(item) {
+    return item.appKey;
+  }, function() {
+    throw new Error('appKeys are no longer supported. ' +
+                    'Please follow the migration guide to upgrade your project');
+  });
 }
 
 /**
@@ -182,7 +210,9 @@ Clay.prototype.getSettings = function(response, convert) {
 
   localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
-  return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
+  return convert === false ?
+    settings :
+    Clay.prepareSettingsForAppMessage(settings, messageKeys);
 };
 
 /**
@@ -214,7 +244,7 @@ Clay.encodeDataUri = function(input, prefix) {
  *    Eg: 1.4567 with a precision set to 3 will become 1456
  * @param {number|string|boolean|Array|Object} val
  * @param {number|string|boolean|Array} val.value
- * @param {number} [val.precision=0]
+ * @param {number|undefined} [val.precision=0]
  * @returns {number|string|Array}
  */
 Clay.prepareForAppMessage = function(val) {
@@ -235,12 +265,8 @@ Clay.prepareForAppMessage = function(val) {
 
   if (Array.isArray(val)) {
     result = [];
-    val.forEach(function(item) {
-      var itemConverted = Clay.prepareForAppMessage(item);
-      result.push(itemConverted);
-      if (typeof itemConverted === 'string') {
-        result.push(0);
-      }
+    val.forEach(function(item, index) {
+      result[index] = Clay.prepareForAppMessage(item);
     });
   } else if (typeof val === 'object' && val) {
     if (typeof val.value === 'number') {
@@ -266,16 +292,56 @@ Clay.prepareForAppMessage = function(val) {
 
 /**
  * Converts a Clay settings dict into one that is compatible with
- * Pebble.sendAppMessage();
+ * Pebble.sendAppMessage(); It also uses the provided messageKeys to correctly
+ * assign arrays into individual keys
  * @see {prepareForAppMessage}
  * @param {Object} settings
  * @returns {{}}
  */
 Clay.prepareSettingsForAppMessage = function(settings) {
-  var result = {};
+
+  // flatten settings
+  var flatSettings = {};
   Object.keys(settings).forEach(function(key) {
-    result[key] = Clay.prepareForAppMessage(settings[key]);
+    var val = settings[key];
+    var matches = key.match(/(.+?)(?:\[(\d*)\])?$/);
+
+    if (!matches[2]) {
+      flatSettings[key] = val;
+      return;
+    }
+
+    var position = parseInt(matches[2], 10);
+    key = matches[1];
+
+    if (typeof flatSettings[key] === 'undefined') {
+      flatSettings[key] = [];
+    }
+
+    flatSettings[key][position] = val;
   });
+
+  var result = {};
+  Object.keys(flatSettings).forEach(function(key) {
+    var messageKey = messageKeys[key];
+    var settingArr = Clay.prepareForAppMessage(flatSettings[key]);
+    settingArr = Array.isArray(settingArr) ? settingArr : [settingArr];
+
+    settingArr.forEach(function(setting, index) {
+      result[messageKey + index] = setting;
+    });
+  });
+
+  // validate the settings
+  Object.keys(result).forEach(function(key) {
+    if (Array.isArray(result[key])) {
+      throw new Error('Clay does not support 2 dimensional arrays for item ' +
+                      'values. Make sure you are not attempting to use array ' +
+                      'syntax (eg: "myMessageKey[2]") in the messageKey for ' +
+                      'components that return an array, such as a checkboxgroup');
+    }
+  });
+
   return result;
 };
 

@@ -10,9 +10,9 @@ module.exports = function() {
    */
   function toggleBackground() {
     if (this.get()) {
-      Clay.getItemByAppKey('colorTest').enable();
+      Clay.getItemByMessageKey('colorTest').enable();
     } else {
-      Clay.getItemByAppKey('colorTest').disable();
+      Clay.getItemByMessageKey('colorTest').disable();
     }
   }
 
@@ -25,7 +25,7 @@ module.exports = function() {
   }
 
   Clay.on(Clay.EVENTS.AFTER_BUILD, function() {
-    var coolStuffToggle = Clay.getItemByAppKey('cool_stuff');
+    var coolStuffToggle = Clay.getItemByMessageKey('cool_stuff');
     toggleBackground.call(coolStuffToggle);
     coolStuffToggle.on('change', toggleBackground);
 

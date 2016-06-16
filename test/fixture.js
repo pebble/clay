@@ -53,7 +53,7 @@ module.exports.configItem = function(config, autoRegister) {
 
   var result = _.extend({}, {
     label: config.type + '-label',
-    appKey: 'appKey-' + idCounter,
+    messageKey: 'messageKey-' + idCounter,
     id: 'id-' + idCounter
   }, config);
 
@@ -125,4 +125,58 @@ module.exports.clay = function(config, customFn, options, destroyLocalStorage) {
     localStorage.removeItem('clay-settings');
   }
   return new Clay(config, customFn, options);
+};
+
+/**
+ * @param {Array} keys
+ * @return {Object}
+ */
+module.exports.messageKeys = function(keys) {
+  var counter = 10000;
+  var result = {};
+
+  keys.forEach(function(key) {
+    var matches = key.match(/(.+?)(?:\[(\d*)\])?$/);
+    var parsedKey = matches[1];
+    var length = parseInt(matches[2] || 1, 10);
+
+    result[parsedKey] = counter;
+
+    counter += length;
+  });
+
+  return result;
+};
+
+/**
+ * @param {Object} obj
+ * @returns {Array}
+ */
+module.exports.messageKeysObjToArray = function(obj) {
+  return Object.keys(obj).map(function(key) {
+    return Array.isArray(obj[key]) ?
+    key + '[' + obj[key].length + ']' :
+      key;
+  });
+};
+
+/**
+ * @param {Object} expected
+ * @return {Object}
+ */
+module.exports.messageKeysExpected = function(expected) {
+  var result = {};
+  var messageKeys = module.exports.messageKeysObjToArray(expected);
+  messageKeys = module.exports.messageKeys(messageKeys);
+
+  Object.keys(expected).forEach(function(key) {
+    var expectedVal = Array.isArray(expected[key]) ? expected[key] : [expected[key]];
+    expectedVal.forEach(function(val, index) {
+      if (typeof val !== 'undefined') {
+        result[messageKeys[key] + index] = val;
+      }
+    });
+  });
+
+  return result;
 };

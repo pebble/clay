@@ -3,13 +3,8 @@
   <div class="checkbox-group">
     {{each options}}
       <label class="tap-highlight">
-        <span class="label">{{{this.label}}}</span>
-        <input
-          type="checkbox"
-          value="{{this.value}}"
-          name="clay-{{clayId}}"
-          {{each key: attributes}}{{key}}="{{this}}"{{/each}}
-        />
+        <span class="label">{{{this}}}</span>
+        <input type="checkbox" value="1" name="clay-{{clayId}}" />
         <i></i>
       </label>
     {{/each}}
