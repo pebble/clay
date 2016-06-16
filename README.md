@@ -33,6 +33,7 @@ Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pe
   ```
 5. Ensure `pebble.enableMultiJS` is set to true in your `package.json`.
 6. Next is the fun part - creating your config page. Edit your `config.json` file to build a layout of elements as described in the sections below.
+7. Make sure you have defined all of your `messageKeys` in your `package.json`. More info on how that works [here.](https://developer.pebble.com/guides/communication/using-pebblekit-js/#defining-keys)
 
 # Getting Started (CloudPebble)
 
@@ -54,6 +55,7 @@ NOTE these are similar to using the SDK but instead of a data file called config
   var clay = new Clay(clayConfig);
   ```
 6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
+7. Make sure you have defined all of your message keys using `Automatic assignment` in your project settings. More info on how that works [here.](https://developer.pebble.com/guides/communication/using-pebblekit-js/#defining-keys)
 
 # Creating Your Config File
 
@@ -480,7 +482,7 @@ A list of options where a user may choose more than one option to submit.
 |----------|------|-------------|
 | type | string | Set to `checkboxgroup`. |
 | id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
-| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
+| messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. **NOTE:** The checkboxgroup component will expect you to have defined a `messageKey` in your `package.json` using array syntax. In the example below, the matching entry in the `package.json` would be `favorite_food[3]`. In CloudPebble, you must use `Automatic assignment` for message keys and the `Key Array Length` must match the number of options in the checkboxgroup |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of booleans | The default selected items. |
 | description | string | Optional sub-text to include below the component |
@@ -597,11 +599,38 @@ The submit button for the page. You **MUST** include this component somewhere in
 
 ---
 
-### Coming Soon
+### Message keys and array syntax
 
-- Tabs
-- Footer
-- Dynamic + draggable list
+Clay supports (and requires in some cases) the use of array syntax for message keys. Also known as `Automatic assignment` in CloudPebble. More info [here.](https://developer.pebble.com/guides/communication/using-pebblekit-js/#defining-keys)
+
+You can assign any component that does not return an array to a particular position in your message key. This is done by appending the position (zero indexed) wrapped in brackets to the end of the `messageKey` property. Do **NOT** include any spaces in your `messageKey`.
+
+##### Example
+
+```javascript
+{
+  "type": "toggle",
+  "messageKey": "light_switch[1]",
+  "label": "Invert Colors",
+  "defaultValue": true
+}
+```
+In the above example, the value of the item will be accessible with `MESSAGE_KEY_light_switch + 1` in your C code.
+
+Components that return an array in their `.get()` method, such as the checkboxgroup will expect the corresponding message key to already be defined with the correct length. You **CAN NOT** use the array syntax in the `messageKey` property as this would be trying to create a 2 dimensional array.
+
+##### Example
+
+```javascript
+{
+  "type": "checkboxgroup",
+  "messageKey": "favorite_food",
+  "label": "Favorite Food",
+  "defaultValue": [true, false, true],
+  "options": ["Sushi", "Pizza", "Burgers"]
+}
+```
+In the above example, the value of the item will be accessible with `MESSAGE_KEY_favorite_food`, `MESSAGE_KEY_favorite_food + 1`, and `MESSAGE_KEY_favorite_food + 2` in your C code.
 
 ---
 ### Showing items for specific platforms and features
