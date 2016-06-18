@@ -1208,6 +1208,74 @@ becomes:
 
 If you have a [custom function](#custom-function) and are using the `clayConfig.getItemByAppKey()` method you will need to change this to `clayConfig.getItemByMessageKey()`
 
+### clay.getSettings() will now by default, return an object where the keys are numbers.
+
+In the past, `clay.getSettings()` would return something that looked like:
+
+```javascript
+{
+  BACKGROUND_COLOR: 0,
+  NAME: 'Jane Doe',
+  ENABLE_TOOLS: 1
+}
+```
+
+It now uses the values provided in the `message_keys` module to construct this object.
+The new format looks something like:
+
+```javascript
+{
+  10000: 0,
+  10001: 'Jane Doe',
+  10002: 1
+}
+```
+
+If you wish to find out what keys are associated with what values, you must use the `message_keys` module.
+
+```javascript
+var messageKeys = require('message_keys');
+
+Pebble.addEventListener('webviewclosed', function(e) {
+  // Get the keys and values from each config item
+  var claySettings = clay.getSettings(e.response);
+
+  // In this example messageKeys.NAME is equal to 10001
+  console.log('Name is ' + claySettings[messageKeys.NAME]); // Logs: "Name is Jane Doe"
+});
+```
+
+**NOTE:** The above only applies to the default behavior of the method. If you pass
+`false` to the second argument, a standard object will be returned with the `messageKey`
+as the key.
+
+```javascript
+
+Pebble.addEventListener('webviewclosed', function(e) {
+
+  clay.getSettings(e.response);
+    /* returns:
+    {
+      10000: 0,
+      10001: 'Jane Doe',
+      10002: 1
+    }
+    */
+
+  clay.getSettings(e.response, false);
+    /* returns:
+    {
+      BACKGROUND_COLOR: {value: 0},
+      NAME: {value: 'Jane Doe'},
+      ENABLE_TOOLS: {value: true}
+    }
+
+    Notice that the value for ENABLE_TOOLS was not converted to a number from a boolean
+    */
+});
+
+```
+
 ### Checkbox groups now use arrays.
 
 In the previous version of Clay, checkbox groups would split the values of the items with zeros. This made for clumsy usage on the C side. Checkbox groups are now much simpler to use thanks to message keys. You will however need to update you config to the new format.
