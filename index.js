@@ -210,9 +210,7 @@ Clay.prototype.getSettings = function(response, convert) {
 
   localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
-  return convert === false ?
-    settings :
-    Clay.prepareSettingsForAppMessage(settings, messageKeys);
+  return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
 };
 
 /**
