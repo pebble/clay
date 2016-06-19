@@ -786,7 +786,7 @@ Clay will by default, automatically handle the 'showConfiguration' and 'webviewc
 Example:
 
 ```javascript
-var Clay = require('./clay');
+var Clay = require('pebble-clay');
 var clayConfig = require('./config');
 var clayConfigAplite = require('./config-aplite');
 var clay = new Clay(clayConfig, null, { autoHandleEvents: false });
@@ -829,7 +829,7 @@ If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and wo
 
 ```javascript
 var Settings = require('settings');
-var Clay = require('./clay');
+var Clay = require('pebble-clay');
 var clayConfig = require('./config');
 var clay = new Clay(clayConfig, null, {autoHandleEvents: false});
 
@@ -951,7 +951,7 @@ Make sure to always wait for the config page to be built before manipulating ite
 ##### app.js
 
 ```javascript
-var Clay = require('./clay');
+var Clay = require('pebble-clay');
 var clayConfig = require('./config');
 var customClay = require('./custom-clay');
 var userData = {token: 'abc123'}
@@ -1088,7 +1088,7 @@ Components are simple objects with the following properties.
 Components must be registered before the config page is built. The easiest way to do this is in your `app.js` after you have initialized Clay:
 
 ```javascript
-var Clay = require('./clay');
+var Clay = require('pebble-clay');
 var clayConfig = require('./config.json');
 var clay = new Clay(clayConfig);
 
