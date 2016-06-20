@@ -80,20 +80,11 @@ and is responsible for passing the injected config and other components to the
 
 ## Building
 
-There are two ways to build Clay, production mode and development mode.
-
-### Production Mode
-
-`$ npm run build`
-
-Packages up the entire Clay project into `dist/clay.js` to be required in the
-developer's `app.js`.
-
-### Development Mode
+Use the following command to build Clay during development.
 
 `$ npm run dev`
 
-Packages up `src/scripts/config-page.js` and `dev/dev.js` into the `tmp/` directory
+This command packages up `src/scripts/config-page.js` and `dev/dev.js` into the `tmp/` directory
 so `dev/dev.html` can include them as script tags. This will also watch for changes
 in the project.
 
