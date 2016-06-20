@@ -143,6 +143,49 @@ There are two commands to use while writing your tests.
 
 ## Style Guide
 
-Have a look at the rest of the codebase for an example of how you should format your code.
-Our style guide is enforced using ESLint. Run `$ npm run lint` to ensure you are
+Our style guide is very similar to the
+[Airbnb style guide.](https://github.com/airbnb/javascript/tree/master/es5) with the
+following exceptions:
+
+ - When saving a reference to `this` use `self`.
+  ```javascript
+  // bad
+  function() {
+    var _this = this;
+    return function() {
+      console.log(_this);
+    };
+  }
+
+  // bad
+  function() {
+    var that = this;
+    return function() {
+      console.log(that);
+    };
+  }
+
+  // good
+  function() {
+    var self = this;
+    return function() {
+      console.log(self);
+    };
+  }
+  ```
+ - Don't double name your functions. It makes refactoring more difficult.
+
+ ```javascript
+ // bad
+ var log = function log(msg) {
+    console.log(msg);
+  };
+
+ // good
+ var log = function(msg) {
+    console.log(msg);
+  };
+ ```
+
+The style guide is enforced using ESLint. Run `$ npm run lint` to ensure you are
 adhering to the style guide.
