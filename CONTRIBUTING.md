@@ -39,8 +39,7 @@ then please make one. This allows us to assign milestones and triage priority.
 
 ### 4. Develop your feature
 
-Commit as often as you like, however please squash commits that fix typos or are
-otherwise noisy.
+Commit as often as you like. Your branch will be squashed when the pull request is merged.
 
 ### 5. Run the tests
 
