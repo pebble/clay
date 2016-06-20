@@ -189,3 +189,10 @@ following exceptions:
 
 The style guide is enforced using ESLint. Run `$ npm run lint` to ensure you are
 adhering to the style guide.
+
+## Getting Help
+
+ - Chat to us in the `#clay` channel on slack. http://slack.pbldev.io/
+ - Visit the [Pebble Forums](https://forums.pebble.com/)
+ - Email devsupport@getpebble.com
+ - More options at https://developer.pebble.com/community/online/
