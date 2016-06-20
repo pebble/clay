@@ -5,6 +5,8 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pebble-packages/) so it is super easy to include in your project. If you are upgrading from v0.1.x of Clay you need to follow the [migration guide](#migrating-from-v01x-to-v1x) before you can get started.
 
+If you would like to contribute to Clay, check out the [contributing guide.](CONTRIBUTING.md)
+
 # Getting Started (SDK 3.13 or higher)
 
 1. Run `pebble package install pebble-clay` to install the package in your project
