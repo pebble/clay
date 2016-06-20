@@ -5,6 +5,8 @@ Clay will by default automatically handle the 'showConfiguration' and 'webviewcl
 
 Clay is distributed as a [Pebble package](https://developer.pebble.com/guides/pebble-packages/) so it is super easy to include in your project. If you are upgrading from v0.1.x of Clay you need to follow the [migration guide](#migrating-from-v01x-to-v1x) before you can get started.
 
+If you would like to contribute to Clay, check out the [contributing guide.](CONTRIBUTING.md)
+
 # Getting Started (SDK 3.13 or higher)
 
 1. Run `pebble package install pebble-clay` to install the package in your project
@@ -1124,56 +1126,6 @@ clay.registerComponent(require('./my-custom-component'));
  - `_.formatHtml()`
  - `_.template()`
  - `_.isObject()`
-
-# Project Structure and Development 
-
-There are two main entry points for Clay - `index.js` and `src/scripts/config-page.js`. 
-
-#### index.js
-
-This is the main entry point for the code that will run in the Pebble app's `src/js/app.js`. It is responsible for serializing the provided config into a data URI that will be opened using `Pebble.openURL()`. It also persists data to `localStorage`. 
-
-#### src/scripts/config-page.js
-
-This is the main entry point for the code that runs on the generated config page, and is responsible for passing the injected config and other components to the `ClayConfig` class.
-
-
-### Building 
-
-There are two ways to build Clay, production mode and development mode. 
-
-#### Production Mode
-
-```
-$ npm run build
-```
-
-Packages up the entire Clay project into `dist/clay.js` to be required in the developer's `app.js`.
-
-#### Development Mode
-
-```
-$ npm run dev
-```
-
-Packages up `src/scripts/config-page.js` and `dev/dev.js` into the `tmp/` directory so `dev/dev.html` can include them as script tags. This will also watch for changes in the project. 
-
-While developing components and other functionality for Clay, it is much easier to work with the files in the `dev/` directory than on a phone or emulator. Below is an explanation of the files and their purpose.
-
-| File | Purpose |
-|----------|-----|
-| `dev.html` | Open this page in a browser after running `$ npm run dev`. |
-| `dev.js` | Injects the components and dependencies into the window the same way `index.js` would. |
-| `config.js` | Clay config to use as a sandbox for testing components. |
-| `custom-fn.js` | Clay custom function to be injected by `dev.js`. |
-| `emulator.html` | Copy of the HTML page that is used to make the Clay compatible with the Pebble SDK emulator. |
-| `uri-test.html` | Used to stress test URI creation for older browser versions. |
-
-## Functionality
-
-Most of the magic happens in the `src/scripts/lib` directory. `config-page.js` initializes a new instance of `ClayConfig` and calls the injected custom function (`window.customFn`) with the `ClayConfig` as its context. This allows developers to add extra functionality to the config page, such as setting values of items dynamically or registering small custom components. 
-
-Once the `ClayConfig` is initialized, we run the `.build()` method. This iterates over the config and injects each item into the page. Each item is an instance of `ClayItem`. It also indexes the items to later be retrieved with `.getAllItems()`, `.getItemByMessageKey()`, `.getItemById()`, `.getItemsByType()`.
 
 # Migrating from v0.1.x to v1.x
 
