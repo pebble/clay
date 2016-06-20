@@ -194,5 +194,5 @@ adhering to the style guide.
 
  - Chat to us in the `#clay` channel on slack. http://slack.pbldev.io/
  - Visit the [Pebble Forums](https://forums.pebble.com/)
- - Email devsupport@getpebble.com
+ - Tweet at [@pebbledev](https://twitter.com/pebbledev)
  - More options at https://developer.pebble.com/community/online/
