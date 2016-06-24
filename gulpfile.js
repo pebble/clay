@@ -109,6 +109,7 @@ gulp.task('dev-js', ['js', 'sass'], function() {
     .transform('deamdify')
     .transform(sassify, sassifyOptions)
     .transform(autoprefixify, autoprefixerOptions)
+    .ignore('message_keys')
     .bundle()
     .pipe(source('dev.js'))
     .pipe(gulp.dest('./tmp/'));
