@@ -183,6 +183,17 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   };
 
   /**
+   * @param {string} group
+   * @returns {Array.<ClayItem>}
+   */
+  self.getItemsByGroup = function(group) {
+    _checkBuilt('getItemsByGroup');
+    return _items.filter(function(item) {
+      return item.config.group === group;
+    });
+  };
+
+  /**
    * @returns {Object}
    */
   self.serialize = function() {
