@@ -25,7 +25,7 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 
 # Getting Started (CloudPebble)
 
-1. Ensure `Configurable` is checked and `JS Handling` is set to `CommonJS-style` in your project settings.
+1. Ensure `JS Handling` is set to `CommonJS-style` in your project settings.
 2. Under `Dependencies` in the project navigation, enter `pebble-clay` as the `Package Name` and `^1.0.0` for the `Version`. You may use any specific version you like, however using `^1.0.0` will ensure you receive all minor version updates.
 4. Create a JavaScript file called `config.js` with the following content. This will act as your config's root array element, from which the rest of the page is built up:
 
