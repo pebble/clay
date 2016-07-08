@@ -116,12 +116,13 @@ module.exports = {
     function autoLayout() {
       if (!clay.meta.activeWatchInfo ||
           clay.meta.activeWatchInfo.firmware.major === 2 ||
-          clay.meta.activeWatchInfo.platform === 'aplite' &&
+          ['aplite', 'diorite'].indexOf(clay.meta.activeWatchInfo.platform) > -1 &&
           !self.config.allowGray) {
         return standardLayouts.BLACK_WHITE;
       }
 
-      if (clay.meta.activeWatchInfo.platform === 'aplite' && self.config.allowGray) {
+      if (['aplite', 'diorite'].indexOf(clay.meta.activeWatchInfo.platform) > -1 &&
+          self.config.allowGray) {
         return standardLayouts.GRAY;
       }
 
