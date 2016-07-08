@@ -434,6 +434,28 @@ describe('component - color', function() {
         suffix: ''
       }
     });
+    testAutoLayout('diorite', standardLayouts.BLACK_WHITE, false, '', {
+      platform: 'diorite',
+      model: 'qemu_platform_diorite',
+      language: 'en_US',
+      firmware: {
+        major: 4,
+        minor: 0,
+        patch: 0,
+        suffix: ''
+      }
+    });
+    testAutoLayout('diorite', standardLayouts.GRAY, true, '', {
+      platform: 'diorite',
+      model: 'qemu_platform_diorite',
+      language: 'en_US',
+      firmware: {
+        major: 4,
+        minor: 0,
+        patch: 0,
+        suffix: ''
+      }
+    });
 
     testCustomLayout();
     testCustomLayout('COLOR');
