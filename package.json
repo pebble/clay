@@ -40,7 +40,10 @@
     ],
     "resources": {
       "media": []
-    }
+    },
+    "capabilities": [
+      "configurable"
+    ]
   },
   "homepage": "https://github.com/pebble/clay#readme",
   "devDependencies": {
