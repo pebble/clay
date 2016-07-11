@@ -585,6 +585,7 @@ The submit button for the page. You **MUST** include this component somewhere in
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
