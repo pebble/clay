@@ -42,6 +42,9 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 6. Next is the fun part - creating your config page. Edit your `config.js` file to build a layout of elements as described in the sections below.
 7. Make sure you have defined all of your message keys using `Automatic assignment` in your project settings. More info on how that works [here.](https://developer.pebble.com/guides/communication/using-pebblekit-js/#defining-keys)
 
+# Getting Started (Pebble.js)
+If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and would like to use Clay, The setup process is a little different. Pebble.js does not currently support message keys so you will have to use [v0.1.7](https://github.com/pebble/clay/releases/v0.1.7) of Clay. Follow the instructions in the [readme for that version.](https://github.com/pebble/clay/blob/v0.1.7/README.md) 
+
 # Creating Your Config File
 
 Clay uses JavaScript object notation (or JSON) to generate the config page for you. The structure of the page is up to you, but you do need to follow some basic rules. 
@@ -120,7 +123,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `heading`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
@@ -151,7 +154,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `text`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
@@ -179,7 +182,7 @@ Standard text input field.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `input`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the input field. |
@@ -217,7 +220,7 @@ Switch for a single item.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `toggle`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
@@ -249,7 +252,7 @@ A dropdown menu containing multiple options.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `select`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default value of the dropdown menu. Must match a value in the `options` array. |
@@ -355,7 +358,7 @@ The color picker will automatically show a different layout depending on the wat
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `color`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string OR int | The default color. One of the [64 colors](https://developer.pebble.com/guides/tools-and-resources/color-picker/) compatible with Pebble smartwatches. Always use the uncorrected value even if `sunlight` is true. The component will do the conversion internally. |
@@ -421,7 +424,7 @@ A list of options allowing the user can only choose one option to submit.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `radiogroup`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | label | string | The label that should appear next to this item. |
 | defaultValue | string | The default selected item. Must match a value in the `options` array. |
@@ -466,7 +469,7 @@ A list of options where a user may choose more than one option to submit.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `checkboxgroup`. |
-| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemsById()` in your [custom function](#custom-function). |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. **NOTE:** The checkboxgroup component will expect you to have defined a `messageKey` in your `package.json` using array syntax. In the example below, the matching entry in the `package.json` would be `favorite_food[3]`. In CloudPebble, you must use `Automatic assignment` for message keys and the `Key Array Length` must match the number of options in the checkboxgroup |
 | label | string | The label that should appear next to this item. |
 | defaultValue | array of booleans | The default selected items. |
@@ -820,51 +823,6 @@ Pebble.addEventListener('webviewclosed', function(e) {
     console.log(JSON.stringify(e));
   });
 });
-```
-
-## Clay and Pebble.js
-
-If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and would like to use Clay, There are some extra steps to follow:
-
-1. Remove all your `Settings.config` calls. Clay will handle the settings from now on. 
-2. Use the example below to modify your `app.js`. Notice that `autoHandleEvents` is set to `false` in the Clay constructor.: 
-
-```javascript
-var Settings = require('settings');
-var Clay = require('pebble-clay');
-var clayConfig = require('./config');
-var clay = new Clay(clayConfig, null, {autoHandleEvents: false});
-
-Pebble.addEventListener('showConfiguration', function(e) {
-  Pebble.openURL(clay.generateUrl());
-});
-
-Pebble.addEventListener('webviewclosed', function(e) {
-  if (e && !e.response) {
-    return;
-  }
-  var dict = clay.getSettings(e.response);
-  
-  // Save the Clay settings to the Settings module. 
-  Settings.option(dict);
-});
-```
-
-### Caveats
-
-Clay treats colors as numbers. You will need to convert these numbers to CSS colors before they can be used by Pebble.js. Use the function below to convert the colors.
-
-```javascript
-function cssColor(color) {
-  color = color.toString(16);
-  while (color.length < 6) {
-    color = '0' + color;
-  }
-  return '#' + color;
-}
-
-// Example usage with default: 
-cssColor(Settings.option('BACKGROUND_COLOR') || 0xff0000);
 ```
 
 ## Clay API (app.js)
