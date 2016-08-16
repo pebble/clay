@@ -45,6 +45,9 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 # Getting Started (Pebble.js)
 If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and would like to use Clay, The setup process is a little different. Pebble.js does not currently support message keys so you will have to use [v0.1.7](https://github.com/pebble/clay/releases/v0.1.7) of Clay. Follow the instructions in the [readme for that version.](https://github.com/pebble/clay/blob/v0.1.7/README.md) 
 
+# Getting Started (Rocky.js)
+If you are using [Rocky.js](https://developer.pebble.com/docs/rockyjs/) and would like to use Clay, please be aware that this is currently unsupported. It is possible to install the Clay package and override the 'showConfiguration' and 'webviewclosed' events and handle them manually, but Rocky.js does not currently support persistent storage, so the settings must be loaded from the phone each time. You can find an example of using Clay with Rocky.js [here](https://github.com/orviwan/rocky-leco-clay).
+
 # Creating Your Config File
 
 Clay uses JavaScript object notation (or JSON) to generate the config page for you. The structure of the page is up to you, but you do need to follow some basic rules. 
