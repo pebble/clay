@@ -1008,7 +1008,7 @@ This is the main way of talking to your generated config page. An instance of th
 | Property | Type | Description |
 |----------|------|-------------|
 | `.id` | String | The ID of the item if provided in the config. |
-| `.messageKey` | String | The ID of the item if provided in the config. |
+| `.messageKey` | String | The messageKey of the item if provided in the config. |
 | `.config` | Object | Reference to the config passed to the constructer. |
 | `$element` | $Minified | A Minified list representing the root HTML element of the config item. |
 | `$manipulatorTarget` | $Minified | A Minified list representing the HTML element with **data-manipulator-target** set. This is generally pointing to the main `<input>` element and will be used for binding events. |
