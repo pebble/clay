@@ -12,7 +12,7 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 1. Run `pebble package install pebble-clay` to install the package in your project
 2. Create a JSON file called `config.json` and place it in your `src/js` directory.
 3. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
-4. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+4. Your `index.js` (`app.js` in SDK 3) file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `index.js` file:
 
   ```javascript
   var Clay = require('pebble-clay');
@@ -32,7 +32,7 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
   ```javascript
   module.exports = [];
   ```
-5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+5. Your `index.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
   var Clay = require('pebble-clay');
