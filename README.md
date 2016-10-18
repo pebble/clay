@@ -510,6 +510,7 @@ In the above example, Sushi and Burgers will be selected by default.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `button`. |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | defaultValue | string | The text displayed on the button. |
 | primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
 | description | string | Optional sub-text to include below the component |
@@ -584,6 +585,7 @@ The submit button for the page. You **MUST** include this component somewhere in
 |----------|------|-------------|
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
 | group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
