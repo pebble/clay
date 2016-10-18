@@ -12,7 +12,7 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 1. Run `pebble package install pebble-clay` to install the package in your project
 2. Create a JSON file called `config.json` and place it in your `src/js` directory.
 3. In order for JSON files to work you may need to change a line in your `wscript` from `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'))` to `ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob(['src/js/**/*.js', 'src/js/**/*.json']))`.
-4. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+4. Your `index.js` (`app.js` in SDK 3) file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `index.js` file:
 
   ```javascript
   var Clay = require('pebble-clay');
@@ -32,7 +32,7 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
   ```javascript
   module.exports = [];
   ```
-5. Your `app.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
+5. Your `index.js` file needs to `require` clay and your config file, then be initialized. Clay will by default automatically handle the 'showConfiguration' and 'webviewclosed' events. Copy and paste the following into the top of your `app.js` file:
 
   ```javascript
   var Clay = require('pebble-clay');
@@ -44,6 +44,9 @@ If you would like to contribute to Clay, check out the [contributing guide.](CON
 
 # Getting Started (Pebble.js)
 If you are using [Pebble.js](https://developer.pebble.com/docs/pebblejs/) and would like to use Clay, The setup process is a little different. Pebble.js does not currently support message keys so you will have to use [v0.1.7](https://github.com/pebble/clay/releases/v0.1.7) of Clay. Follow the instructions in the [readme for that version.](https://github.com/pebble/clay/blob/v0.1.7/README.md) 
+
+# Getting Started (Rocky.js)
+If you are using [Rocky.js](https://developer.pebble.com/docs/rockyjs/) and would like to use Clay, please be aware that this is currently unsupported. It is possible to install the Clay package and override the 'showConfiguration' and 'webviewclosed' events and handle them manually, but Rocky.js does not currently support persistent storage, so the settings must be loaded from the phone each time. You can find an example of using Clay with Rocky.js [here](https://github.com/orviwan/rocky-leco-clay).
 
 # Creating Your Config File
 
@@ -1019,7 +1022,7 @@ This is the main way of talking to your generated config page. An instance of th
 | Property | Type | Description |
 |----------|------|-------------|
 | `.id` | String | The ID of the item if provided in the config. |
-| `.messageKey` | String | The ID of the item if provided in the config. |
+| `.messageKey` | String | The messageKey of the item if provided in the config. |
 | `.config` | Object | Reference to the config passed to the constructer. |
 | `$element` | $Minified | A Minified list representing the root HTML element of the config item. |
 | `$manipulatorTarget` | $Minified | A Minified list representing the HTML element with **data-manipulator-target** set. This is generally pointing to the main `<input>` element and will be used for binding events. |
