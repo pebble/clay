@@ -15,6 +15,7 @@ describe('ClayConfig', function() {
       'getItemByMessageKey',
       'getItemById',
       'getItemsByType',
+      'getItemsByGroup',
       'serialize',
       'registerComponent',
       'build',
@@ -224,6 +225,7 @@ describe('ClayConfig', function() {
       'getItemByMessageKey',
       'getItemById',
       'getItemsByType',
+      'getItemsByGroup',
       'serialize'
     ].forEach(function(method) {
       it('.' + method + '()', function() {
@@ -284,6 +286,25 @@ describe('ClayConfig', function() {
       var clayConfig = fixtures.clayConfig(config);
       assert.deepEqual(clayConfig.getItemsByType('input')[0].config, config[0]);
       assert.deepEqual(clayConfig.getItemsByType('input')[1].config, config[2]);
+    });
+  });
+
+  describe('.getItemsByGroup()', function() {
+    it('it returns the correct items', function() {
+      var config = fixtures.config([
+        {type: 'input', id: 'g1-0', group: 'group1'},
+        {type: 'text', id: 'g2-0', group: 'group2'},
+        {type: 'input', id: 'g1-1', group: 'group1'}
+      ]);
+
+      var clayConfig = fixtures.clayConfig(config);
+      assert.deepEqual(clayConfig.getItemsByGroup('group1'), [
+        clayConfig.getItemById('g1-0'),
+        clayConfig.getItemById('g1-1')
+      ]);
+      assert.deepEqual(clayConfig.getItemsByGroup('group2'), [
+        clayConfig.getItemById('g2-0')
+      ]);
     });
   });
 

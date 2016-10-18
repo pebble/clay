@@ -131,6 +131,7 @@ Headings can be used in anywhere and can have their size adjusted to suit the co
 | defaultValue | string/HTML | The heading's text. |
 | size | int | Defaults to `4`. An integer from 1 to 6 where 1 is the largest size and 6 is the smallest. (represents HTML `<h1>`, `<h2>`, `<h3>`, etc). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 
 ##### Example
@@ -161,6 +162,7 @@ Text is used to provide descriptions of sections or to explain complex parts of 
 | messageKey | string (unique) | The AppMessage key matching the `messageKey` item defined in your `package.json`.  Set this to a unique string to allow this item to be looked up using `Clay.getItemsByMessageKey()` in your custom function. You must set this if you wish for the value of this item to be persisted after the user closes the config page. |
 | defaultValue | string/HTML | The content of the text element. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 
 ##### Example
@@ -192,6 +194,7 @@ Standard text input field.
 | description | string | Optional sub-text to include below the component |
 | attributes | object | An object containing HTML attributes to set on the input field. Set `type` to values such as "email", "time", "date" etc to adjust the behavior of the component. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 
 ##### Example
@@ -229,6 +232,7 @@ Switch for a single item.
 | defaultValue | int\|boolean | The default value of the toggle. Defaults to `false` if not specified. |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 
 ##### Example
@@ -262,6 +266,7 @@ A dropdown menu containing multiple options.
 | description | string | Optional sub-text to include below the component |
 | options | array of objects | The options you want to appear in the dropdown menu. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -370,6 +375,7 @@ The color picker will automatically show a different layout depending on the wat
 | layout | string OR array | Optional. Use a custom layout for the color picker. Defaults to automatically choosing the most appropriate layout for the connected watch. The layout is represented by a two dimensional array. Use `false` to insert blank spaces. You may also use one of the preset layouts by setting `layout` to: `"COLOR"`, `"GRAY"` or `"BLACK_WHITE"` |
 | allowGray | boolean | Optional. Set this to `true` to include gray (`#AAAAAA`) in the color picker for aplite running on firmware 3 and above. This is optional because only a subset of the drawing operations support gray on aplite. Defaults to `false` |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -434,6 +440,7 @@ A list of options allowing the user can only choose one option to submit.
 | description | string | Optional sub-text to include below the component |
 | options | array of objects | The options you want to appear in the radio group. Each option is an object with a `label` and `value` property. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -479,6 +486,7 @@ A list of options where a user may choose more than one option to submit.
 | description | string | Optional sub-text to include below the component |
 | options | array of strings | The labels for each checkbox you want to appear in the checkbox group. |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -505,10 +513,12 @@ In the above example, Sushi and Burgers will be selected by default.
 | Property | Type | Description |
 |----------|------|-------------|
 | type | string | Set to `button`. |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | defaultValue | string | The text displayed on the button. |
 | primary | boolean | If `true` the button will be orange, if `false`, the button will be gray (defaults to `false`)|
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -547,6 +557,7 @@ you must just remember to divide the received value on the watch accordingly.
 | step | number | The multiple of the values allowed to be set on the slider. The slider will snap to these values. This value also determines the precision used when the value is sent to the watch. Defaults to 1 |
 | description | string | Optional sub-text to include below the component |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -577,7 +588,9 @@ The submit button for the page. You **MUST** include this component somewhere in
 |----------|------|-------------|
 | type | string | Set to `submit`. |
 | defaultValue | string | The text displayed on the button. |
+| id | string (unique) | Set this to a unique string to allow this item to be looked up using `Clay.getItemById()` in your [custom function](#custom-function). |
 | capabilities | array | Array of features that the connected watch must have for this item to be present |
+| group | string | Set this to allow this item, along with other items sharing the same group to be looked up using `Clay.getItemsByGroup()` in your [custom function](#custom-function) |
 
 ##### Example
 
@@ -991,6 +1004,7 @@ This is the main way of talking to your generated config page. An instance of th
 | `.getItemByMessageKey( [string] messageKey )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `messageKey`, otherwise `undefined`. |
 | `.getItemById( [string] id )` | `ConfigItem\|undefined` - a single `ConfigItem` that has the provided `id`, otherwise `undefined`. |
 | `.getItemsByType( [string] type )` | `Array.<ConfigItem>` - an array of config items that match the provided `type`. |
+| `.getItemsByGroup( [string] group )` | `Array.<ConfigItem>` - an array of config items that match the provided `group`. |
 | `.serialize()` | `Object` - an object representing all items with an `messageKey` where the key is the `messageKey` and the value is an object with the `value` property set to the result of running `.get()` on the Clay item. If the Clay item has a `precision` property set, it is included in the object |
 | `.build()` <br> Builds the config page. Will dispatch the `BEFORE_BUILD` event prior to building the page, then the `AFTER_BUILD` event once it is complete. If the config page has already been built, then the `ClayConfig.destroy()` method will be executed prior to building the page again. | `ClayConfig` |
 | `.destroy()` <br> Destroys the config page. Will dispatch the `BEFORE_DESTROY` event prior to destroying the page, then the `AFTER_DESTROY` event once it is complete. This method wipes the config page completely, including all existing items. You will need to make sure that you re-attach your event handlers for any items that are replaced | `ClayConfig` |
