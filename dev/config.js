@@ -64,11 +64,11 @@ module.exports = [
       {
         "type": "slider",
         "messageKey": "slider",
-        "defaultValue": 15,
+        "defaultValue": 0,
         "label": "Slider",
         "description": "This is the description for the slider",
-        "min": 10,
-        "max": 20,
+        "min": 0,
+        "max": 30,
         "step": 0.25
       },
       {

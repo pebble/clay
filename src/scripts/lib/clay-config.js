@@ -86,9 +86,9 @@ function ClayConfig(settings, config, $rootContainer, meta) {
         // set the value of the item via the manipulator to ensure consistency
         var value = typeof _settings[_item.messageKey] !== 'undefined' ?
           _settings[_item.messageKey] :
-          (_item.defaultValue || '');
+          _item.defaultValue;
 
-        clayItem.set(value);
+        clayItem.set(typeof value !== 'undefined' ? value : '');
 
         $container.add(clayItem.$element);
       }
