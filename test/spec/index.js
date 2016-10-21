@@ -386,6 +386,54 @@ describe('Clay', function() {
     });
   });
 
+  describe('.setSettings', function() {
+    it('it writes to localStorage when passing an object',
+      function() {
+        var clay = fixture.clay([]);
+        var settings = {
+          key1: 'value1',
+          key2: 'value2'
+        };
+        var expected = {
+          key1: 'value1',
+          key2: 'value2'
+        };
+
+        clay.setSettings(settings);
+        assert.equal(
+          localStorage.getItem('clay-settings'),
+          JSON.stringify(expected)
+        );
+      });
+
+    it('it writes to localStorage when passing a key and a value',
+      function() {
+        var clay = fixture.clay([]);
+        var expected = {
+          key1: 'value1',
+          key2: 'value2%7Dbreaks'
+        };
+
+        clay.setSettings('key1', 'value1');
+        clay.setSettings('key2', 'value2%7Dbreaks');
+        assert.equal(localStorage.getItem('clay-settings'),
+          JSON.stringify(expected)
+        );
+      });
+
+    it('doesn\'t throw and logs an error if settings in localStorage are broken',
+      function() {
+        var clay = fixture.clay([]);
+        var errorStub = sinon.stub(console, 'error');
+        localStorage.setItem('clay-settings', 'not valid JSON');
+        assert.doesNotThrow(function() {
+          clay.setSettings('key', 'value');
+        });
+        assert(errorStub.calledWithMatch(/SyntaxError/i));
+        errorStub.restore();
+      });
+  });
+
   describe('.meta', function() {
     var emptyMeta = {
       activeWatchInfo: null,

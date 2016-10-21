@@ -214,6 +214,39 @@ Clay.prototype.getSettings = function(response, convert) {
 };
 
 /**
+ * Updates the settings with the given value(s).
+ *
+ * @signature `clay.setSettings(key, value)`
+ * @param {String} key the property to set.
+ * @param {String} value the value assigned to _key_.
+ * @return {undefined}
+ *
+ * @signature `clay.setSettings(setting)`
+ * @param {Object} setting an object containing the key/value pairs to be set.
+ * @return {undefined}
+ */
+Clay.prototype.setSettings = function(key, value) {
+  var settingsStorage = {};
+
+  try {
+    settingsStorage = JSON.parse(localStorage.getItem('clay-settings')) || {};
+  } catch (e) {
+    console.error(e.toString());
+  }
+
+  if (typeof key === 'object') {
+    var settings = key;
+    Object.keys(settings).forEach(function(key) {
+      settingsStorage[key] = settings[key];
+    });
+  } else {
+    settingsStorage[key] = value;
+  }
+
+  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
+};
+
+/**
  * @param {string} input
  * @param {string} [prefix='data:text/html;charset=utf-8,']
  * @returns {string}
