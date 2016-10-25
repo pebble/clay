@@ -196,16 +196,16 @@ Clay.prototype.getSettings = function(response, convert) {
 
   // @todo do something with the persist flag here
   // flatten the settings for localStorage
-//  var settingsStorage = {};
-//  Object.keys(settings).forEach(function(key) {
-//    if (typeof settings[key] === 'object' && settings[key]) {
-//      settingsStorage[key] = settings[key].value;
-//    } else {
-//      settingsStorage[key] = settings[key];
-//    }
-//  });
-//
-//  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
+  var settingsStorage = {};
+  Object.keys(settings).forEach(function(key) {
+    if (typeof settings[key] === 'object' && settings[key]) {
+      settingsStorage[key] = settings[key].value;
+    } else {
+      settingsStorage[key] = settings[key];
+    }
+  });
+
+  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
   return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
 };
