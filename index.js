@@ -5,34 +5,30 @@ var toSource = require('tosource');
 var standardComponents = require('./src/scripts/components');
 var deepcopy = require('deepcopy/build/deepcopy.min');
 var version = require('./package.json').version;
-var messageKeys = require('message_keys');
+var simpleAppMessage = require('@keegan-stoneware/simple-app-message');
+var utils = require('./src/scripts/lib/utils');
 
 /**
- * @param {Array} config - the Clay config
- * @param {function} [customFn] - Custom code to run from the config page. Will run
- *   with the ClayConfig instance as context
- * @param {Object} [options] - Additional options to pass to Clay
- * @param {boolean} [options.autoHandleEvents=true] - If false, Clay will not
- *   automatically handle the 'showConfiguration' and 'webviewclosed' events
- * @param {*} [options.userData={}] - Arbitrary data to pass to the config page. Will
- *   be available as `clayConfig.meta.userData`
+ * @param {Object} options - Clay options
+ * @param {Array} [options.config] - The config
+ * @param {function} [options.openCallback]
+ * @param {function} [options.closedCallback]
+ * @param {Object} [options.locales]
+ * @param {function} [options.customFunction] - Custom code to run from the config
+ * page. Will run with the ClayConfig instance as context
  * @constructor
  */
-function Clay(config, customFn, options) {
+function Clay(options) {
   var self = this;
 
-  if (!Array.isArray(config)) {
-    throw new Error('config must be an Array');
+  if (!options) {
+    utils.throw('You must define options');
   }
 
-  if (customFn && typeof customFn !== 'function') {
-    throw new Error('customFn must be a function or "null"');
-  }
+  options = deepcopy(options);
 
-  options = options || {};
-
-  self.config = deepcopy(config);
-  self.customFn = customFn || function() {};
+  self.config = options.config;
+  self.customFn = options.customFn || function() {};
   self.components = {};
   self.meta = {
     activeWatchInfo: null,
@@ -57,30 +53,30 @@ function Clay(config, customFn, options) {
   }
 
   // Let Clay handle all the magic
-  if (options.autoHandleEvents !== false && typeof Pebble !== 'undefined') {
+  Pebble.addEventListener('showConfiguration', function() {
+    _populateMeta();
+    Pebble.openURL(self.generateUrl());
+  });
 
-    Pebble.addEventListener('showConfiguration', function() {
-      _populateMeta();
-      Pebble.openURL(self.generateUrl());
+  Pebble.addEventListener('webviewclosed', function(e) {
+
+    if (!e || !e.response) { return; }
+
+    var settings = self.getSettings(e.response);
+
+    if (options.closedCallback) {
+      options.closedCallback(settings);
+    }
+
+    simpleAppMessage.send('CLAY', settings, function(response) {
+      if (response.error) {
+        utils.log('Failed to send config data!');
+        utils.log(response.error);
+      } else {
+        utils.log('Sent config data to Pebble');
+      }
     });
-
-    Pebble.addEventListener('webviewclosed', function(e) {
-
-      if (!e || !e.response) { return; }
-
-      // Send settings to Pebble watchapp
-      Pebble.sendAppMessage(self.getSettings(e.response), function() {
-        console.log('Sent config data to Pebble');
-      }, function(error) {
-        console.log('Failed to send config data!');
-        console.log(JSON.stringify(error));
-      });
-    });
-  } else if (typeof Pebble !== 'undefined') {
-    Pebble.addEventListener('ready', function() {
-      _populateMeta();
-    });
-  }
+  });
 
   /**
    * If this function returns true then the callback will be executed
@@ -195,20 +191,21 @@ Clay.prototype.getSettings = function(response, convert) {
   try {
     settings = JSON.parse(response);
   } catch (e) {
-    throw new Error('The provided response was not valid JSON');
+    utils.error('The provided response was not valid JSON');
   }
 
+  // @todo do something with the persist flag here
   // flatten the settings for localStorage
-  var settingsStorage = {};
-  Object.keys(settings).forEach(function(key) {
-    if (typeof settings[key] === 'object' && settings[key]) {
-      settingsStorage[key] = settings[key].value;
-    } else {
-      settingsStorage[key] = settings[key];
-    }
-  });
-
-  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
+//  var settingsStorage = {};
+//  Object.keys(settings).forEach(function(key) {
+//    if (typeof settings[key] === 'object' && settings[key]) {
+//      settingsStorage[key] = settings[key].value;
+//    } else {
+//      settingsStorage[key] = settings[key];
+//    }
+//  });
+//
+//  localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
   return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
 };
@@ -321,13 +318,15 @@ Clay.prepareSettingsForAppMessage = function(settings) {
 
   var result = {};
   Object.keys(flatSettings).forEach(function(key) {
-    var messageKey = messageKeys[key];
-    var settingArr = Clay.prepareForAppMessage(flatSettings[key]);
-    settingArr = Array.isArray(settingArr) ? settingArr : [settingArr];
+//    var messageKey = messageKeys[key];
+//    var settingArr = Clay.prepareForAppMessage(flatSettings[key]);
+//    settingArr = Array.isArray(settingArr) ? settingArr : [settingArr];
+//
+//    settingArr.forEach(function(setting, index) {
+//      result[messageKey + index] = setting;
+//    });
 
-    settingArr.forEach(function(setting, index) {
-      result[messageKey + index] = setting;
-    });
+    result[key] = Clay.prepareForAppMessage(flatSettings[key]);
   });
 
   // validate the settings

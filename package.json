@@ -87,5 +87,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@keegan-stoneware/simple-app-message": "^1.0.0"
+  }
 }

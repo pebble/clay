@@ -133,3 +133,11 @@ module.exports.includesCapability = function(activeWatchInfo, capabilities) {
 
   return result.indexOf(false) === -1;
 };
+
+module.exports.log = function(message) {
+  console.log('Clay: ' + JSON.stringify(message));
+};
+
+module.exports.throw = function(error) {
+  throw new Error('Clay: '+ error)
+};

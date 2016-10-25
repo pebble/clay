@@ -13,6 +13,13 @@ module.exports = [
     "defaultValue": "This is config 2"
   },
   {
+    type: 'thing',
+    defaultValue: {
+      en_US: 'foo',
+      fr_FR: 'bar'
+    }
+  },
+  {
     "type": "section",
     "items": [
       {

@@ -41,7 +41,7 @@ module.exports = [
         "messageKey": "email",
         "defaultValue": "",
         "label": "Input Field",
-        "description": "This is a description for the input component. " +
+        "description": "{{i18n.foo}} This is a description for the input component. " +
                        "You can add <strong>html</strong> in here too.",
         "attributes": {
           "placeholder": "Placeholder set with attributes"

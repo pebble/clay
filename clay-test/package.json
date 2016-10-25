@@ -1,0 +1,34 @@
+{
+  "name": "clay-test",
+  "author": "MakeAwesomeHappen",
+  "version": "1.0.0",
+  "keywords": [
+    "pebble-app"
+  ],
+  "scripts": {
+    "build": "./scripts/build.sh"
+  },
+  "private": true,
+  "dependencies": {
+    "pebble-clay": "../"
+  },
+  "pebble": {
+    "displayName": "clay-test",
+    "uuid": "3fff53d2-1b59-48d7-8187-0c2f3674c32d",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": []
+    }
+  }
+}
