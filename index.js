@@ -189,16 +189,17 @@ Clay.prototype.generateUrl = function() {
  */
 Clay.prototype.getSettings = function(response, convert) {
   // Decode and parse config data as JSON
-  var settings = {};
+  var payload = {};
   response = response.match(/^\{/) ? response : decodeURIComponent(response);
 
   try {
-    settings = JSON.parse(response);
+    payload = JSON.parse(response);
   } catch (e) {
     throw new Error('The provided response was not valid JSON');
   }
 
   // flatten the settings for localStorage
+  var settings = payload.settings;
   var settingsStorage = {};
   Object.keys(settings).forEach(function(key) {
     if (typeof settings[key] === 'object' && settings[key]) {
@@ -211,6 +212,25 @@ Clay.prototype.getSettings = function(response, convert) {
   localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
   return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
+};
+
+/**
+ * Parse the response from the webviewclosed event data
+ * @param {string} response
+ * @returns {Object}
+ */
+Clay.prototype.getUserData = function(response) {
+  // Decode and parse config data as JSON
+  var payload = {};
+  response = response.match(/^\{/) ? response : decodeURIComponent(response);
+
+  try {
+    payload = JSON.parse(response);
+  } catch (e) {
+    throw new Error('The provided response was not valid JSON');
+  }
+
+  return payload.userData;
 };
 
 /**

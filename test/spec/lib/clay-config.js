@@ -331,11 +331,14 @@ describe('ClayConfig', function() {
       var clayConfig = fixtures.clayConfig(config, true, true, settings);
 
       assert.deepEqual(clayConfig.serialize(), {
-        test1: {value: 'default val'},
-        test2: {value: 'val-2'},
-        test3: {value: false},
-        test4: {value: [false, false, false]},
-        test5: {value: 12.5, precision: 2}
+        settings: {
+          test1: {value: 'default val'},
+          test2: {value: 'val-2'},
+          test3: {value: false},
+          test4: {value: [false, false, false]},
+          test5: {value: 12.5, precision: 2}
+        },
+        userData: {}
       });
 
       clayConfig.getItemByMessageKey('test1').set('val-1');
@@ -343,11 +346,14 @@ describe('ClayConfig', function() {
       clayConfig.getItemByMessageKey('test4').set([true, false, true]);
 
       assert.deepEqual(clayConfig.serialize(), {
-        test1: {value: 'val-1'},
-        test2: {value: 'val-2'},
-        test3: {value: true},
-        test4: {value: [true, false, true]},
-        test5: {value: 12.5, precision: 2}
+        settings: {
+          test1: {value: 'val-1'},
+          test2: {value: 'val-2'},
+          test3: {value: true},
+          test4: {value: [true, false, true]},
+          test5: {value: 12.5, precision: 2}
+        },
+        userData: {}
       });
 
       // make sure the result of serialize() can actually be fed back in to
@@ -384,8 +390,11 @@ describe('ClayConfig', function() {
 
       var clayConfig = fixtures.clayConfig(config, true, true, settings);
       assert.deepEqual(clayConfig.serialize(), {
-        test1: {value: 'default val'},
-        test2: {value: 'val-2'}
+        settings: {
+          test1: {value: 'default val'},
+          test2: {value: 'val-2'}
+        },
+        userData: {}
       });
     });
   });
