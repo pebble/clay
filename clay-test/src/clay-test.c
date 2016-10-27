@@ -28,12 +28,11 @@ static void prv_window_load(Window *window) {
 
 static void prv_init(void) {
 
-  const ClayCallbacks clay_callbacks = (ClayCallbacks) {
+  const ClayCallbacks clay_callbacks = {
       .settings_updated = prv_clay_updated_handler,
   };
-  clay_register_callbacks(&clay_callbacks, NULL);
 
-  clay_init(CLAY_INBOX_SIZE);
+  clay_init(CLAY_INBOX_SIZE, &clay_callbacks, NULL);
 
   s_window = window_create();
   window_set_window_handlers(s_window, (WindowHandlers) {
