@@ -65,3 +65,7 @@ bool clay_get_bool(const char *key, bool *value_out) {
 bool clay_get_string(const char *key, char *value_out, size_t size) {
   return prv_read(key, value_out, size);
 }
+
+bool clay_get_data(const char *key, void *value_out, size_t size) {
+  return prv_read(key, value_out, size);
+}
