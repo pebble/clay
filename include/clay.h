@@ -8,7 +8,7 @@ typedef struct ClayCallbacks {
   ClayUpdatedCallback settings_updated;
 } ClayCallbacks;
 
-void clay_init(uint32_t inbox_size);
+void clay_init(uint32_t inbox_size, const ClayCallbacks *callbacks, void *context);
 
 void clay_remove(const char *key);
 
@@ -29,5 +29,3 @@ bool clay_get_data(const char *key, void *value_out, size_t n);
 bool clay_get_int(const char *key, int *value_out);
 
 bool clay_get_string(const char *key, char *value_out, size_t n);
-
-bool clay_register_callbacks(const ClayCallbacks *callbacks, void *context);
