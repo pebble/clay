@@ -5,9 +5,12 @@
 
 static ClayCallbacks s_callbacks;
 
-static bool prv_store_settings(
-    const char *key, SimpleDictDataType type, const void *data, size_t data_size, void *context) {
-  uint32_t persist_key = hash((uint8_t *) key, strlen(key));
+static uint32_t prv_hash_key(const char *key) {
+  return hash((uint8_t *)key, strlen(key));
+}
+
+static bool prv_write(const char *key, const SimpleDictDataType type, const void *data, size_t data_size, void *context) {
+  uint32_t persist_key = prv_hash_key(key);
 
   switch (type) {
     case SimpleDictDataType_Raw:
@@ -20,8 +23,6 @@ static bool prv_store_settings(
     }
     case SimpleDictDataType_Int: {
       const int value = *((int *) data);
-      APP_LOG(APP_LOG_LEVEL_INFO, "CLAY: writing %d - %d to storage",
-              (int) persist_key, value);
       persist_write_int(persist_key, value);
       return true;
     }
@@ -43,9 +44,42 @@ static void prv_simple_app_message_received_callback(const SimpleDict *message, 
   }
 
   APP_LOG(APP_LOG_LEVEL_INFO, "CLAY: Received SimpleAppMessage");
-  simple_dict_foreach(message, prv_store_settings, NULL);
+  simple_dict_foreach(message, prv_write, NULL);
   s_callbacks.settings_updated(context);
 }
+
+static bool prv_read(SimpleDictDataType type, const char *key, void *value_out, size_t size) {
+  uint32_t persist_key = prv_hash_key(key);
+
+  if (persist_exists(persist_key)) {
+
+    switch (type) {
+      case SimpleDictDataType_Raw:
+//        persist_write_data(persist_key, data, data_size);
+        return true;
+      case SimpleDictDataType_Bool: {
+        const bool value = persist_read_bool(persist_key);
+        memcpy(value_out, &value, size);
+        return true;
+      }
+      case SimpleDictDataType_Int: {
+        const int value = persist_read_int(persist_key);
+        memcpy(value_out, &value, size);
+        return true;
+      }
+      case SimpleDictDataType_String: {
+        persist_read_string(persist_key, value_out, size);
+        return true;
+      }
+      case SimpleDictDataTypeCount:
+        break;
+    }
+  }
+  return false;
+
+}
+
+// ----- PUBLIC API -----
 
 void clay_init(uint32_t inbox_size, const ClayCallbacks *callbacks, void *context) {
   s_callbacks = *callbacks;
@@ -71,17 +105,13 @@ void clay_init(uint32_t inbox_size, const ClayCallbacks *callbacks, void *contex
 }
 
 bool clay_get_int(const char *key, int *value_out) {
-  uint32_t persist_key = hash((uint8_t *)key, strlen(key));
-
-  if (persist_exists(persist_key)) {
-    int value = persist_read_int(persist_key);
-    APP_LOG(APP_LOG_LEVEL_INFO, "CLAY: reading %d - %d from storage", (int)persist_key, value);
-    memcpy(value_out, &value, sizeof(&value));
-
-    return true;
-  }
-  return false;
+  return prv_read(SimpleDictDataType_Int, key, value_out, sizeof(&value_out));
 }
 
+bool clay_get_bool(const char *key, bool *value_out) {
+  return prv_read(SimpleDictDataType_Bool, key, value_out, sizeof(&value_out));
+}
 
-
+bool clay_get_string(const char *key, char *value_out, size_t size) {
+  return prv_read(SimpleDictDataType_String, key, value_out, size);
+}

@@ -62,7 +62,7 @@ function Clay(options) {
 
     if (!e || !e.response) { return; }
 
-    var settings = self.getSettings(e.response);
+    var settings = self.getSettings(e.response, false);
 
     if (options.closedCallback) {
       options.closedCallback(settings);
@@ -207,7 +207,7 @@ Clay.prototype.getSettings = function(response, convert) {
 
   localStorage.setItem('clay-settings', JSON.stringify(settingsStorage));
 
-  return convert === false ? settings : Clay.prepareSettingsForAppMessage(settings);
+  return convert === false ? settingsStorage : Clay.prepareSettingsForAppMessage(settings);
 };
 
 /**
@@ -330,14 +330,14 @@ Clay.prepareSettingsForAppMessage = function(settings) {
   });
 
   // validate the settings
-  Object.keys(result).forEach(function(key) {
-    if (Array.isArray(result[key])) {
-      throw new Error('Clay does not support 2 dimensional arrays for item ' +
-                      'values. Make sure you are not attempting to use array ' +
-                      'syntax (eg: "myMessageKey[2]") in the messageKey for ' +
-                      'components that return an array, such as a checkboxgroup');
-    }
-  });
+  // Object.keys(result).forEach(function(key) {
+  //   if (Array.isArray(result[key])) {
+  //     throw new Error('Clay does not support 2 dimensional arrays for item ' +
+  //                     'values. Make sure you are not attempting to use array ' +
+  //                     'syntax (eg: "myMessageKey[2]") in the messageKey for ' +
+  //                     'components that return an array, such as a checkboxgroup');
+  //   }
+  // });
 
   return result;
 };
