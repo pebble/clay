@@ -9,9 +9,9 @@ static uint32_t prv_hash_key(const char *key) {
   return hash((uint8_t *)key, strlen(key));
 }
 
-static bool prv_write(const char *key, const SimpleDictDataType type, const void *data, size_t data_size, void *context) {
+static bool prv_write(const char *key, const SimpleDictDataType type, const void *data, size_t size, void *context) {
   uint32_t persist_key = prv_hash_key(key);
-  return persist_write_data(persist_key, data, data_size) != E_DOES_NOT_EXIST;
+  return persist_write_data(persist_key, data, size) == size;
 }
 
 static void prv_simple_app_message_received_callback(const SimpleDict *message, void *context) {
@@ -26,7 +26,7 @@ static void prv_simple_app_message_received_callback(const SimpleDict *message, 
 
 static bool prv_read(const char *key, void *value_out, size_t size) {
   uint32_t persist_key = prv_hash_key(key);
-  return persist_read_data(persist_key, value_out, size) != E_DOES_NOT_EXIST;
+  return persist_read_data(persist_key, value_out, size) == size;
 }
 
 // ----- PUBLIC API -----
