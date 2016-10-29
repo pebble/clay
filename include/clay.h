@@ -8,7 +8,9 @@ typedef struct ClayCallbacks {
   ClayUpdatedCallback settings_updated;
 } ClayCallbacks;
 
-void clay_init(uint32_t inbox_size, const ClayCallbacks *callbacks, void *context);
+void clay_init(uint32_t inbox_size, bool open_app_message);
+
+void clay_register_callbacks(const ClayCallbacks *callbacks, void *context);
 
 void clay_remove(const char *key);
 

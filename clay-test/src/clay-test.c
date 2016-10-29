@@ -59,7 +59,8 @@ static void prv_init(void) {
       .settings_updated = prv_clay_updated_handler,
   };
 
-  clay_init(CLAY_INBOX_SIZE, &clay_callbacks, NULL);
+  clay_register_callbacks(&clay_callbacks, NULL);
+  clay_init(CLAY_INBOX_SIZE, true);
 
   s_window = window_create();
   window_set_window_handlers(s_window, (WindowHandlers) {
