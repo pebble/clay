@@ -538,7 +538,7 @@ In the above example, Sushi and Burgers will be selected by default.
 
 The range slider is used to allow users to select numbers between two values. 
 
-**NOTE** If you set the `step` property to anything less than `1`, 
+**NOTE** If you set the `step` property to a fractional value, 
 it will multiply the final value sent to the watch by 10 to the power of the number of decimal places in the value of `step`.
 Eg: If you set the `step` to `0.25` and the slider has value of `34.5`, the watch will receive `3450`. 
 The reason why this is necessary, is because you can not send floats to the watch via `Pebble.sendAppMessage()`. 
