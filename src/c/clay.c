@@ -80,3 +80,19 @@ bool clay_get_string(const char *key, char *value_out, size_t size) {
 bool clay_get_data(const char *key, void *value_out, size_t size) {
   return prv_read(key, value_out, size);
 }
+
+bool clay_set_int(const char *key, int *value) {
+  return prv_write(key, value, sizeof(value));
+}
+
+bool clay_set_bool(const char *key, bool *value) {
+  return prv_write(key, value, sizeof(value));
+}
+
+bool clay_set_data(const char *key, const void *value, size_t size) {
+  return prv_write(key, value, size);
+}
+
+bool clay_set_string(const char *key, const char *value) {
+  return prv_write(key, value, strlen(value));
+}

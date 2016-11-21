@@ -20,12 +20,12 @@ var clay = new Clay({
           type: 'toggle',
           messageKey: 'test_bool'
         },
-        // {
-        //   label: 'raw',
-        //   type: 'checkboxgroup',
-        //   messageKey: 'test_raw',
-        //   options: ['one', 'two', 'three']
-        // },
+        {
+          label: 'array',
+          type: 'checkboxgroup',
+          messageKey: 'test_array',
+          options: ['one', 'two', 'three']
+        },
         {
           type: 'submit',
           defaultValue: 'submit'

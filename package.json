@@ -88,6 +88,6 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "@keegan-stoneware/simple-app-message": "^1.0.0"
+    "@keegan-stoneware/simple-app-message": "^1.1.1"
   }
 }
