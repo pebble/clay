@@ -217,12 +217,12 @@ Clay.prototype.getSettings = function(response, convert) {
  * Updates the settings with the given value(s).
  *
  * @signature `clay.setSettings(key, value)`
- * @param {String} key the property to set.
- * @param {String} value the value assigned to _key_.
+ * @param {String} key - The property to set.
+ * @param {*} value - the value assigned to _key_.
  * @return {undefined}
  *
- * @signature `clay.setSettings(setting)`
- * @param {Object} setting an object containing the key/value pairs to be set.
+ * @signature `clay.setSettings(settings)`
+ * @param {Object} settings - an object containing the key/value pairs to be set.
  * @return {undefined}
  */
 Clay.prototype.setSettings = function(key, value) {
