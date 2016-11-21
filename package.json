@@ -1,6 +1,6 @@
 {
   "name": "pebble-clay",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Pebble Config Framework",
   "scripts": {
     "test-travis": "./node_modules/.bin/gulp && ./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers chromeTravisCI && ./node_modules/.bin/eslint ./",
