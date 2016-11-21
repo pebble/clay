@@ -876,6 +876,8 @@ Pebble.addEventListener('webviewclosed', function(e) {
 | `.registerComponent( [ClayComponent] component )` <br> Registers a custom component. | `void`. |  
 | `.generateUrl()` | `string` - The URL to open with `Pebble.openURL()` to use the Clay-generated config page. |
 | `.getSettings( [object] response, [boolean] convert=true)` <br> `response` - the response object provided to the "webviewclosed" event <br> `convert` - Pass `false` to not convert the settings to be compatible with `Pebble.sendAppMessage()` | `Object` - object of keys and values for each config page item with an `messageKey`, where the key is the `messageKey` and the value is the chosen value of that item.  <br><br>This method will do some conversions depending on the type of the setting. Arrays will use message key array syntax to make the values of each item in the array available as individual message keys. Booleans will be converted to numbers. eg `true` becomes `1` and `false` becomes `0`. If the value is a number or an array of numbers and the optional property: "precision" is the power of precision (value * 10 ^ precision) and then floored. Eg: `1.4567` with a precision set to `3` will become `1456`. Pass `false` as the second parameter to disable this behavior. See the example below for how this all works |
+| `.setSettings( [string] key, [*] value )` <br> `key` - The key for the setting you want to set. <br> `value` - The value of the setting you want to set. | `void` |
+| `.setSettings( [object] settings )` <br> `settings` - An object of key/value pairs that you would like to update the settings with. eg `{ user_name: 'Emily', show_animations: true }` | `void` |
 
 #### `.getSettings()` Example 
 
