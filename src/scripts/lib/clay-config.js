@@ -130,6 +130,13 @@ function ClayConfig(settings, config, $rootContainer, meta) {
     AFTER_BUILD: 'AFTER_BUILD',
 
     /**
+     * Called before configuration is returned to app.js. This is when you would set
+     * properties of of userData to pass back.
+     * @const
+     */
+    BEFORE_SUBMIT: 'BEFORE_SUBMIT',
+
+    /**
      * Called if .build() is executed after the page has already been built and
      * before the existing content is destroyed
      * @const
@@ -210,7 +217,13 @@ function ClayConfig(settings, config, $rootContainer, meta) {
         _settings[messageKey].precision = item.precision;
       }
     });
-    return _settings;
+
+    self.trigger(self.EVENTS.BEFORE_SUBMIT);
+
+    return {
+      settings: _settings,
+      userData: meta.userData
+    };
   };
 
   // @todo maybe don't do this and force the static method

@@ -32,5 +32,10 @@ module.exports = function() {
     Clay.getItemById('testButton').on('click', handleButtonClick);
   });
 
+  Clay.on(Clay.EVENTS.BEFORE_SUBMIT, function() {
+    var password = Clay.getItemById('password').get();
+    Clay.meta.userData.password = password;
+  });
+
   console.log('userData: ', Clay.meta.userData);
 };

@@ -107,14 +107,14 @@ describe('Clay', function() {
       stubPebble();
       fixture.clay([]);
       var logStub = sinon.stub(console, 'log');
-      var expected = {someSetting: 'value'};
+      var expected = {settings: {someSetting: 'value'}, userData: {}};
 
-      stubMessageKeys(fixture.messageKeysObjToArray(expected));
+      stubMessageKeys(fixture.messageKeysObjToArray(expected.settings));
       Pebble.addEventListener
         .withArgs('webviewclosed')
         .callArgWith(1, {response: encodeURIComponent(JSON.stringify(expected))});
 
-      var expectedAppMessage = fixture.messageKeysExpected(expected);
+      var expectedAppMessage = fixture.messageKeysExpected(expected.settings);
       assert(Pebble.addEventListener.calledWith('webviewclosed'));
       assert(Pebble.sendAppMessage.calledWith(expectedAppMessage));
 
@@ -269,13 +269,66 @@ describe('Clay', function() {
     });
   });
 
+  describe('.getUserData', function() {
+    it('it returns the data when input is encoded',
+    function() {
+      var clay = fixture.clay([]);
+      var payload = encodeURIComponent(JSON.stringify({
+        settings: {},
+        userData: {
+          key1: 'value1',
+          key2: 'value2'
+        }
+      }));
+      var expected = {
+        key1: 'value1',
+        key2: 'value2'
+      };
+
+      var result = clay.getUserData(payload);
+      assert.deepEqual(result, expected);
+    });
+
+    it('it returns the data when input is not encoded',
+    function() {
+      var clay = fixture.clay([]);
+      var unencodedResponse = JSON.stringify({
+        settings: {},
+        userData: {
+          key1: 'value1',
+          key2: 'value2%7Dbreaks'
+        }
+      });
+      var expected = {
+        key1: 'value1',
+        key2: 'value2%7Dbreaks'
+      };
+
+      var result = clay.getUserData(unencodedResponse);
+      assert.deepEqual(result, expected);
+    });
+
+    it('it logs an error if it is invalid JSON',
+    function() {
+      var clay = fixture.clay([]);
+
+      assert.throws(function() {
+        clay.getUserData('not valid JSON');
+      }, /Not Valid JSON/i);
+    });
+
+  });
+
   describe('.getSettings', function() {
     it('it writes to localStorage and returns the data when input is encoded',
     function() {
       var clay = fixture.clay([]);
-      var settings = encodeURIComponent(JSON.stringify({
-        key1: 'value1',
-        key2: {value: 'value2'}
+      var payload = encodeURIComponent(JSON.stringify({
+        settings: {
+          key1: 'value1',
+          key2: {value: 'value2'}
+        },
+        userData: {}
       }));
       var expected = {
         key1: 'value1',
@@ -284,7 +337,7 @@ describe('Clay', function() {
 
       stubMessageKeys(fixture.messageKeysObjToArray(expected));
 
-      var result = clay.getSettings(settings);
+      var result = clay.getSettings(payload);
       assert.equal(
         localStorage.getItem('clay-settings'),
         JSON.stringify(expected)
@@ -295,9 +348,12 @@ describe('Clay', function() {
     it('it writes to localStorage and returns the data when input is not encoded',
     function() {
       var clay = fixture.clay([]);
-      var settings = JSON.stringify({
-        key1: 'value1',
-        key2: {value: 'value2%7Dbreaks'}
+      var unencodedResponse = JSON.stringify({
+        settings: {
+          key1: 'value1',
+          key2: {value: 'value2%7Dbreaks'}
+        },
+        userData: {}
       });
       var expected = {
         key1: 'value1',
@@ -306,7 +362,7 @@ describe('Clay', function() {
 
       stubMessageKeys(fixture.messageKeysObjToArray(expected));
 
-      var result = clay.getSettings(settings);
+      var result = clay.getSettings(unencodedResponse);
       assert.equal(
         localStorage.getItem('clay-settings'),
         JSON.stringify(expected)
@@ -328,21 +384,24 @@ describe('Clay', function() {
     it('Prepares the settings for sendAppMessage', function() {
       var clay = fixture.clay([]);
       var response = encodeURIComponent(JSON.stringify({
-        test1: false,
-        test2: 'val-2',
-        test3: true,
-        test4: ['cb-1', 'cb-3'],
-        test5: 12345,
-        test6: [1, 2, 3, 4],
-        test7: [true, false, true],
-        test8: {
-          precision: 2,
-          value: 12.34
+        settings: {
+          test1: false,
+          test2: 'val-2',
+          test3: true,
+          test4: ['cb-1', 'cb-3'],
+          test5: 12345,
+          test6: [1, 2, 3, 4],
+          test7: [true, false, true],
+          test8: {
+            precision: 2,
+            value: 12.34
+          },
+          test9: {
+            precision: 1,
+            value: [1, 2, 3, 4]
+          }
         },
-        test9: {
-          precision: 1,
-          value: [1, 2, 3, 4]
-        }
+        userData: {}
       }));
       var expected = {
         test1: 0,
@@ -367,22 +426,25 @@ describe('Clay', function() {
     it('does not prepare the settings for sendAppMessage if convert is false',
     function() {
       var clay = fixture.clay([]);
-      var settings = {
-        test1: false,
-        test2: 'val-2',
-        test3: true,
-        test4: ['cb-1', 'cb-3'],
-        test5: 12345,
-        test6: [1, 2, 3, 4],
-        test7: [true, false, true],
-        test8: {
-          precision: 2,
-          value: 12.34
-        }
+      var payload = {
+        settings: {
+          test1: false,
+          test2: 'val-2',
+          test3: true,
+          test4: ['cb-1', 'cb-3'],
+          test5: 12345,
+          test6: [1, 2, 3, 4],
+          test7: [true, false, true],
+          test8: {
+            precision: 2,
+            value: 12.34
+          }
+        },
+        userData: {}
       };
-      var response = encodeURIComponent(JSON.stringify(settings));
+      var response = encodeURIComponent(JSON.stringify(payload));
 
-      assert.deepEqual(clay.getSettings(response, false), settings);
+      assert.deepEqual(clay.getSettings(response, false), payload.settings);
     });
   });
 

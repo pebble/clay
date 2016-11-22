@@ -62,6 +62,14 @@ module.exports = [
         }
       },
       {
+        "type": "input",
+        "id": "password",
+        "label": "Password Field",
+        "attributes": {
+          "type": "password"
+        }
+      },
+      {
         "type": "slider",
         "messageKey": "slider",
         "defaultValue": 0,
