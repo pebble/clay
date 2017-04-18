@@ -61,7 +61,7 @@ Your root element **must** be an array. This represents the entire page. Inside 
 NOTE for config.js (rather than config.json) a leading `module.exports =` is required.
 
 ```javascript
-[
+module.exports = [
   { 
     "type": "heading", 
     "defaultValue": "Example Header Item" 
@@ -70,7 +70,7 @@ NOTE for config.js (rather than config.json) a leading `module.exports =` is req
     "type": "text", 
     "defaultValue": "Example text item." 
   }
-]
+];
 ```
 
 ## Components
