@@ -292,9 +292,9 @@ describe('ClayConfig', function() {
   describe('.getItemsByGroup()', function() {
     it('it returns the correct items', function() {
       var config = fixtures.config([
-        {type: 'input', id: 'g1-0', group: 'group1'},
-        {type: 'text', id: 'g2-0', group: 'group2'},
-        {type: 'input', id: 'g1-1', group: 'group1'}
+        {type: 'input', id: 'g1-0', groups: ['group1']},
+        {type: 'text', id: 'g2-0', groups: ['group2']},
+        {type: 'input', id: 'g1-1', groups: ['group1']}
       ]);
 
       var clayConfig = fixtures.clayConfig(config);

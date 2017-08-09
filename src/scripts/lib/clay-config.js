@@ -189,7 +189,7 @@ function ClayConfig(settings, config, $rootContainer, meta) {
   self.getItemsByGroup = function(group) {
     _checkBuilt('getItemsByGroup');
     return _items.filter(function(item) {
-      return item.config.group === group;
+      return item.config.groups && item.config.groups.indexOf(group) > -1;
     });
   };
 
